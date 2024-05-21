@@ -3,6 +3,7 @@ import { useUserContext } from '@/utils/authProvider'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import NavbarUser from '@/components/NavbarUser'
+import { Card } from '@/components/ui/card'
 
 function Dashboard() {
 	const { userData } = useUserContext()
@@ -48,10 +49,10 @@ function Dashboard() {
 					<div className="flex my-16 px-20 flex-col">
 						<div className="grid grid-cols-4 gap-5 md:gap-10 mt-5">
 							{Array.from({ length: 16 }, (_, index) => (
-								<div
+								<Card
 									key={index}
 									className="px-5 py-40 bg-black rounded-md"
-								></div>
+								></Card>
 							))}
 						</div>
 					</div>
