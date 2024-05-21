@@ -160,7 +160,7 @@ function Home() {
 			</section>
 
 			<section id="review">
-				<div className="px-5 py-10 md:px-20 lg:px-72 lg:py-20 items-center">
+				<div className="px-5 py-10 md:px-20 lg:px-72 lg:pt-20 items-center">
 					<div className="flex justify-center">
 						<h1 className="text-3xl font-bold">Komentar Pembeli</h1>
 					</div>

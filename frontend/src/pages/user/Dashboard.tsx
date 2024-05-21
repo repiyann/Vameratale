@@ -13,9 +13,9 @@ function Dashboard() {
 			<div className="flex">
 				<section
 					id="sidebar"
-					className="md:block md:w-64 md:bg-[#FFCAD4] md:h-64 md:my-20 md:sticky md:top-40 md:rounded-r-lg hidden"
+					className="md:block md:bg-[#FFCAD4] md:w-64 md:h-1/2 md:my-20 md:sticky md:top-40 md:rounded-r-lg hidden"
 				>
-					<div className="py-20 px-10 gap-3">
+					<div className="py-10 px-10 gap-3">
 						<Accordion type="multiple">
 							<AccordionItem value="item-1">
 								<AccordionTrigger>Acara</AccordionTrigger>
@@ -47,54 +47,12 @@ function Dashboard() {
 				>
 					<div className="flex my-16 px-20 flex-col">
 						<div className="grid grid-cols-4 gap-5 md:gap-10 mt-5">
-							<div className="col-start-1 col-end-1">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-2 col-end-2">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-3 col-end-3">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-4 col-end-4">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-1 col-end-1">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-2 col-end-2">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-3 col-end-3">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-4 col-end-4">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-1 col-end-1">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-2 col-end-2">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-3 col-end-3">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-4 col-end-4">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-1 col-end-1">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-2 col-end-2">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-3 col-end-3">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-4 col-end-4">
-								<div className="px-5 py-40 bg-black rounded-md"></div>
-							</div>
+							{Array.from({ length: 16 }, (_, index) => (
+								<div
+									key={index}
+									className="px-5 py-40 bg-black rounded-md"
+								></div>
+							))}
 						</div>
 					</div>
 				</section>
