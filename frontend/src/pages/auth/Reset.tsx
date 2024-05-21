@@ -35,7 +35,7 @@ function Reset() {
 							type="password"
 							placeholder="Enter Password"
 							minLength={8}
-							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none"
+							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							autoFocus
 							required
 							value={password}
@@ -48,7 +48,7 @@ function Reset() {
 							type="password"
 							placeholder="Enter Confirm Password"
 							minLength={8}
-							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none"
+							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							autoFocus
 							required
 							value={confirmPassword}

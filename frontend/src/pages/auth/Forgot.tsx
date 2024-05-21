@@ -36,7 +36,7 @@ function Forgot() {
 						<input
 							type="text"
 							placeholder="Enter Email Address"
-							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none"
+							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							autoFocus
 							required
 							value={email}

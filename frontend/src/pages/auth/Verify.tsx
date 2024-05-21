@@ -51,7 +51,7 @@ function Verifying() {
 								type="text"
 								placeholder="-"
 								maxLength={1}
-								className="w-1/4 px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none text-center"
+								className="w-1/4 px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none text-center focus:ring-2 focus:ring-[#E28392]"
 								autoFocus={index === 0}
 								value={pin}
 								ref={(el) => (inputRefs.current[index] = el)}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faBars } from '@fortawesome/free-solid-svg-icons'
 import {
@@ -21,6 +21,7 @@ function Navbar() {
 	const [shadow, setShadow] = useState<boolean>(false)
 	const [activeSection, setActiveSection] = useState<string>('')
 	const location = useLocation()
+	const navigate = useNavigate()
 	const isDashboard: boolean = location.pathname === '/dashboard'
 	const isAbout: boolean = location.pathname === '/about'
 
@@ -52,6 +53,19 @@ function Navbar() {
 			document.removeEventListener('scroll', handleScroll)
 		}
 	}, [shadow, location])
+
+	function scrollToContact(): void {
+		isDashboard || isAbout
+			? (navigate('/'),
+		setTimeout(() => {
+					const contactSection = document.getElementById('contact')
+					contactSection && contactSection.scrollIntoView({ behavior: 'smooth' })
+		}, 100))
+			: (() => {
+					const contactSection = document.getElementById('contact')
+					contactSection && contactSection.scrollIntoView({ behavior: 'smooth' })
+		})()
+	}
 
 	return (
 		<header
@@ -166,14 +180,14 @@ function Navbar() {
 						</Link>
 					</li>
 					<li>
-						<Link
-							to={'/contact'}
+						<a
+							onClick={scrollToContact}
 							className={`font-medium cursor-pointer ${
 								activeSection === 'contact' && 'pb-1 border-b-4 border-green-950'
 							}`}
 						>
 							Kontak
-						</Link>
+						</a>
 					</li>
 				</ul>
 			</nav>

@@ -91,7 +91,7 @@ function Register() {
 						<input
 							type="email"
 							placeholder="Enter Email Address"
-							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none"
+							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							autoFocus
 							required
 							value={email}
@@ -103,7 +103,7 @@ function Register() {
 						<input
 							type="tel"
 							placeholder="Enter No Telepon"
-							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none"
+							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							required
 							value={telepon}
 							onChange={(e) => setTelepon(e.target.value)}
@@ -115,7 +115,7 @@ function Register() {
 							type="password"
 							placeholder="Enter Password"
 							minLength={8}
-							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none"
+							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							required
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
@@ -127,7 +127,7 @@ function Register() {
 							type="password"
 							placeholder="Enter Confirm Password"
 							minLength={8}
-							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none"
+							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							required
 							value={confirmPassword}
 							onChange={(e) => setConfirmPassword(e.target.value)}

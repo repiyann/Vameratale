@@ -135,12 +135,18 @@ function Home() {
 
 			<section id="about">
 				<div className="px-5 py-2 md:px-20 md:py-24 lg:px-72 lg:py-20 flex flex-col bg-[#FDEBE7] justify-center items-center md:grid md:grid-cols-2 md:gap-5">
-					<h1 className="text-3xl font-bold dark:text-white">Tentang Kami</h1>
-					<div className="col-start-1 col-end-1 my-5 md:m-auto text-center md:text-left">
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lacinia euismod felis nec mollis. Lorem ipsum
-							dolor sit amet, consectetur adipiscing elit. Mauris eget vulputate turpis, id egestas libero.
+					<div className="col-start-1 col-end-1 mt-5 mb-10 md:m-auto text-center md:text-left">
+						<h1 className="text-3xl font-bold dark:text-white mb-10">Tentang Kami</h1>
+						<p className="mb-10">
+							Vameratale merupakan handicraft gift shop yang lahir di Bogor pada pertengahan 2022. Tidak berjalan
+							sendirian, Vameratale adalah bagian dari Petrikor Solid Produksi sebagai rumah utama.
 						</p>
+						<Link
+							to={'/about'}
+							className="px-5 py-2 bg-[#FD9A9A] rounded-md text-white"
+						>
+							Baca Selengkapnya
+						</Link>
 					</div>
 					<div className="col-start-2 col-end-2 m-auto">
 						<img
@@ -227,9 +233,9 @@ function Home() {
 							>
 								<FontAwesomeIcon
 									icon={faEnvelope}
-									size="2xl"
+									className="text-2xl"
 								/>
-								<span className="ml-2 mt-3 text-2xl">hi@gmail.com</span>
+								<span className="ml-2 mt-3 lg:text-2xl">hi@gmail.com</span>
 							</a>
 							<a
 								href="https://www.instagram.com/vameratale"
@@ -238,9 +244,9 @@ function Home() {
 							>
 								<FontAwesomeIcon
 									icon={faInstagram}
-									size="2xl"
+									className="text-2xl"
 								/>
-								<span className="ml-2 mt-3 text-2xl">@vameratale</span>
+								<span className="ml-2 mt-3 lg:text-2xl">@vameratale</span>
 							</a>
 						</div>
 						<div className="flex justify-center md:justify-start mb-5">
@@ -251,9 +257,9 @@ function Home() {
 							>
 								<FontAwesomeIcon
 									icon={faFacebook}
-									size="2xl"
+									className="text-2xl"
 								/>
-								<span className="ml-2 mt-3 text-2xl">Vameratale</span>
+								<span className="ml-2 mt-3 lg:text-2xl">Vameratale</span>
 							</a>
 							<a
 								href="https://www.instagram.com/vameratale"
@@ -262,9 +268,9 @@ function Home() {
 							>
 								<FontAwesomeIcon
 									icon={faTwitter}
-									size="2xl"
+									className="text-2xl"
 								/>
-								<span className="ml-2 mt-3 text-2xl">@vameratale</span>
+								<span className="ml-2 mt-3 lg:text-2xl">@vameratale</span>
 							</a>
 						</div>
 					</div>
