@@ -1,12 +1,31 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
-// import flower from '/flowers.png'
+import flower from '/flowers.png'
 import NavbarUser from '@/components/NavbarUser'
 
 function Product() {
+	const [selectedVariant, setSelectedVariant] = useState<string>('')
+	const [stock] = useState<number>(23)
+	const [quantity, setQuantity] = useState<number>(1)
+
+	const handleVariantChange = (variant: string) => {
+		setSelectedVariant(variant)
+	}
+
+	const handleQuantityChange = (change: number) => {
+		setQuantity((prevQuantity) => {
+			const newQuantity = prevQuantity + change
+			if (newQuantity > 0 && newQuantity <= stock) {
+				return newQuantity
+			}
+			return prevQuantity
+		})
+	}
+
 	return (
 		<>
 			<NavbarUser />
@@ -37,8 +56,12 @@ function Product() {
 									>
 										<div className="p-1">
 											<Card>
-												<CardContent className="flex aspect-square items-center justify-center p-32">
-													<span className="text-4xl font-semibold">{index + 1}</span>
+												<CardContent className="flex items-center p-10 justify-center">
+													<img
+														src={flower}
+														width={250}
+														alt=""
+													/>
 												</CardContent>
 											</Card>
 										</div>
@@ -50,7 +73,73 @@ function Product() {
 						</Carousel>
 					</div>
 					<div className="col-start-2 col-end-2">
-						<h1 className='font-semibold text-4xl'>3 Stems of Rose with Filler | <span className='text-2xl'>Rp. 95.000</span></h1>
+						<h1 className="font-semibold text-4xl">
+							3 Stems of Rose with Filler | <span className="text-2xl">Rp. 95.000</span>
+						</h1>
+						<p className="text-[#660000] italic font-semibold">Great for romantic</p>
+						<div className="mt-5">
+							<label className="block font-semibold">Variant</label>
+							<div className="flex space-x-4 mt-2">
+								{['S', 'M', 'R', 'L'].map((variant) => (
+									<label
+										key={variant}
+										className="flex items-center space-x-2"
+									>
+										<input
+											type="radio"
+											name="variant"
+											value={variant}
+											checked={selectedVariant === variant}
+											onChange={() => handleVariantChange(variant)}
+											className="form-radio"
+										/>
+										<span>Variant {variant}</span>
+									</label>
+								))}
+							</div>
+						</div>
+						<div className="mt-5">
+							<label className="block font-semibold">Stock</label>
+							<p>{stock}</p>
+						</div>
+						<div className="mt-5">
+							<label className="block font-semibold">Quantity</label>
+							<div className="flex items-center space-x-4 mt-2">
+								<button
+									onClick={() => handleQuantityChange(-1)}
+									className="px-4 py-2 border rounded-full"
+									disabled={quantity === 1}
+								>
+									-
+								</button>
+								<span>{quantity}</span>
+								<button
+									onClick={() => handleQuantityChange(1)}
+									className="px-4 py-2 border rounded-full"
+									disabled={quantity === stock}
+								>
+									+
+								</button>
+							</div>
+						</div>
+						<div className="mt-5">
+							<label className="block font-semibold">Description</label>
+							<p>S = 2 Tangkai Bunga Mawar</p>
+							<p>M = 5 Tangkai Bunga Mawar</p>
+							<p>L = 10 Tangkai Bunga Mawar</p>
+						</div>
+						<div className="mt-5">
+							<label className="block font-semibold">Makna</label>
+							<p>
+								Mawar pink melambangkan cinta yang baru mekar, penuh kelembutan, dan kasih sayang. Perpaduannya dengan
+								mawar putih, yang melambangkan cinta sejati dan ketulusan, menunjukkan cinta yang murni dan penuh
+								perhatian. Buket ini cocok diberikan untuk pasangan, sahabat, atau keluarga untuk menunjukkan rasa cinta
+								dan kasih sayang yang mendalam.
+							</p>
+						</div>
+						<div className="mt-5">
+							<button className="px-4 py-2 bg-[#990000] text-white rounded-full">Tambahkan ke keranjang</button>
+						</div>
 					</div>
 				</div>
 			</section>

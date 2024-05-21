@@ -69,7 +69,7 @@ function Navbar() {
 
 	return (
 		<header
-			className={`px-6 py-3 md:px-16 md:py-2 lg:px-72 lg:py-4 bg-[#FDEBE7] flex sticky top-0 z-50 justify-between items-center ${
+			className={`px-6 py-5 md:px-20 md:py-4 lg:px-60 lg:py-4 bg-[#FDEBE7] flex sticky top-0 z-50 justify-between items-center ${
 				shadow && 'shadow-lg'
 			}`}
 		>
@@ -98,7 +98,7 @@ function Navbar() {
 			)}
 
 			<nav>
-				<ul className="hidden lg:flex lg:justify-between lg:items-center lg:relative lg:gap-5">
+				<ul className="hidden lg:flex lg:justify-between lg:items-center lg:relative lg:gap-10">
 					<li>
 						{isDashboard || isAbout ? (
 							<Link

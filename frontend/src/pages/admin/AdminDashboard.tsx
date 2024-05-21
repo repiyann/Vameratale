@@ -28,7 +28,7 @@ import {
 import { RiShoppingBagFill } from 'react-icons/ri'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-import '@/assets/admin.css'
+// import '@/assets/admin.css'
 
 function AdminDashboard() {
 	const [openSidebarToggle, setOpenSidebarToggle] = useState(false)

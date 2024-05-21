@@ -1,4 +1,4 @@
-/* .icon {
+.icon {
 	vertical-align: middle;
 	line-height: 1px;
 	font-size: 20px;
@@ -33,7 +33,7 @@
 }
 
 /* Header  */
-/* .header {
+.header {
 	grid-area: header;
 	height: 60px;
 	display: flex;
@@ -45,11 +45,11 @@
 
 .menu-icon {
 	display: none;
-} */
+}
 /* End Header  */
 
 /* Sidebar  */
-/* #sidebar {
+#sidebar {
 	grid-area: sidebar;
 	height: 100%;
 	background-color: #263043;
@@ -100,12 +100,12 @@
 	display: inline !important;
 	position: absolute;
 	z-index: 12 !important;
-} */
+}
 
 /* End Sidebar  */
 
 /* Main  */
-/* .main-container {
+.main-container {
 	grid-area: main;
 	overflow-y: auto;
 	padding: 20px 20px;
@@ -176,13 +176,13 @@
 	gap: 20px;
 	margin-top: 60px;
 	height: 300px;
-} */
+}
 
 /* End Main  */
 
 /* Medium <= 992px */
 
-/* @media screen and (max-width: 992px) {
+@media screen and (max-width: 992px) {
 	.grid-container {
 		grid-template-columns: 1fr;
 		grid-template-rows: 0.2fr 3fr;
@@ -202,10 +202,10 @@
 	.sidebar-title > span {
 		display: inline;
 	}
-} */
+}
 /* Small <= 768px */
 
-/* @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
 	.main-cards {
 		grid-template-columns: 1fr;
 		gap: 10px;
@@ -216,12 +216,12 @@
 		grid-template-columns: 1fr;
 		margin-top: 30px;
 	}
-} */
+}
 
 /* Extra Small <= 576px */
 
-/* @media screen and (max-width: 576px) {
+@media screen and (max-width: 576px) {
 	.hedaer-left {
 		display: none;
 	}
-} */
+}
