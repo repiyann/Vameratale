@@ -1,7 +1,7 @@
 import express from 'express'
 import verifyToken from '../../middleware/jwt.middleware.js'
 import { editUser, deleteUser } from '../../controllers/user/user.controller.js'
-import pool from '../../config/db.js'
+import pool from '../../database/config.js'
 
 const router = express.Router()
 

@@ -7,7 +7,7 @@ import {
 	updateProduct,
 	deleteProduct
 } from '../../controllers/product/product.controller.js'
-import pool from '../../config/db.js'
+import pool from '../../database/config.js'
 
 const router = express.Router()
 
