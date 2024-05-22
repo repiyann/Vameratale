@@ -18,6 +18,9 @@ CREATE TABLE IF NOT EXISTS admins (
   CONSTRAINT admins_ibfk_1 FOREIGN KEY (role_id) REFERENCES roles (role_id)
 ) ENGINE=InnoDB;
 
+INSERT INTO admins (email, password) VALUES
+('admin@gmail.com', '$2b$10$3zQ42EOyj6mVRYFzNXntXOir6egI3.i.ecieUC5tYcyGh60BbLNte');
+
 CREATE TABLE IF NOT EXISTS users (
   id int NOT NULL AUTO_INCREMENT,
   email varchar(25) NOT NULL,
