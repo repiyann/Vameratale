@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useUserContext } from '@/utils/authProvider'
 import {
 	BsSearch,
 	BsJustify,
@@ -28,12 +27,13 @@ import {
 import { RiShoppingBagFill } from 'react-icons/ri'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-// import '@/assets/admin.css'
+import '@/assets/admin.css'
+import { useAdminContext } from '@/utils/admin/authAdminProvider'
 
 function AdminDashboard() {
 	const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
-	const { userData, handleLogout } = useUserContext()
-	const email = userData?.email
+	const { adminData, handleLogout } = useAdminContext()
+	const email = adminData?.email
 	let username = ''
 	if (email) {
 		username = email.split('@')[0]
