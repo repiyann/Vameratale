@@ -11,8 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
-function Home() {
-	const role = localStorage.getItem('userRole')
+export default function Home() {
+	const role: string | null = localStorage.getItem('userRole')
 
 	return (
 		<>
@@ -280,5 +280,3 @@ function Home() {
 		</>
 	)
 }
-
-export default Home

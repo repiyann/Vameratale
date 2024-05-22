@@ -2,13 +2,13 @@ import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import roundLogo from '/round_logo.png'
 
-function Verifying() {
+export default function Verifying() {
 	const [pins, setPins] = useState<string[]>(['', '', '', ''])
 	const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(4).fill(null))
 
 	function handleChange(index: number, value: string): void {
 		if (value.length > 1) return
-		const newPins = [...pins]
+		const newPins: string[] = [...pins]
 		newPins[index] = value
 		setPins(newPins)
 		if (value !== '' && index < 3) {
@@ -85,5 +85,3 @@ function Verifying() {
 		</section>
 	)
 }
-
-export default Verifying

@@ -2,7 +2,7 @@ import logo from '/name_logo.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram, faLinkedin, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
-function Footer() {
+export default function Footer() {
 	return (
 		<footer className="bg-[#32473C] px-5 py-10 md:px-20 lg:px-72 lg:pt-10 lg:pb-5">
 			<div className="flex flex-col items-start gap-2 justify-center md:grid md:grid-cols-4 md:gap-16">
@@ -64,5 +64,3 @@ function Footer() {
 		</footer>
 	)
 }
-
-export default Footer

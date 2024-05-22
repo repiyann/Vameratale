@@ -17,7 +17,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import logo from '/name_logo.png'
 
-function NavbarUser() {
+export default function NavbarUser() {
 	const [openDropdown, setOpenDropdown] = useState<boolean>(false)
 	const [shadow, setShadow] = useState<boolean>(false)
 	const [activeSection, setActiveSection] = useState<string>('')
@@ -300,5 +300,3 @@ function NavbarUser() {
 		</header>
 	)
 }
-
-export default NavbarUser

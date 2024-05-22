@@ -3,7 +3,7 @@ import Home from './pages/guest/Home'
 import Register from './pages/auth/user/Register'
 import Login from './pages/auth/user/Login'
 import Verifying from './pages/auth/user/Verify'
-import Forgot from './pages/auth/Forgot'
+import Forgot from './pages/auth/user/Forgot'
 import Reset from './pages/auth/user/Reset'
 import Dashboard from './pages/user/Dashboard'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -17,7 +17,7 @@ import AdminMiddleware from './utils/admin/AdminMiddleware'
 import LoginAdmin from './pages/auth/admin/LoginAdmin'
 import GuestMiddleware from './utils/guest/GuestMiddleware'
 
-function App() {
+export default function App() {
 	return (
 		<Routes>
 			<Route element={<GuestMiddleware />}>
@@ -93,5 +93,3 @@ function App() {
 		</Routes>
 	)
 }
-
-export default App

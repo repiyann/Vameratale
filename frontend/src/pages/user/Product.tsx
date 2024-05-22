@@ -7,18 +7,18 @@ import { Card, CardContent } from '@/components/ui/card'
 import flower from '/flowers.png'
 import NavbarUser from '@/components/NavbarUser'
 
-function Product() {
+export default function Product() {
 	const [selectedVariant, setSelectedVariant] = useState<string>('')
 	const [stock] = useState<number>(23)
 	const [quantity, setQuantity] = useState<number>(1)
 
-	const handleVariantChange = (variant: string) => {
+	function handleVariantChange(variant: string): void {
 		setSelectedVariant(variant)
 	}
 
-	const handleQuantityChange = (change: number) => {
+	function handleQuantityChange(change: number): void {
 		setQuantity((prevQuantity) => {
-			const newQuantity = prevQuantity + change
+			const newQuantity: number = prevQuantity + change
 			if (newQuantity > 0 && newQuantity <= stock) {
 				return newQuantity
 			}
@@ -146,5 +146,3 @@ function Product() {
 		</>
 	)
 }
-
-export default Product

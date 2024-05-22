@@ -30,14 +30,16 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import '@/assets/admin.css'
 import { useAdminContext } from '@/utils/admin/authAdminProvider'
 
-function AdminDashboard() {
-	const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
+export default function AdminDashboard() {
+	const [openSidebarToggle, setOpenSidebarToggle] = useState<boolean>(false)
 	const { adminData, handleLogout } = useAdminContext()
-	const email = adminData?.email
-	let username = ''
+	const email: string | undefined = adminData?.email
+
+	let username: string = ''
 	if (email) {
 		username = email.split('@')[0]
 	}
+
 	const data = [
 		{
 			name: 'Page A',
@@ -83,7 +85,7 @@ function AdminDashboard() {
 		}
 	]
 
-	const OpenSidebar = () => {
+	function OpenSidebar(): void {
 		setOpenSidebarToggle(!openSidebarToggle)
 	}
 
@@ -264,5 +266,3 @@ function AdminDashboard() {
 		</div>
 	)
 }
-
-export default AdminDashboard

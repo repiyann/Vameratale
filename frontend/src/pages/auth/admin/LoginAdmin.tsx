@@ -3,15 +3,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import roundLogo from '/round_logo.png'
 
-function LoginAdmin() {
+export default function LoginAdmin() {
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const navigate = useNavigate()
-	const BASE_API_URL = process.env.REACT_APP_API_URL
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
 	function handleValidation(): boolean {
-		let isValid = true
+		let isValid: boolean = true
 		setErrorMessage('')
 
 		if (!email.trim()) {
@@ -131,5 +131,3 @@ function LoginAdmin() {
 		</section>
 	)
 }
-
-export default LoginAdmin

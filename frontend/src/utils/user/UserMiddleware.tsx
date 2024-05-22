@@ -1,6 +1,6 @@
-import { Outlet, Navigate } from "react-router-dom"
+import { Outlet, Navigate } from 'react-router-dom'
 
-function UserMiddleware() {
+export default function UserMiddleware() {
 	const role = localStorage.getItem('userRole')
 
 	if (!role) {
@@ -11,5 +11,3 @@ function UserMiddleware() {
 		return <Navigate to="/dashboard" />
 	}
 }
-
-export default UserMiddleware

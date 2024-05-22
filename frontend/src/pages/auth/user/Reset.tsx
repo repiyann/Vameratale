@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import roundLogo from '/round_logo.png'
 
-function Reset() {
+export default function Reset() {
 	const [password, setPassword] = useState<string>('')
 	const [confirmPassword, setConfirmPassword] = useState<string>('')
 
@@ -72,5 +72,3 @@ function Reset() {
 		</section>
 	)
 }
-
-export default Reset

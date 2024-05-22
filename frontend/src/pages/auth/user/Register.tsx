@@ -5,17 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 import roundLogo from '/round_logo.png'
 
-function Register() {
+export default function Register() {
 	const [telepon, setTelepon] = useState<string>('')
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
 	const [confirmPassword, setConfirmPassword] = useState<string>('')
 	const [errorMessage, setErrorMessage] = useState<string>('')
-	const BASE_API_URL = process.env.REACT_APP_API_URL
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 	const navigate = useNavigate()
 
 	function handleValidation(): boolean {
-		let isValid = true
+		let isValid: boolean = true
 		setErrorMessage('')
 
 		if (!email.trim()) {
@@ -183,5 +183,3 @@ function Register() {
 		</section>
 	)
 }
-
-export default Register

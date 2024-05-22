@@ -6,7 +6,7 @@ import NavbarUser from '@/components/NavbarUser'
 import { Card } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
 
-function Dashboard() {
+export default function Dashboard() {
 	const { userData } = useUserContext()
 	const imageCard = [
 		{
@@ -131,5 +131,3 @@ function Dashboard() {
 		</>
 	)
 }
-
-export default Dashboard

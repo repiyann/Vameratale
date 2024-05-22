@@ -16,7 +16,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import logo from '/name_logo.png'
 
-function Navbar() {
+export default function Navbar() {
 	const [openDropdown, setOpenDropdown] = useState<boolean>(false)
 	const [shadow, setShadow] = useState<boolean>(false)
 	const [activeSection, setActiveSection] = useState<string>('')
@@ -57,14 +57,14 @@ function Navbar() {
 	function scrollToContact(): void {
 		isDashboard || isAbout
 			? (navigate('/'),
-		setTimeout(() => {
+			setTimeout(() => {
 					const contactSection = document.getElementById('contact')
 					contactSection && contactSection.scrollIntoView({ behavior: 'smooth' })
-		}, 100))
+			}, 100))
 			: (() => {
 					const contactSection = document.getElementById('contact')
 					contactSection && contactSection.scrollIntoView({ behavior: 'smooth' })
-		})()
+			})()
 	}
 
 	return (
@@ -273,5 +273,3 @@ function Navbar() {
 		</header>
 	)
 }
-
-export default Navbar

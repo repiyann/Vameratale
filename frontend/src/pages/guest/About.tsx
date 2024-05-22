@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import { Card } from '@/components/ui/card'
 import roundLogo from '/round_logo.png'
 
-function About() {
+export default function About() {
 	return (
 		<>
 			<Navbar />
@@ -36,5 +36,3 @@ function About() {
 		</>
 	)
 }
-
-export default About

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 import roundLogo from '/round_logo.png'
 
-function Forgot() {
+export default function Forgot() {
 	const [email, setEmail] = useState<string>('')
 
 	return (
@@ -22,7 +22,7 @@ function Forgot() {
 				}}
 			>
 				<h1 className="text-xl font-bold leading-tight mt-64 md:mt-44 mb-6 md:text-5xl">Forgot your password?</h1>
-        <h2 className='text-lg font-semibold'>Enter your email below to receive a password reset link</h2>
+				<h2 className="text-lg font-semibold">Enter your email below to receive a password reset link</h2>
 
 				<form
 					className="mt-10"
@@ -93,5 +93,3 @@ function Forgot() {
 		</section>
 	)
 }
-
-export default Forgot
