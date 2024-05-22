@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom'
 type AdminData = {
 	email: string
 	name: string
-	telepon: string
-	address: string
 	role_id: number
 }
 
@@ -29,7 +27,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 			const fetchUser = async () => {
 				try {
 					const BASE_API_URL = process.env.REACT_APP_API_URL
-					const response = await axios.get(`${BASE_API_URL}/auth/getUser`, {
+					const response = await axios.get(`${BASE_API_URL}/auth/getAdmin`, {
 						headers: {
 							Authorization: `Bearer ${token}`
 						}
@@ -37,7 +35,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 					const { user } = response.data
 					setAdminData(user)
 				} catch (error) {
-					setErrorMessage('Fetching user data failed. Please try again.')
+					setErrorMessage('Fetching admin data failed. Please try again.')
 				}
 			}
 			fetchUser()
