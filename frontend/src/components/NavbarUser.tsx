@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faBars, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
-import { useUserContext } from '@/utils/authProvider'
+import { useUserContext } from '@/utils/user/authProvider'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -31,7 +31,6 @@ function NavbarUser() {
 	}
 
 	function scrollToAbout(): void {
-		// fungsi cek apakah URL /dashboard. if yes navigate first then scroll, if no immeadiately scroll
 		isDashboard
 			? (navigate('/'),
 			setTimeout(() => {
@@ -45,7 +44,6 @@ function NavbarUser() {
 	}
 
 	function scrollToContact(): void {
-		// fungsi cek apakah URL /dashboard. if yes navigate first then scroll, if no immeadiately scroll
 		isDashboard
 			? (navigate('/'),
 			setTimeout(() => {
@@ -59,7 +57,6 @@ function NavbarUser() {
 	}
 
 	useEffect(() => {
-		// fungsi cek apakah sedang scroll di bagian <section> kemudian ambil id dari <section>
 		function handleScroll(): void {
 			const show: boolean = window.scrollY > 0
 			shadow !== show && setShadow(show)
@@ -85,13 +82,11 @@ function NavbarUser() {
 	}, [shadow, location])
 
 	return (
-		// ${shadow} hasil dari fungsi scroll tadi yang ngasih shadow-lg kalo terdeteksi scroll
 		<header
 			className={`flex px-6 py-3 md:px-16 md:py-2 lg:px-60 lg:py-4 bg-[#FDEBE7] sticky top-0 z-50 justify-between items-center ${
 				shadow && 'shadow-lg'
 			}`}
 		>
-			{/* isDashboard ada di const atas yang cek lokasi URL /dashboard. if yes kasih Link ke route '/', if no jadiin button scrollToHome */}
 			{isDashboard ? (
 				<Link
 					to={'/'}
@@ -127,7 +122,6 @@ function NavbarUser() {
 								Beranda
 							</Link>
 						) : (
-							// ini cek apakah halaman sedang berada di <section id> tertentu, if yes kasih border
 							<a
 								className={`font-medium cursor-pointer ${
 									activeSection === 'home' && 'pb-1 border-b-4 border-green-950'
@@ -139,20 +133,16 @@ function NavbarUser() {
 						)}
 					</li>
 					<li>
-						{/* ini komponen dropdown dari shadcn/ui components, file ada di components/ui kalo butuh penjelasan */}
 						<DropdownMenu
-							// ini karena dropdown itu seharusnya onClick, ini dibikin dibuka saat mouse hovering
 							open={openDropdown}
 							onOpenChange={() => setOpenDropdown(false)}
 						>
-							{/* ini karena dropdown itu seharusnya onClick, ini dibikin dibuka saat mouse hovering */}
 							<DropdownMenuTrigger
 								onMouseEnter={() => setOpenDropdown(true)}
 								className={`font-medium ${isDashboard && 'mt-1 border-b-4 border-green-950'}`}
 							>
 								Katalog <FontAwesomeIcon icon={faChevronDown} />
 							</DropdownMenuTrigger>
-							{/* ini menutup dropdown content kalo udah ga hovering */}
 							<DropdownMenuContent onMouseLeave={() => setOpenDropdown(false)}>
 								<DropdownMenuSub>
 									<DropdownMenuSubTrigger>
@@ -301,13 +291,6 @@ function NavbarUser() {
 									>
 										<FontAwesomeIcon icon={faUser} />
 									</Link>
-
-									{/* <Link
-										to={'/register'}
-										className="px-5 pt-[6px] pb-2 items-center text-center bg-[#606F49] text-white rounded-md"
-									>
-										Beli Sekarang
-									</Link> */}
 								</div>
 							</SheetDescription>
 						</SheetHeader>
