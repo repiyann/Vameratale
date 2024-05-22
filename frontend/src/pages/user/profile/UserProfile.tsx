@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom'
 import NavbarUser from '@/components/NavbarUser'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useUserContext } from '@/utils/user/authProvider'
 
 function UserProfile() {
+	const { userData } = useUserContext()
+
 	return (
 		<>
 			<NavbarUser />
@@ -41,6 +44,7 @@ function UserProfile() {
 								<input
 									type="email"
 									className="w-full border-2 border-[#B7B8B9] rounded-lg px-3 py-2"
+									value={userData?.email}
 								/>
 							</div>
 							<div>

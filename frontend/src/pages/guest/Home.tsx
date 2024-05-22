@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useUserContext } from '@/utils/authProvider'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
 import roundLogo from '/round_logo.png'
@@ -13,11 +12,11 @@ import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/fre
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 function Home() {
-	const { userData } = useUserContext()
+	const role = localStorage.getItem('userRole')
 
 	return (
 		<>
-			{userData ? <NavbarUser /> : <Navbar />}
+			{role === 'user' ? <NavbarUser /> : <Navbar />}
 
 			<section id="home">
 				<div className="px-5 py-10 md:px-20 md:py-24 lg:px-72 lg:py-36 flex bg-[#FDEBE7] justify-center items-center md:grid md:grid-cols-2 md:gap-5">

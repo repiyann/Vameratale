@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { useUserContext } from '@/utils/authProvider'
+import { useUserContext } from '@/utils/user/authProvider'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import NavbarUser from '@/components/NavbarUser'
