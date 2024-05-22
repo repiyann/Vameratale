@@ -1,6 +1,7 @@
 import express from 'express'
 import rateLimit from 'express-rate-limit'
-import { register, login, getUser, registerAdmin } from '../../controllers/auth/auth.controller.js'
+import { register, login, getUser } from '../../controllers/auth/authUser.controller.js'
+import { registerAdmin, loginAdmin, getAdmin } from '../../controllers/auth/authAdmin.controller.js'
 import verifyToken from '../../middleware/jwt.middleware.js'
 import pool from '../../database/config.js'
 
@@ -17,9 +18,8 @@ const attemptsLimiter = rateLimit({
 router.post('/register', attemptsLimiter, async (req, res, next) => await register(req, res, pool, next))
 router.post('/registerAdmin', attemptsLimiter, async (req, res, next) => await registerAdmin(req, res, pool, next))
 router.post('/login', attemptsLimiter, async (req, res, next) => await login(req, res, pool, next))
+router.post('/loginAdmin', attemptsLimiter, async (req, res, next) => await loginAdmin(req, res, pool, next))
 router.get('/getUser', verifyToken, async (req, res) => await getUser(req, res, pool))
-router.get('/protected', verifyToken, (req, res) => {
-	res.json({ message: 'This is a protected route' })
-})
+router.get('/getAdmin', verifyToken, async (req, res) => await getAdmin(req, res, pool))
 
 export default router
