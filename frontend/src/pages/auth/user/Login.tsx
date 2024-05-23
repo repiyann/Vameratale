@@ -5,6 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 import roundLogo from '/round_logo.png'
 
+interface LoginUserResponse {
+	token: string
+	role: string
+}
+
 export default function Login() {
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
@@ -43,7 +48,7 @@ export default function Login() {
 		}
 
 		try {
-			const response = await axios.post(`${BASE_API_URL}/auth/login`, data)
+			const response = await axios.post<LoginUserResponse>(`${BASE_API_URL}/auth/login`, data)
 			const { token, role } = response.data
 			localStorage.setItem('token', token)
 			localStorage.setItem('userRole', role)

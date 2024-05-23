@@ -3,6 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import roundLogo from '/round_logo.png'
 
+interface LoginAdminResponse {
+	token: string
+	role: string
+}
+
 export default function LoginAdmin() {
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
@@ -41,7 +46,7 @@ export default function LoginAdmin() {
 		}
 
 		try {
-			const response = await axios.post(`${BASE_API_URL}/auth/loginAdmin`, data)
+			const response = await axios.post<LoginAdminResponse>(`${BASE_API_URL}/auth/loginAdmin`, data)
 			const { token, role } = response.data
 			localStorage.setItem('token', token)
 			localStorage.setItem('userRole', role)
