@@ -38,10 +38,6 @@ export default function App() {
 					element={<Reset />}
 				/>
 				<Route
-					path="/about"
-					element={<About />}
-				/>
-				<Route
 					path="/forgot"
 					element={<Forgot />}
 				/>
@@ -51,6 +47,10 @@ export default function App() {
 				<Route
 					path="/"
 					element={<Home />}
+				/>
+				<Route
+					path="/about"
+					element={<About />}
 				/>
 				<Route
 					path="/dashboard"
