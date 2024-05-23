@@ -30,19 +30,6 @@ export default function NavbarUser() {
 		window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
 
-	function scrollToAbout(): void {
-		isDashboard
-			? (navigate('/'),
-			setTimeout(() => {
-					const aboutSection = document.getElementById('about')
-					aboutSection && aboutSection.scrollIntoView({ behavior: 'smooth' })
-			}, 100))
-			: (() => {
-					const aboutSection = document.getElementById('about')
-					aboutSection && aboutSection.scrollIntoView({ behavior: 'smooth' })
-			})()
-	}
-
 	function scrollToContact(): void {
 		isDashboard
 			? (navigate('/'),
@@ -184,14 +171,14 @@ export default function NavbarUser() {
 						</DropdownMenu>
 					</li>
 					<li>
-						<a
+						<Link
+							to={'/about'}
 							className={`font-medium cursor-pointer ${
 								activeSection === 'about' && 'pb-1 border-b-4 border-green-950'
 							}`}
-							onClick={scrollToAbout}
 						>
 							Tentang
-						</a>
+						</Link>
 					</li>
 					<li>
 						<a
@@ -206,7 +193,7 @@ export default function NavbarUser() {
 				</ul>
 			</nav>
 
-			<div className="lg:flex lg:justify-between lg:items-center lg:relative lg:gap-5 lg:ml-11">
+			<div className="hidden lg:flex lg:justify-between lg:items-center lg:relative lg:gap-5 lg:ml-11">
 				<Link
 					to={''}
 					className="fa-lg"
@@ -286,11 +273,17 @@ export default function NavbarUser() {
 									</Link>
 									<hr />
 									<Link
-										to={''}
-										className="flex flex-1 fa-solid fa-2xl justify-center items-center border-4 border-black rounded-full p-7 mt-4 mx-6 sm:mx-14 sm:py-11 sm:mt-4"
+										to={'/profile'}
+										className="text-base font-medium"
 									>
-										<FontAwesomeIcon icon={faUser} />
+										Profile
 									</Link>
+									<a
+										onClick={handleLogout}
+										className="text-base font-medium"
+									>
+										Logout
+									</a>
 								</div>
 							</SheetDescription>
 						</SheetHeader>
