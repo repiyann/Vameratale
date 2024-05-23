@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Card } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
@@ -54,6 +55,25 @@ export default function Dashboard() {
 		}
 	]
 
+	const [selectedValues, setSelectedValues] = useState<string[]>([''])
+
+	useEffect(() => {
+		const storedValues: string | null = localStorage.getItem('selectedValues')
+		if (storedValues) {
+			try {
+				const parsedValues: string[] = JSON.parse(storedValues)
+				setSelectedValues(parsedValues)
+			} catch (error) {
+				console.error('Error parsing stored selectedValues:', error)
+			}
+		}
+	}, [])
+
+	function handleValueChange(newValues: string[]) {
+		setSelectedValues(newValues)
+		localStorage.setItem('selectedValues', JSON.stringify(newValues))
+	}
+
 	return (
 		<>
 			<div className="flex">
@@ -62,7 +82,11 @@ export default function Dashboard() {
 					className="md:block md:bg-[#FFCAD4] md:w-64 md:h-1/2 md:my-20 md:sticky md:top-40 md:rounded-r-lg hidden"
 				>
 					<div className="py-10 px-10 gap-3 font-medium">
-						<Accordion type="multiple">
+						<Accordion
+							value={selectedValues}
+							type="multiple"
+							onValueChange={handleValueChange}
+						>
 							<AccordionItem value="item-1">
 								<AccordionTrigger>Acara</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
