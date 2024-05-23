@@ -7,8 +7,13 @@ import landingbox from '/landingbox.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { useEffect } from 'react'
 
 export default function Home() {
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	})
+
 	return (
 		<>
 			<section id="home">

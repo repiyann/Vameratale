@@ -28,7 +28,12 @@ export default function Navbar() {
 	const isAbout: boolean = location.pathname === '/about'
 
 	function scrollToHome(): void {
-		window.scrollTo({ top: 0, behavior: 'smooth' })
+		!isDashboard
+			? (navigate('/'),
+			setTimeout(() => {
+				window.scrollTo({ top: 0, behavior: 'smooth' })
+			}, 100))
+			: window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
 
 	useEffect(() => {
@@ -86,17 +91,6 @@ export default function Navbar() {
 			{(!userData && isDashboard) || isAbout ? (
 				<Link
 					to={'/'}
-					className="cursor-pointer"
-				>
-					<img
-						src={logo}
-						alt="Logo Vameratale"
-						width={100}
-					/>
-				</Link>
-			) : userData ? (
-				<Link
-					to={'/dashboard'}
 					className="cursor-pointer"
 				>
 					<img

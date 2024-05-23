@@ -58,6 +58,8 @@ export default function Dashboard() {
 	const [selectedValues, setSelectedValues] = useState<string[]>([''])
 
 	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+
 		const storedValues: string | null = localStorage.getItem('selectedValues')
 		if (storedValues) {
 			try {

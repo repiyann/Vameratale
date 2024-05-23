@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
@@ -14,6 +14,10 @@ export default function Product() {
 	function handleVariantChange(variant: string): void {
 		setSelectedVariant(variant)
 	}
+
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	})
 
 	function handleQuantityChange(change: number): void {
 		setQuantity((prevQuantity) => {
