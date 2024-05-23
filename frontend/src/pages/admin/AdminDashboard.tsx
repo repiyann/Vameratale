@@ -72,7 +72,7 @@ export default function AdminDashboard() {
 			<div className="flex">
 				<section
 					id="sidebar"
-					className="md:block md:bg-[#FFFAFA] shadow-[rgba(0,0,0,0.13)_20px_0px_25px_-5px] md:w-72 p-10 md:h-screen md:fixed hidden"
+					className=""
 				>
 					<SidebarAdmin />
 				</section>
