@@ -27,7 +27,7 @@ export default function NavbarAdmin() {
 	return (
 		<header className="flex px-6 py-3 md:px-16 md:py-2 lg:px-60 lg:py-4 bg-[#FDEBE7] sticky top-0 z-50 justify-between items-center shadow-xl">
 			<Link
-				to={'/'}
+				to={'/admin/dashboard'}
 				className="cursor-pointer"
 			>
 				<img

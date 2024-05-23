@@ -8,6 +8,6 @@ export default function UserMiddleware() {
 	} else if (role === 'user') {
 		return <Outlet />
 	} else {
-		return <Navigate to="/dashboard" />
+		return <Navigate to="/admin/dashboard" />
 	}
 }

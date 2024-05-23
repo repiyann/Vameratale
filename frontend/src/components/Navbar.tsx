@@ -67,6 +67,12 @@ export default function Navbar() {
 			})()
 	}
 
+	function scrollToAbout(): void {
+		!isAbout && (navigate('/about'), setTimeout(() => {
+			window.scrollTo({ top: 0, behavior: 'smooth' })
+		}, 100))
+	}
+
 	return (
 		<header
 			className={`px-6 py-5 md:px-20 md:py-4 lg:px-60 lg:py-4 bg-[#FDEBE7] flex sticky top-0 z-50 justify-between items-center ${
@@ -170,14 +176,14 @@ export default function Navbar() {
 						</DropdownMenu>
 					</li>
 					<li>
-						<Link
-							to={'/about'}
+						<a
+							onClick={scrollToAbout}
 							className={`font-medium cursor-pointer ${
 								activeSection === 'about' && 'pb-1 border-b-4 border-green-950'
 							} ${isAbout && 'mt-1 border-b-4 border-green-950'}`}
 						>
 							Tentang
-						</Link>
+						</a>
 					</li>
 					<li>
 						<a

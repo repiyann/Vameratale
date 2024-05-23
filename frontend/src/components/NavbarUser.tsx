@@ -25,6 +25,7 @@ export default function NavbarUser() {
 	const navigate = useNavigate()
 	const { handleLogout } = useUserContext()
 	const isDashboard: boolean = location.pathname === '/dashboard'
+	const isAbout: boolean = location.pathname === '/about'
 
 	function scrollToHome(): void {
 		window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -41,6 +42,12 @@ export default function NavbarUser() {
 					const contactSection = document.getElementById('contact')
 					contactSection && contactSection.scrollIntoView({ behavior: 'smooth' })
 			})()
+	}
+
+	function scrollToAbout(): void {
+		!isAbout && (navigate('/about'), setTimeout(() => {
+			window.scrollTo({ top: 0, behavior: 'smooth' })
+		}, 100))
 	}
 
 	useEffect(() => {
@@ -171,14 +178,14 @@ export default function NavbarUser() {
 						</DropdownMenu>
 					</li>
 					<li>
-						<Link
-							to={'/about'}
+						<a
+							onClick={scrollToAbout}
 							className={`font-medium cursor-pointer ${
 								activeSection === 'about' && 'pb-1 border-b-4 border-green-950'
 							}`}
 						>
 							Tentang
-						</Link>
+						</a>
 					</li>
 					<li>
 						<a
