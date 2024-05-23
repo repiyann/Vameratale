@@ -5,7 +5,7 @@ import roundLogo from '/round_logo.png'
 import box from '/flowerbox.png'
 import landingbox from '/landingbox.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home() {
@@ -217,11 +217,11 @@ export default function Home() {
 								<span className="ml-2 text-2xl">Chat Us</span>
 							</a>
 						</div>
-						<div className="flex justify-center md:justify-start">
+						<div className="flex justify-center md:justify-start mb-5">
 							<a
 								href="https://www.instagram.com/vameratale"
 								target="_blank"
-								className="block mt-3 mr-5"
+								className="block mt-3 mr-7"
 							>
 								<FontAwesomeIcon
 									icon={faEnvelope}
@@ -236,30 +236,6 @@ export default function Home() {
 							>
 								<FontAwesomeIcon
 									icon={faInstagram}
-									className="text-2xl"
-								/>
-								<span className="ml-2 mt-3 lg:text-2xl">@vameratale</span>
-							</a>
-						</div>
-						<div className="flex justify-center md:justify-start mb-5">
-							<a
-								href="https://www.instagram.com/vameratale"
-								target="_blank"
-								className="block mt-3 mr-5"
-							>
-								<FontAwesomeIcon
-									icon={faFacebook}
-									className="text-2xl"
-								/>
-								<span className="ml-2 mt-3 lg:text-2xl">Vameratale</span>
-							</a>
-							<a
-								href="https://www.instagram.com/vameratale"
-								target="_blank"
-								className="block mt-3"
-							>
-								<FontAwesomeIcon
-									icon={faTwitter}
 									className="text-2xl"
 								/>
 								<span className="ml-2 mt-3 lg:text-2xl">@vameratale</span>
