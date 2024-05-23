@@ -1,10 +1,10 @@
-import { Outlet } from 'react-router-dom'
+import UserLayout from './UserLayout'
 import { UserProvider } from './authService'
 
 export default function UserRoute() {
 	return (
 		<UserProvider>
-			<Outlet />
+			<UserLayout />
 		</UserProvider>
 	)
 }
