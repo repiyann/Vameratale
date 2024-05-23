@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faBars, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
+import { useUserContext } from '@/utils/user/authProvider'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -22,6 +23,7 @@ export default function Navbar() {
 	const [activeSection, setActiveSection] = useState<string>('')
 	const location = useLocation()
 	const navigate = useNavigate()
+	const { userData, handleLogout } = useUserContext()
 	const isDashboard: boolean = location.pathname === '/dashboard'
 	const isAbout: boolean = location.pathname === '/about'
 
@@ -68,9 +70,11 @@ export default function Navbar() {
 	}
 
 	function scrollToAbout(): void {
-		!isAbout && (navigate('/about'), setTimeout(() => {
-			window.scrollTo({ top: 0, behavior: 'smooth' })
-		}, 100))
+		!isAbout &&
+			(navigate('/about'),
+			setTimeout(() => {
+				window.scrollTo({ top: 0, behavior: 'smooth' })
+			}, 100))
 	}
 
 	return (
@@ -79,9 +83,20 @@ export default function Navbar() {
 				shadow && 'shadow-lg'
 			}`}
 		>
-			{isDashboard || isAbout ? (
+			{(!userData && isDashboard) || isAbout ? (
 				<Link
 					to={'/'}
+					className="cursor-pointer"
+				>
+					<img
+						src={logo}
+						alt="Logo Vameratale"
+						width={100}
+					/>
+				</Link>
+			) : userData ? (
+				<Link
+					to={'/dashboard'}
 					className="cursor-pointer"
 				>
 					<img
@@ -197,14 +212,37 @@ export default function Navbar() {
 					</li>
 				</ul>
 			</nav>
-			<div className="hidden lg:block">
-				<Link
-					to={'/register'}
-					className="px-5 py-2 items-center bg-[#606F49] text-white rounded-md"
-				>
-					Beli Sekarang
-				</Link>
-			</div>
+			{!userData ? (
+				<div className="hidden lg:block">
+					<Link
+						to={'/register'}
+						className="px-5 py-2 items-center bg-[#606F49] text-white rounded-md"
+					>
+						Beli Sekarang
+					</Link>
+				</div>
+			) : (
+				<div className="hidden lg:flex lg:justify-between lg:items-center lg:relative lg:gap-5 lg:ml-11">
+					<Link
+						to={''}
+						className="fa-lg"
+					>
+						<FontAwesomeIcon icon={faCartShopping} />
+					</Link>
+					<DropdownMenu>
+						<DropdownMenuTrigger>
+							<FontAwesomeIcon icon={faUser} />
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							<DropdownMenuItem>
+								<Link to={'/profile'}>Profile</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
+			)}
+
 			<div className="block lg:hidden">
 				<Sheet>
 					<SheetTrigger>
@@ -264,12 +302,29 @@ export default function Navbar() {
 										Kontak
 									</Link>
 									<hr />
-									<Link
-										to={'/register'}
-										className="px-5 pt-[6px] pb-2 items-center text-center bg-[#606F49] text-white rounded-md"
-									>
-										Beli Sekarang
-									</Link>
+									{!userData ? (
+										<Link
+											to={'/register'}
+											className="px-5 pt-[6px] pb-2 items-center text-center bg-[#606F49] text-white rounded-md"
+										>
+											Beli Sekarang
+										</Link>
+									) : (
+										<>
+											<Link
+												to={'/profile'}
+												className="text-base font-medium"
+											>
+												Profile
+											</Link>
+											<a
+												onClick={handleLogout}
+												className="text-base font-medium"
+											>
+												Logout
+											</a>
+										</>
+									)}
 								</div>
 							</SheetDescription>
 						</SheetHeader>
