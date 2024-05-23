@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { createContext, useState, useEffect, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 type UserData = {
@@ -10,6 +10,10 @@ type UserData = {
 	role_id: number
 }
 
+interface UserResponse {
+	user: UserData
+}
+
 interface UserContextProps {
 	userData: UserData | null
 	errorMessage: string
@@ -18,32 +22,38 @@ interface UserContextProps {
 
 export const UserContext = createContext<UserContextProps | undefined>(undefined)
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
+export function UserProvider({ children }: { children: ReactNode }) {
 	const [userData, setUserData] = useState<UserData | null>(null)
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const navigate = useNavigate()
-	const token = localStorage.getItem('token')
+	const token: string | null = localStorage.getItem('token')
 
 	useEffect(() => {
-		if (token) {
-			const fetchUser = async () => {
+		const fetchUser = async (): Promise<void> => {
+			if (token) {
 				try {
-					const BASE_API_URL = process.env.REACT_APP_API_URL
-					const response = await axios.get(`${BASE_API_URL}/auth/getUser`, {
+					const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+					if (!BASE_API_URL) {
+						throw new Error('API URL is not defined')
+					}
+
+					const response = await axios.get<UserResponse>(`${BASE_API_URL}/auth/getUser`, {
 						headers: {
 							Authorization: `Bearer ${token}`
 						}
 					})
+
 					const { user } = response.data
 					setUserData(user)
 				} catch (error) {
 					setErrorMessage('Fetching user data failed. Please try again.')
 				}
+			} else {
+				setUserData(null)
 			}
-			fetchUser()
-		} else {
-			setUserData(null)
 		}
+
+		fetchUser()
 	}, [token])
 
 	function handleLogout(): void {

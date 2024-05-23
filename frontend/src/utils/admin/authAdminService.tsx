@@ -1,11 +1,15 @@
-import React, { createContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { createContext, useState, useEffect, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 type AdminData = {
 	email: string
 	name: string
 	role_id: number
+}
+
+interface AdminResponse {
+	admin: AdminData
 }
 
 interface AdminContextProps {
@@ -16,32 +20,38 @@ interface AdminContextProps {
 
 export const AdminContext = createContext<AdminContextProps | undefined>(undefined)
 
-export function AdminProvider({ children }: { children: React.ReactNode }) {
+export function AdminProvider({ children }: { children: ReactNode }) {
 	const [adminData, setAdminData] = useState<AdminData | null>(null)
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const navigate = useNavigate()
-	const token = localStorage.getItem('token')
+	const token: string | null = localStorage.getItem('token')
 
 	useEffect(() => {
-		if (token) {
-			const fetchUser = async () => {
+		const fetchAdmin = async (): Promise<void> => {
+			if (token) {
 				try {
-					const BASE_API_URL = process.env.REACT_APP_API_URL
-					const response = await axios.get(`${BASE_API_URL}/auth/getAdmin`, {
+					const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+					if (!BASE_API_URL) {
+						throw new Error('API URL is not defined')
+					}
+
+					const response = await axios.get<AdminResponse>(`${BASE_API_URL}/auth/getAdmin`, {
 						headers: {
 							Authorization: `Bearer ${token}`
 						}
 					})
-					const { user } = response.data
-					setAdminData(user)
+
+					const { admin } = response.data
+					setAdminData(admin)
 				} catch (error) {
-					setErrorMessage('Fetching admin data failed. Please try again.')
+					setErrorMessage('Fetching user data failed. Please try again.')
 				}
+			} else {
+				setAdminData(null)
 			}
-			fetchUser()
-		} else {
-			setAdminData(null)
 		}
+
+		fetchAdmin()
 	}, [token])
 
 	function handleLogout(): void {

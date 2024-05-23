@@ -4,7 +4,7 @@ import { AdminContext } from './authAdminService'
 export function useAdminContext() {
 	const context = useContext(AdminContext)
 	if (context === undefined) {
-		throw new Error('useUserContext must be used within a UserProvider')
+		throw new Error('useAdminContext must be used within an AdminProvider')
 	}
 	return context
 }
