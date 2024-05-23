@@ -21,7 +21,7 @@ export default function SidebarAdmin() {
 		}
 	}, [])
 
-	function handleValueChange(newValues: string[]) {
+	function handleValueChange(newValues: string[]): void {
 		setSelectedValues(newValues)
 		localStorage.setItem('selectedValues', JSON.stringify(newValues))
 	}
@@ -31,7 +31,7 @@ export default function SidebarAdmin() {
 			<h1 className="text-3xl font-bold">AdminDashboard</h1>
 			<h1>{adminData?.email}</h1>
 			<p className="text-sm mt-5">Menu</p>
-			<h1 className="text-lg font-semibold flex items-center">
+			<h1 className="text-lg font-semibold flex items-center mb-2">
 				<BsGrid1X2Fill className="mr-3" />
 				Dashboard
 			</h1>
@@ -39,45 +39,56 @@ export default function SidebarAdmin() {
 				value={selectedValues}
 				type="multiple"
 				onValueChange={handleValueChange}
+				className='space-y-2'
 			>
 				<AccordionItem value="item-1">
 					<AccordionTrigger className="text-lg font-semibold">
-						{/* <BsFillArchiveFill className="mr-3" /> */}
-						Item Master
+						<div className="flex items-center">
+							<BsFillArchiveFill className="mr-3" />
+							Item Master
+						</div>
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col ml-3">
-						<div>Pernikahan</div>
-						<div>Wisuda</div>
+						<div>Tambah Barang</div>
+						<div>Tambah Kategori</div>
+						<div>Tambah Varian</div>
+						<div>Tambah Ukuran</div>
 					</AccordionContent>
 				</AccordionItem>
 				<AccordionItem value="item-2">
 					<AccordionTrigger className="text-lg font-semibold">
-						{/* <BsFillGrid3X3GapFill className="mr-3" /> */}
-						Orders & Deliveries
+						<div className="flex items-center">
+							<BsFillGrid3X3GapFill className="mr-3" />
+							Orders & Deliveries
+						</div>
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col ml-3">
-						<div>Asli</div>
+						<div>Pengaturan Pengiriman</div>
 						<div>Palsu</div>
 					</AccordionContent>
 				</AccordionItem>
 				<AccordionItem value="item-3">
 					<AccordionTrigger className="text-lg font-semibold">
-						{/* <BsFillGearFill className="mr-3" /> */}
-						Reports
+						<div className="flex items-center">
+							<BsFillGearFill className="mr-3" />
+							Reports
+						</div>
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col ml-3">
-						<div>Mawar</div>
+						<div>Stok Barang</div>
 						<div>Melati</div>
 					</AccordionContent>
 				</AccordionItem>
 				<AccordionItem value="item-4">
 					<AccordionTrigger className="text-lg font-semibold">
-						{/* <BsPeopleFill className="mr-3" /> */}
-						User Administrator
+						<div className="flex items-center">
+							<BsPeopleFill className="mr-3" />
+							User Administrator
+						</div>
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col ml-3">
-						<div>Mawar</div>
-						<div>Melati</div>
+						<div>Manajemen Admin</div>
+						<div>Manajemen User</div>
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>
