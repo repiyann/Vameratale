@@ -59,6 +59,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 	function handleLogout(): void {
 		localStorage.removeItem('token')
 		localStorage.removeItem('userRole')
+		localStorage.removeItem('selectedValues')
 		setUserData(null)
 		navigate('/')
 	}

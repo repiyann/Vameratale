@@ -57,6 +57,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 	function handleLogout(): void {
 		localStorage.removeItem('token')
 		localStorage.removeItem('userRole')
+		localStorage.removeItem('selectedValues')
 		setAdminData(null)
 		navigate('/')
 	}

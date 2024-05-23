@@ -50,6 +50,7 @@ export default function LoginAdmin() {
 			const { token, role } = response.data
 			localStorage.setItem('token', token)
 			localStorage.setItem('userRole', role)
+			localStorage.removeItem('selectedValues')
 			navigate('/admin/dashboard')
 		} catch (error) {
 			setErrorMessage('Login failed. Please try again.')
