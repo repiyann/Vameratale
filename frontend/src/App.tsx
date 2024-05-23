@@ -16,6 +16,7 @@ import UserMiddleware from './utils/user/UserMiddleware'
 import AdminMiddleware from './utils/admin/AdminMiddleware'
 import LoginAdmin from './pages/auth/admin/LoginAdmin'
 import GuestMiddleware from './utils/guest/GuestMiddleware'
+import PageTitle from './utils/PageTitle'
 
 export default function App() {
 	return (
@@ -23,47 +24,92 @@ export default function App() {
 			<Route element={<GuestMiddleware />}>
 				<Route
 					path="/register"
-					element={<Register />}
+					element={
+						<>
+							<Register />
+							<PageTitle title="Registrasi | Vameratale" />
+						</>
+					}
 				/>
 				<Route
 					path="/login"
-					element={<Login />}
+					element={
+						<>
+							<Login />
+							<PageTitle title="Login | Vameratale" />
+						</>
+					}
 				/>
 				<Route
 					path="/verify"
-					element={<Verifying />}
+					element={
+						<>
+							<Verifying />
+							<PageTitle title="Verifikasi | Vameratale" />
+						</>
+					}
 				/>
 				<Route
 					path="/reset"
-					element={<Reset />}
+					element={
+						<>
+							<Reset />
+							<PageTitle title="Reset Password | Vameratale" />
+						</>
+					}
 				/>
 				<Route
 					path="/forgot"
-					element={<Forgot />}
+					element={
+						<>
+							<Forgot />
+							<PageTitle title="Lupa Password | Vameratale" />
+						</>
+					}
 				/>
 			</Route>
 
 			<Route element={<UserRoute />}>
 				<Route
-					path="/"
+					index
 					element={<Home />}
 				/>
 				<Route
 					path="/about"
-					element={<About />}
+					element={
+						<>
+							<About />
+							<PageTitle title="Tentang Kami | Vameratale" />
+						</>
+					}
 				/>
 				<Route
 					path="/dashboard"
-					element={<Dashboard />}
+					element={
+						<>
+							<Dashboard />
+							<PageTitle title="Katalog | Vameratale" />
+						</>
+					}
 				/>
 				<Route element={<UserMiddleware />}>
 					<Route
 						path="/profile"
-						element={<UserProfile />}
+						element={
+							<>
+								<UserProfile />
+								<PageTitle title="Profil | Vameratale" />
+							</>
+						}
 					/>
 					<Route
 						path="/detail/roses"
-						element={<Product />}
+						element={
+							<>
+								<Product />
+								<PageTitle title="Detail Produk | Vameratale" />
+							</>
+						}
 					/>
 				</Route>
 			</Route>
@@ -71,12 +117,22 @@ export default function App() {
 			<Route element={<AdminRoute />}>
 				<Route
 					path="/admin"
-					element={<LoginAdmin />}
+					element={
+						<>
+							<LoginAdmin />
+							<PageTitle title="Login Admin | Vameratale" />
+						</>
+					}
 				/>
 				<Route element={<AdminMiddleware />}>
 					<Route
 						path="/admin/dashboard"
-						element={<AdminDashboard />}
+						element={
+							<>
+								<AdminDashboard />
+								<PageTitle title="Dashboard Admin | Vameratale" />
+							</>
+						}
 					/>
 				</Route>
 			</Route>
