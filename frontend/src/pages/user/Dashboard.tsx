@@ -1,13 +1,8 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { useUserContext } from '@/utils/user/authProvider'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import NavbarUser from '@/components/NavbarUser'
 import { Card } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
 
 export default function Dashboard() {
-	const { userData } = useUserContext()
 	const imageCard = [
 		{
 			src: 'fresh-1.png',
@@ -61,7 +56,6 @@ export default function Dashboard() {
 
 	return (
 		<>
-			{userData ? <NavbarUser /> : <Navbar />}
 			<div className="flex">
 				<section
 					id="sidebar"
@@ -126,8 +120,6 @@ export default function Dashboard() {
 					</div>
 				</section>
 			</div>
-
-			<Footer />
 		</>
 	)
 }

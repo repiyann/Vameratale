@@ -1,12 +1,9 @@
-import Navbar from '@/components/Navbar'
 import { Card } from '@/components/ui/card'
 import roundLogo from '/round_logo.png'
 
 export default function About() {
 	return (
 		<>
-			<Navbar />
-
 			<section className="lg:px-72 lg:py-20">
 				<Card className="grid grid-cols-2 gap-10 px-10 py-10 bg-[#FDEBE7] shadow-xl">
 					<div className="col-start-1 col-end-1">

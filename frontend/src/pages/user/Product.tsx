@@ -5,7 +5,6 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
 import flower from '/flowers.png'
-import NavbarUser from '@/components/NavbarUser'
 
 export default function Product() {
 	const [selectedVariant, setSelectedVariant] = useState<string>('')
@@ -28,8 +27,6 @@ export default function Product() {
 
 	return (
 		<>
-			<NavbarUser />
-
 			<section className="px-5 py-10 md:px-20 md:py-24 lg:px-60 lg:py-10">
 				<div>
 					<Link

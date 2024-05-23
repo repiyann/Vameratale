@@ -3,21 +3,14 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Card, CardContent } from '@/components/ui/card'
 import roundLogo from '/round_logo.png'
 import box from '/flowerbox.png'
-import Navbar from '@/components/Navbar'
-import NavbarUser from '@/components/NavbarUser'
 import landingbox from '/landingbox.png'
-import Footer from '@/components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home() {
-	const role: string | null = localStorage.getItem('userRole')
-
 	return (
 		<>
-			{role === 'user' ? <NavbarUser /> : <Navbar />}
-
 			<section id="home">
 				<div className="px-5 py-10 md:px-20 md:py-24 lg:px-72 lg:py-36 flex bg-[#FDEBE7] justify-center items-center md:grid md:grid-cols-2 md:gap-5">
 					<div className="col-start-1 col-end-1 m-auto text-center md:text-left">
@@ -275,8 +268,6 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
-
-			<Footer />
 		</>
 	)
 }

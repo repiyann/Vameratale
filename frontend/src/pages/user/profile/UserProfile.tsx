@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import NavbarUser from '@/components/NavbarUser'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useUserContext } from '@/utils/user/authProvider'
@@ -9,8 +8,6 @@ export default function UserProfile() {
 
 	return (
 		<>
-			<NavbarUser />
-
 			<section className="px-5 py-10 md:px-20 md:py-24 lg:px-60 lg:py-10">
 				<div>
 					<Link
