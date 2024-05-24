@@ -17,6 +17,9 @@ import AdminMiddleware from './utils/admin/AdminMiddleware'
 import LoginAdmin from './pages/auth/admin/LoginAdmin'
 import GuestMiddleware from './utils/guest/GuestMiddleware'
 import PageTitle from './utils/PageTitle'
+import Scan from './pages/user/transaction/Scan'
+import Invoice from './pages/user/transaction/Invoice'
+import Cart from './pages/user/transaction/Cart'
 
 export default function App() {
 	return (
@@ -108,6 +111,33 @@ export default function App() {
 							<>
 								<Product />
 								<PageTitle title="Detail Produk | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/scan"
+						element={
+							<>
+								<Scan />
+								<PageTitle title="Scan Pembayaran | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/invoice"
+						element={
+							<>
+								<Invoice />
+								<PageTitle title="Invoice | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/cart"
+						element={
+							<>
+								<Cart />
+								<PageTitle title="Keranjang Bunga | Vameratale" />
 							</>
 						}
 					/>

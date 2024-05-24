@@ -31,7 +31,7 @@ export default function Navbar() {
 		!isDashboard
 			? (navigate('/'),
 			setTimeout(() => {
-				window.scrollTo({ top: 0, behavior: 'smooth' })
+					window.scrollTo({ top: 0, behavior: 'smooth' })
 			}, 100))
 			: window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
@@ -218,7 +218,7 @@ export default function Navbar() {
 			) : (
 				<div className="hidden lg:flex lg:justify-between lg:items-center lg:relative lg:gap-5 lg:ml-11">
 					<Link
-						to={''}
+						to={'/cart'}
 						className="fa-lg"
 					>
 						<FontAwesomeIcon icon={faCartShopping} />
@@ -228,10 +228,15 @@ export default function Navbar() {
 							<FontAwesomeIcon icon={faUser} />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
-							<DropdownMenuItem>
-								<Link to={'/profile'}>Profile</Link>
+							<Link to={'/profile'}>
+								<DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+							</Link>
+							<DropdownMenuItem
+								className="cursor-pointer"
+								onClick={handleLogout}
+							>
+								Logout
 							</DropdownMenuItem>
-							<DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>

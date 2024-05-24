@@ -139,7 +139,7 @@ export default function Product() {
 							</p>
 						</div>
 						<div className="mt-5">
-							<button className="px-4 py-2 bg-[#990000] text-white rounded-full">Tambahkan ke keranjang</button>
+							<Link to={'/cart'} className="px-4 py-2 bg-[#990000] text-white rounded-full">Tambahkan ke keranjang</Link>
 						</div>
 					</div>
 				</div>
