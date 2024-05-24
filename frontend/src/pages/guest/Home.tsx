@@ -122,21 +122,14 @@ export default function Home() {
 										<div className="p-1">
 											<Link to={item.url}>
 												<Card className="h-full bg-white rounded-2xl shadow-lg">
-													{/* <CardContent className="flex aspect-square items-center justify-center p-6"> */}
-														{/* <img
+													<div className="bg-[#FFE3E3] px-2 py-5 flex items-center justify-center rounded-xl aspect-square">
+														<img
 															src={item.image}
-															alt={`Image ${index + 1}`}
+															alt={item.alt}
 															className="h-full w-auto"
-														/> */}
-														<div className="bg-[#FFE3E3] px-2 py-5 flex items-center justify-center rounded-xl aspect-square">
-															<img
-																src={item.image}
-																alt={item.alt}
-																className="h-full w-auto"
-															/>
-														</div>
-														<h2 className="text-lg my-5 font-bold flex justify-center md:mx-6">{item.title}</h2>
-													{/* </CardContent> */}
+														/>
+													</div>
+													<h2 className="text-lg my-5 font-bold flex justify-center md:mx-6">{item.title}</h2>
 												</Card>
 											</Link>
 										</div>
