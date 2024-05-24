@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent } from '@/components/ui/card'
@@ -7,12 +8,29 @@ import landingbox from '/landingbox.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
-import { useEffect } from 'react'
+import categoriesImage from '/categories.png'
+import reviewImage from '/reviews.png'
 
 export default function Home() {
 	useEffect(() => {
 		window.scrollTo({ top: 0, behavior: 'smooth' })
 	})
+
+	const categoryImages = Array(4).fill(categoriesImage)
+	const reviewImages = Array(5).fill(reviewImage)
+	const categoryData = [
+		{ text: 'Fresh Flowers', url: '/text1' },
+		{ text: 'Occational Bouquet', url: '/text2' },
+		{ text: 'Artificial Flowers', url: '/text3' },
+		{ text: 'Other Bouquet', url: '/text4' }
+	]
+	const bestSelling = [
+		{ image: '/fresh-1.png', alt: 'Card 1', title: '2 Sunflower', url: '/product1' },
+		{ image: '/flowers.png', alt: 'Card 2', title: '3 Roses', url: '/product' },
+		{ image: '/fresh-3.png', alt: 'Card 3', title: 'Mixed Flowers', url: '/product1' },
+		{ image: '/fresh-4.png', alt: 'Card 4', title: 'Orchid Bouquet', url: '/product1' },
+		{ image: '/fresh-5.png', alt: 'Card 5', title: 'Tulips', url: '/product1' }
+	]
 
 	return (
 		<>
@@ -80,7 +98,12 @@ export default function Home() {
 				<div className="px-5 py-10 md:px-20 lg:px-72 lg:py-20 items-center">
 					<div className="flex justify-between md:w-full">
 						<h1 className="text-xl font-medium">Penjualan Terbaik Saat Ini</h1>
-						<p className="text-end">Lihat Semua</p>
+						<Link
+							to={'/dashboard'}
+							className="text-end"
+						>
+							Lihat Semua
+						</Link>
 					</div>
 					<div className="flex lg:px-[48px] pt-5">
 						<Carousel
@@ -91,17 +114,31 @@ export default function Home() {
 							className="w-full lg:max-w-screen-lg"
 						>
 							<CarouselContent>
-								{Array.from({ length: 5 }).map((_, index) => (
+								{bestSelling.map((item, index) => (
 									<CarouselItem
 										key={index}
 										className="lg:basis-1/4"
 									>
 										<div className="p-1">
-											<Card>
-												<CardContent className="flex aspect-square items-center justify-center p-6">
-													<span className="text-4xl font-semibold">{index + 1}</span>
-												</CardContent>
-											</Card>
+											<Link to={item.url}>
+												<Card className="h-full bg-white rounded-2xl shadow-lg">
+													{/* <CardContent className="flex aspect-square items-center justify-center p-6"> */}
+														{/* <img
+															src={item.image}
+															alt={`Image ${index + 1}`}
+															className="h-full w-auto"
+														/> */}
+														<div className="bg-[#FFE3E3] px-2 py-5 flex items-center justify-center rounded-xl aspect-square">
+															<img
+																src={item.image}
+																alt={item.alt}
+																className="h-full w-auto"
+															/>
+														</div>
+														<h2 className="text-lg my-5 font-bold flex justify-center md:mx-6">{item.title}</h2>
+													{/* </CardContent> */}
+												</Card>
+											</Link>
 										</div>
 									</CarouselItem>
 								))}
@@ -113,18 +150,26 @@ export default function Home() {
 					<div className="flex mt-20 flex-col">
 						<h1 className="text-3xl text-center font-medium">Kategori Layanan</h1>
 						<div className="grid grid-cols-2 gap-5 md:gap-10 mt-5">
-							<div className="col-start-1 col-end-1">
-								<div className="px-5 py-20 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-2 col-end-2">
-								<div className="px-5 py-20 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-1 col-end-1">
-								<div className="px-5 py-20 bg-black rounded-md"></div>
-							</div>
-							<div className="col-start-2 col-end-2">
-								<div className="px-5 py-20 bg-black rounded-md"></div>
-							</div>
+							{categoryImages.map((src, index) => (
+								<div
+									key={index}
+									className={`col-start-${index % 2 === 0 ? 1 : 2} col-end-${index % 2 === 0 ? 1 : 2}`}
+								>
+									<Link
+										to={categoryData[index].url}
+										className="relative"
+									>
+										<img
+											src={src}
+											alt={`Image ${index}`}
+											className="w-full h-full object-cover"
+										/>
+										<div className="absolute text-3xl font-semibold inset-0 flex justify-center items-center text-white">
+											{categoryData[index].text}
+										</div>
+									</Link>
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
@@ -170,15 +215,18 @@ export default function Home() {
 							className="w-full lg:max-w-screen-lg"
 						>
 							<CarouselContent>
-								{Array.from({ length: 5 }).map((_, index) => (
+								{reviewImages.map((image, index) => (
 									<CarouselItem
 										key={index}
 										className="lg:basis-1/2"
 									>
 										<div className="p-1">
 											<Card>
-												<CardContent className="flex aspect-square items-center justify-center p-32">
-													<span className="text-4xl font-semibold">{index + 1}</span>
+												<CardContent className="flex aspect-square items-center justify-center p-5">
+													<img
+														src={image}
+														alt={`Review Image ${index + 1}`}
+													/>
 												</CardContent>
 											</Card>
 										</div>

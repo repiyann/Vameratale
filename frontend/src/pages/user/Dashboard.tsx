@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Card } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 export default function Dashboard() {
 	const imageCard = [
@@ -81,9 +83,10 @@ export default function Dashboard() {
 			<div className="flex">
 				<section
 					id="sidebar"
-					className="md:block md:bg-[#FFCAD4] md:w-64 md:h-1/2 md:my-20 md:sticky md:top-40 md:rounded-r-lg hidden"
+					className="md:block md:bg-[#FFFAFA] md:shadow-[rgba(0,0,0,0.13)_20px_15px_25px_-5px] md:w-64 md:h-1/2 md:my-20 md:sticky md:top-40 md:rounded-r-lg hidden"
 				>
 					<div className="py-10 px-10 gap-3 font-medium">
+						<h1 className='text-[#A5273A]'>Penjualan Terbaik</h1>
 						<Accordion
 							value={selectedValues}
 							type="multiple"
@@ -118,6 +121,18 @@ export default function Dashboard() {
 					className="flex-grow"
 				>
 					<div className="flex my-16 px-32 flex-col">
+						<h1 className="text-2xl font-bold mb-3">Penjualan Terbaik Saat Ini</h1>
+						<div className="relative">
+							<input
+								type="text"
+								className="px-4 py-1 rounded-full w-full border-4 border-[#D1D1D1] pl-10"
+								placeholder="Cari katalog bunga"
+							/>
+							<FontAwesomeIcon
+								icon={faSearch}
+								className="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-400"
+							/>
+						</div>
 						<div className="md:grid md:grid-cols-3 gap-5 md:gap-10 mt-5">
 							{imageCard.map((card, index) => (
 								<Card
