@@ -21,19 +21,20 @@ import Scan from './pages/user/transaction/Scan'
 import Invoice from './pages/user/transaction/Invoice'
 import Cart from './pages/user/transaction/Cart'
 import CreateProduct from './pages/CreateProduct'
-import ProductCatalog from './pages/admin/products/ProductCatalog'
-import AddProduct from './pages/admin/products/AddProduct'
+import ProductCatalog from './pages/admin/products/catalogs/ProductCatalog'
+import AddProduct from './pages/admin/products/catalogs/AddProduct'
 import GuestAdminMiddleware from './utils/guest/GuestAdminMiddleware'
 import AdminManage from './pages/admin/manage/AdminManage'
 import UserManage from './pages/admin/manage/UserManage'
 import AddAdmin from './pages/admin/manage/AddAdmin'
-import ProductCategory from './pages/admin/products/ProductCategory'
-import AddCategory from './pages/admin/products/AddCategory'
-import ProductVarian from './pages/admin/products/ProductVarian'
-import AddVarian from './pages/admin/products/AddVarian'
-import ProductSize from './pages/admin/products/ProductSize'
-import AddSize from './pages/admin/products/AddSize'
+import ProductCategory from './pages/admin/products/categories/ProductCategory'
+import AddCategory from './pages/admin/products/categories/AddCategory'
+import ProductVarian from './pages/admin/products/varians/ProductVarian'
+import AddVarian from './pages/admin/products/varians/AddVarian'
+import ProductSize from './pages/admin/products/sizes/ProductSize'
+import AddSize from './pages/admin/products/sizes/AddSize'
 import ProductStock from './pages/admin/reports/ProductStock'
+import EditProduct from './pages/admin/products/catalogs/EditProduct'
 
 export default function App() {
 	return (
@@ -204,6 +205,15 @@ export default function App() {
 							<>
 								<AddProduct />
 								<PageTitle title="Add Catalog | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/admin/products/catalog/edit-product"
+						element={
+							<>
+								<EditProduct />
+								<PageTitle title="Edit Catalog | Vameratale" />
 							</>
 						}
 					/>
