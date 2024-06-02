@@ -1,11 +1,48 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 import roundLogo from '/round_logo.png'
 
+interface ForgotPassword {
+	email: string
+}
+
 export default function Forgot() {
 	const [email, setEmail] = useState<string>('')
+	const [errorMessage, setErrorMessage] = useState<string>('')
+	const navigate = useNavigate()
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+
+	function handleValidation(): boolean {
+		let isValid: boolean = true
+		setErrorMessage('')
+
+		if (!email.trim()) {
+			isValid = false
+			setErrorMessage('Email is required')
+		} else if (!/^\S+@\S+$/i.test(email)) {
+			isValid = false
+			setErrorMessage('Invalid email format')
+		}
+
+		return isValid
+	}
+
+	async function handleSubmit(): Promise<void> {
+		if (!handleValidation()) {
+			return
+		}
+
+		try {
+			localStorage.setItem('resetEmail', email)
+			await axios.post<ForgotPassword>(`${BASE_API_URL}/auth/generateOTP`, { email: email })
+			navigate('/verify')
+		} catch (error) {
+			setErrorMessage('Email not found')
+		}
+	}
 
 	return (
 		<section className="flex flex-col h-screen items-center md:grid md:grid-cols-2 bg-white">
@@ -29,12 +66,20 @@ export default function Forgot() {
 					method="POST"
 					onSubmit={(e) => {
 						e.preventDefault()
+						handleSubmit()
 					}}
 				>
 					<div>
-						<label className="font-semibold text-xl"> Email Address </label>
+						{errorMessage && <p className="text-red-500">{errorMessage}</p>}
+						<label
+							className="font-semibold text-xl"
+							htmlFor="email"
+						>
+							{' '}
+							Email Address{' '}
+						</label>
 						<input
-							type="text"
+							type="email"
 							placeholder="Enter Email Address"
 							className="w-full px-4 py-4 text-xl rounded-xl bg-white mt-1 border focus:outline-none focus:ring-2 focus:ring-[#E28392]"
 							autoFocus
@@ -43,12 +88,12 @@ export default function Forgot() {
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</div>
-					<Link
-						to={'/verify'}
+					<button
+						type="submit"
 						className="w-full flex items-center justify-center bg-[#ff7474] hover:bg-[#ff5d5d] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 text-white font-semibold rounded-[28px] px-4 py-3 mt-4 border-white border-4"
 					>
 						Kirim Kode
-					</Link>
+					</button>
 				</form>
 
 				<div className="my-6 flex items-center space-x-10">
@@ -80,6 +125,7 @@ export default function Forgot() {
 				<img
 					src={roundLogo}
 					width={500}
+					alt="logo Vameratale round"
 				/>
 			</div>
 			<nav className="absolute top-0 left-0 right-0 p-4 flex justify-between w-full">

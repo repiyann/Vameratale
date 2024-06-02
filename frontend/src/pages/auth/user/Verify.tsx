@@ -1,10 +1,41 @@
-import { useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import roundLogo from '/round_logo.png'
 
 export default function Verifying() {
 	const [pins, setPins] = useState<string[]>(['', '', '', ''])
+	const [errorMessage, setErrorMessage] = useState<string>('')
+	const [resendDisabled, setResendDisabled] = useState<boolean>(false)
 	const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(4).fill(null))
+	const [timer, setTimer] = useState<number>(600)
+	const navigate = useNavigate()
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setTimer((prevTimer) => prevTimer - 1)
+		}, 1000)
+
+		return () => clearInterval(interval)
+	}, [])
+
+	useEffect(() => {
+		if (timer <= 0) {
+			setResendDisabled(false)
+		}
+	}, [timer])
+
+	async function generateOTP(email: string): Promise<void> {
+		try {
+			await axios.post(`${BASE_API_URL}/auth/generateOTP`, { email })
+			setErrorMessage('New code sent successfully!')
+			setResendDisabled(true)
+			setTimer(600)
+		} catch (error) {
+			setErrorMessage('Failed to send new code. Please try again later.')
+		}
+	}
 
 	function handleChange(index: number, value: string): void {
 		if (value.length > 1) return
@@ -15,6 +46,21 @@ export default function Verifying() {
 			inputRefs.current[index + 1]?.focus()
 		} else if (value === '' && index > 0) {
 			inputRefs.current[index - 1]?.focus()
+		}
+	}
+
+	function handleSubmit(): void {
+		const pinString: string = pins.join('')
+		localStorage.setItem('verificationPin', pinString)
+		navigate('/reset')
+	}
+
+	function handleResendCode(): void {
+		const email: string | null = localStorage.getItem('resetEmail')
+		if (email) {
+			generateOTP(email)
+		} else {
+			setErrorMessage('Email address not found in localStorage. Please try again.')
 		}
 	}
 
@@ -42,9 +88,11 @@ export default function Verifying() {
 					method="POST"
 					onSubmit={(e) => {
 						e.preventDefault()
+						handleSubmit()
 					}}
 				>
 					<div className="flex justify-between gap-5">
+						{errorMessage && <p className="text-red-500">{errorMessage}</p>}
 						{pins.map((pin, index) => (
 							<input
 								key={index}
@@ -59,21 +107,22 @@ export default function Verifying() {
 							/>
 						))}
 					</div>
-					<Link
-						to={'/reset'}
+					<button
+						type="submit"
 						className="w-full flex items-center justify-center bg-[#ff7474] hover:bg-[#ff5d5d] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 text-white font-semibold rounded-[28px] px-4 py-3 mt-4 border-white border-4"
 					>
 						Verifikasi Kode
-					</Link>
+					</button>
 				</form>
 
 				<div className="mt-12 items-center text-xl flex justify-center">
-					<Link
-						to={'/register'}
+					<button
+						onClick={handleResendCode}
+						disabled={resendDisabled || timer > 0}
 						className="text-blue-700 ml-1 text-xl hover:text-blue-900 font-semibold underline"
 					>
-						Resend Code
-					</Link>
+						Resend Code {timer > 0 && `(${Math.floor(timer / 60)}:${timer % 60 < 10 ? '0' : ''}${timer % 60})`}
+					</button>
 				</div>
 			</div>
 			<div className="col-start-2 col-end-2 bg-white hidden md:flex md:justify-center">

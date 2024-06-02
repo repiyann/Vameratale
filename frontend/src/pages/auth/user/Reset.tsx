@@ -1,10 +1,38 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import roundLogo from '/round_logo.png'
 
 export default function Reset() {
 	const [password, setPassword] = useState<string>('')
 	const [confirmPassword, setConfirmPassword] = useState<string>('')
+	const [errorMessage, setErrorMessage] = useState<string>('')
+	const navigate = useNavigate()
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+
+	async function handleSubmit(): Promise<void> {
+		const resetEmail = localStorage.getItem('resetEmail')
+		const verificationPin = localStorage.getItem('verificationPin')
+
+		if (password !== confirmPassword) {
+			alert("Passwords don't match")
+			return
+		}
+
+		try {
+			await axios.post(`${BASE_API_URL}/auth/resetPasswordOTP`, {
+				email: resetEmail,
+				otp: verificationPin,
+				password: password,
+				confirmPassword: confirmPassword
+			})
+			localStorage.removeItem('resetEmail')
+			localStorage.removeItem('verificationPin')
+			navigate('/login')
+		} catch (error) {
+			setErrorMessage('Email not found')
+		}
+	}
 
 	return (
 		<section className="flex flex-col h-screen items-center md:grid md:grid-cols-2 bg-white">
@@ -27,9 +55,11 @@ export default function Reset() {
 					method="POST"
 					onSubmit={(e) => {
 						e.preventDefault()
+						handleSubmit()
 					}}
 				>
 					<div className="mt-4">
+						{errorMessage && <p className="text-red-500">{errorMessage}</p>}
 						<label className="font-semibold text-xl"> Password </label>
 						<input
 							type="password"
@@ -55,12 +85,12 @@ export default function Reset() {
 							onChange={(e) => setConfirmPassword(e.target.value)}
 						/>
 					</div>
-					<Link
-						to={'/login'}
+					<button
+						type="submit"
 						className="w-full flex items-center justify-center bg-[#ff7474] hover:bg-[#ff5d5d] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 text-white font-semibold rounded-[28px] px-4 py-3 mt-4 border-white border-4"
 					>
 						Reset Password
-					</Link>
+					</button>
 				</form>
 			</div>
 			<div className="col-start-2 col-end-2 bg-white hidden md:flex md:justify-center">

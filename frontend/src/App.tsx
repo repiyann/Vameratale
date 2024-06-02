@@ -35,6 +35,8 @@ import ProductSize from './pages/admin/products/sizes/ProductSize'
 import AddSize from './pages/admin/products/sizes/AddSize'
 import ProductStock from './pages/admin/reports/ProductStock'
 import EditProduct from './pages/admin/products/catalogs/EditProduct'
+import VerifyEmail from './pages/auth/user/VerifyEmail'
+import ResetMiddleware from './utils/user/ResetMiddleware'
 
 export default function App() {
 	return (
@@ -68,6 +70,18 @@ export default function App() {
 					}
 				/>
 				<Route
+					path="/forgot"
+					element={
+						<>
+							<Forgot />
+							<PageTitle title="Lupa Password | Vameratale" />
+						</>
+					}
+				/>
+			</Route>
+
+			<Route element={<ResetMiddleware />}>
+				<Route
 					path="/verify"
 					element={
 						<>
@@ -82,15 +96,6 @@ export default function App() {
 						<>
 							<Reset />
 							<PageTitle title="Reset Password | Vameratale" />
-						</>
-					}
-				/>
-				<Route
-					path="/forgot"
-					element={
-						<>
-							<Forgot />
-							<PageTitle title="Lupa Password | Vameratale" />
 						</>
 					}
 				/>
@@ -122,6 +127,15 @@ export default function App() {
 					/>
 				</Route>
 				<Route element={<UserMiddleware />}>
+					<Route
+						path="verify-email"
+						element={
+							<>
+								<VerifyEmail />
+								<PageTitle title="VerifyEmail | Vameratale" />
+							</>
+						}
+					/>
 					<Route
 						path="/profile"
 						element={

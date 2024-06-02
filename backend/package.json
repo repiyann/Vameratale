@@ -16,6 +16,9 @@
     "express-rate-limit": "^7.2.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.9.7"
+    "moment": "^2.30.1",
+    "mysql2": "^3.9.7",
+    "nodemailer": "^6.9.13",
+    "validator": "^13.12.0"
   }
 }
