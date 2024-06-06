@@ -1,11 +1,58 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import NavbarAdmin from '@/components/NavbarAdmin'
 import SidebarAdmin from '@/components/SidebarAdmin'
 
+type Category = {
+	category_id: number
+	category_name: string
+}
+
 export default function ProductCategory() {
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const [categories, setCategories] = useState<Category[]>([])
+	const [errorMessage, setErrorMessage] = useState<string>('')
+
+	useEffect(() => {
+		const fetchData = async () => {
+			if (BASE_API_URL) {
+				try {
+					const response = await axios.get(`${BASE_API_URL}/category/getCategories`)
+					setCategories(response.data.data)
+				} catch (error: unknown) {
+					if (axios.isAxiosError(error)) {
+						setErrorMessage(error.response?.data.message)
+					} else if (error instanceof Error) {
+						setErrorMessage(error.message)
+					} else {
+						setErrorMessage('Server bermasalah')
+					}
+				}
+			}
+		}
+
+		fetchData()
+	}, [BASE_API_URL])
+
+	async function handleDelete(id: number) {
+		try {
+			await axios.delete(`${BASE_API_URL}/size/deleteSize/${id}`)
+			setCategories(categories.filter((category) => category.category_id !== id))
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
+			}
+		}
+	}
+
 	return (
 		<>
 			<NavbarAdmin />
@@ -39,25 +86,27 @@ export default function ProductCategory() {
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead className="w-[10px]">Email</TableHead>
-										<TableHead>Nama</TableHead>
-										<TableHead>Alamat</TableHead>
+										<TableHead className="w-[10px]">No</TableHead>
+										<TableHead>Kategori</TableHead>
 										<TableHead className="text-right">Aksi</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
-									<TableRow>
-										<TableCell className="font-medium">INV001</TableCell>
-										<TableCell>Credit Card</TableCell>
-										<TableCell>$250.00</TableCell>
-										<TableCell className="text-right">
-											<FontAwesomeIcon
-												icon={faTrashCan}
-												size="xl"
-												color="red"
-											/>
-										</TableCell>
-									</TableRow>
+									{errorMessage && <p className="text-red-500">{errorMessage}</p>}
+									{categories.map((category, index) => (
+										<TableRow key={category.category_id}>
+											<TableCell className="font-medium">{index + 1}</TableCell>
+											<TableCell>{category.category_name}</TableCell>
+											<TableCell className="text-right">
+												<FontAwesomeIcon
+													icon={faTrashCan}
+													size="xl"
+													color="red"
+													onClick={() => handleDelete(category.category_id)}
+												/>
+											</TableCell>
+										</TableRow>
+									))}
 								</TableBody>
 							</Table>
 						</div>
