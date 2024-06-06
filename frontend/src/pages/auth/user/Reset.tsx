@@ -15,8 +15,7 @@ export default function Reset() {
 		const verificationPin = localStorage.getItem('verificationPin')
 
 		if (password !== confirmPassword) {
-			alert("Passwords don't match")
-			return
+			return setErrorMessage('Kata sandi tidak sesuai')
 		}
 
 		try {
@@ -29,8 +28,14 @@ export default function Reset() {
 			localStorage.removeItem('resetEmail')
 			localStorage.removeItem('verificationPin')
 			navigate('/login')
-		} catch (error) {
-			setErrorMessage('Email not found')
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
+			}
 		}
 	}
 

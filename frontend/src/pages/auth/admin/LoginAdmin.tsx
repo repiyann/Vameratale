@@ -21,15 +21,15 @@ export default function LoginAdmin() {
 
 		if (!email.trim()) {
 			isValid = false
-			setErrorMessage('Email is required')
+			setErrorMessage('Email tidak boleh kosong')
 		} else if (!/^\S+@\S+$/i.test(email)) {
 			isValid = false
-			setErrorMessage('Invalid email format')
+			setErrorMessage('Format email salah')
 		}
 
 		if (password.length < 8) {
 			isValid = false
-			setErrorMessage('Password must be at least 8 characters long')
+			setErrorMessage('Kata sandi minimal 8 karakter')
 		}
 
 		return isValid
@@ -52,8 +52,14 @@ export default function LoginAdmin() {
 			localStorage.setItem('userRole', role)
 			localStorage.removeItem('selectedValues')
 			navigate('/admin/dashboard')
-		} catch (error) {
-			setErrorMessage('Login failed. Please try again.')
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
+			}
 		}
 	}
 

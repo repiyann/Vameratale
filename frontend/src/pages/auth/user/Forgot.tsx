@@ -21,10 +21,10 @@ export default function Forgot() {
 
 		if (!email.trim()) {
 			isValid = false
-			setErrorMessage('Email is required')
+			setErrorMessage('Email tidak boleh kosong')
 		} else if (!/^\S+@\S+$/i.test(email)) {
 			isValid = false
-			setErrorMessage('Invalid email format')
+			setErrorMessage('Format email salah')
 		}
 
 		return isValid
@@ -39,8 +39,14 @@ export default function Forgot() {
 			localStorage.setItem('resetEmail', email)
 			await axios.post<ForgotPassword>(`${BASE_API_URL}/auth/generateOTP`, { email: email })
 			navigate('/verify')
-		} catch (error) {
-			setErrorMessage('Email not found')
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
+			}
 		}
 	}
 

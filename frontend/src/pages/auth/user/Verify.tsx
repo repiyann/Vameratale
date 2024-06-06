@@ -29,11 +29,17 @@ export default function Verifying() {
 	async function generateOTP(email: string): Promise<void> {
 		try {
 			await axios.post(`${BASE_API_URL}/auth/generateOTP`, { email })
-			setErrorMessage('New code sent successfully!')
+			setErrorMessage('Kode OTP baru berhasil dikirim')
 			setResendDisabled(true)
 			setTimer(600)
-		} catch (error) {
-			setErrorMessage('Failed to send new code. Please try again later.')
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
+			}
 		}
 	}
 
@@ -60,7 +66,7 @@ export default function Verifying() {
 		if (email) {
 			generateOTP(email)
 		} else {
-			setErrorMessage('Email address not found in localStorage. Please try again.')
+			setErrorMessage('Email tidak ditemukan')
 		}
 	}
 

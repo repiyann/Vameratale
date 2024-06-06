@@ -20,23 +20,23 @@ export default function Register() {
 
 		if (!email.trim()) {
 			isValid = false
-			setErrorMessage('Email is required')
+			setErrorMessage('Email tidak boleh kosong')
 		} else if (!/^\S+@\S+$/i.test(email)) {
 			isValid = false
-			setErrorMessage('Invalid email format')
+			setErrorMessage('Format email salah')
 		}
 
 		if (password.length < 8) {
 			isValid = false
-			setErrorMessage('Password must be at least 8 characters long')
+			setErrorMessage('Kata sandi minimal 8 karakter')
 		} else if (password !== confirmPassword) {
 			isValid = false
-			setErrorMessage('Passwords do not match')
+			setErrorMessage('Kata sandi tidak sesuai')
 		}
 
 		if (!/^\d+$/.test(telepon)) {
 			isValid = false
-			setErrorMessage('Invalid phone number format')
+			setErrorMessage('Format telepon salah')
 		}
 
 		return isValid
@@ -57,8 +57,14 @@ export default function Register() {
 		try {
 			await axios.post(`${BASE_API_URL}/auth/register`, data)
 			navigate('/login')
-		} catch (error) {
-			setErrorMessage('Registration failed. Please try again.')
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
+			}
 		}
 	}
 
