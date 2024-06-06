@@ -5,7 +5,7 @@ import pool from '../../database/config.js'
 
 const router = express.Router()
 
-router.put('/updateUser', verifyToken, async (req, res) => await editUser(req, res, pool))
-router.post('/deleteUser', verifyToken, async (req, res) => await deleteUser(req, res, pool))
+router.put('/updateUser', verifyToken, async (req, res, next) => await editUser(req, res, pool, next))
+router.post('/deleteUser', verifyToken, async (req, res, next) => await deleteUser(req, res, pool, next))
 
 export default router
