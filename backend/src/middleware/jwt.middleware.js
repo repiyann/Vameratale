@@ -6,7 +6,7 @@ function verifyToken(req, res, next) {
 	const token = req.headers['authorization']
 
 	if (!token) {
-		return res.status(403).json({ message: 'Token not provided' })
+		return res.status(401).json({ message: 'Token tidak tersedia' })
 	}
 
 	const tokenParts = token.split(' ')
@@ -14,7 +14,7 @@ function verifyToken(req, res, next) {
 
 	jwt.verify(jwtToken, JWT_SECRET_KEY, (err, decoded) => {
 		if (err) {
-			return res.status(401).json({ message: 'Failed to authenticate token' })
+			return res.status(403).json({ message: 'Gagal verifikasi token' })
 		}
 		req.userId = decoded.userId
 		next()

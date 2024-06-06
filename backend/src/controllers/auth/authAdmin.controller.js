@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import validator from 'validator'
 
 const SALT_ROUNDS = process.env.SALT_ROUND
 const JWT_SECRET_KEY = process.env.JWT_SECRET
@@ -8,22 +9,30 @@ async function registerAdmin(req, res, pool, next) {
 	try {
 		const { email, password } = req.body
 
-		if (password.length < 8) {
-			return res.status(400).json({ message: 'Password should be at least 8 characters long' })
+		if (validator.isEmpty(email) || validator.isEmpty(password)) {
+			return res.status(400).json({ message: 'Input tidak boleh kosong' })
 		}
 
-		const [checkEmailResult] = await pool.query('SELECT * FROM admins WHERE email = ?', [email])
+		if (!validator.isEmail(email)) {
+			return res.status(400).json({ message: 'Format email salah' })
+		}
+
+		if (!validator.isLength(password, { min: 8 })) {
+			return res.status(400).json({ message: 'Kata sandi minimal 8 karakter' })
+		}
+
+		const [checkEmailResult] = await pool.query('SELECT * FROM admins WHERE admin_email = ?', [email])
 		if (checkEmailResult.length > 0) {
-			return res.status(400).json({ message: 'Email already exists' })
+			return res.status(400).json({ message: 'Email sudah digunakan' })
 		}
 
 		const hashedPassword = await bcrypt.hash(password, parseInt(SALT_ROUNDS))
-		await pool.query('INSERT INTO admins (email, password) VALUES (?, ?)', [email, hashedPassword])
+		await pool.query('INSERT INTO admins (admin_email, admin_password) VALUES (?, ?)', [email, hashedPassword])
 
-		return res.status(201).json({ message: 'Registration successful' })
+		return res.status(201).json({ message: 'Registrasi berhasil' })
 	} catch (err) {
 		console.error(err.stack)
-		res.status(500).json({ message: 'Internal Server Error' })
+		res.status(500).json({ message: 'Server sedang bermasalah' })
 	}
 }
 
@@ -31,10 +40,22 @@ async function loginAdmin(req, res, pool, next) {
 	try {
 		const { email, password } = req.body
 
-		const [validateAdminResult] = await pool.query('SELECT * FROM admins WHERE email = ?', [email])
+		if (validator.isEmpty(email) || validator.isEmpty(password)) {
+			return res.status(400).json({ message: 'Input tidak boleh kosong' })
+		}
+
+		if (!validator.isEmail(email)) {
+			return res.status(400).json({ message: 'Format email salah' })
+		}
+
+		if (!validator.isLength(password, { min: 8 })) {
+			return res.status(400).json({ message: 'Kata sandi minimal 8 karakter' })
+		}
+
+		const [validateAdminResult] = await pool.query('SELECT * FROM admins WHERE admin_email = ?', [email])
 
 		if (validateAdminResult.length === 0) {
-			return res.status(404).json({ message: 'Email not exist' })
+			return res.status(404).json({ message: 'Email dan kata sandi tidak sesuai' })
 		}
 
 		let user
@@ -45,17 +66,17 @@ async function loginAdmin(req, res, pool, next) {
 			role = 'admin'
 		}
 
-		const isPasswordValid = await bcrypt.compare(password, user.password)
+		const isPasswordValid = await bcrypt.compare(password, user.admin_password)
 		if (!isPasswordValid) {
-			return res.status(401).json({ message: 'Invalid username or password' })
+			return res.status(401).json({ message: 'Email dan kata sandi tidak sesuai' })
 		}
 
 		const token = jwt.sign({ userId: user.id }, JWT_SECRET_KEY, { expiresIn: '1h' })
 
-		return res.status(200).json({ message: 'Login successful', token, role: role })
+		return res.status(200).json({ message: 'Login berhasil', token, role: role })
 	} catch (err) {
 		console.error(err.stack)
-		res.status(500).json({ message: 'Internal Server Error' })
+		res.status(500).json({ message: 'Server Bermasalah' })
 	}
 }
 
@@ -63,7 +84,7 @@ async function getAdmin(req, res, pool) {
 	try {
 		const token = req.headers['authorization']
 		if (!token) {
-			return res.status(401).json({ message: 'Unauthorized' })
+			return res.status(401).json({ message: 'Tidak berwenang' })
 		}
 
 		const tokenParts = token.split(' ')
@@ -71,13 +92,13 @@ async function getAdmin(req, res, pool) {
 
 		const decoded = jwt.verify(jwtToken, JWT_SECRET_KEY)
 		if (!decoded) {
-			return res.status(401).json({ message: 'Invalid token' })
+			return res.status(401).json({ message: 'Token tidak valid' })
 		}
 
-		const [validateAdminResult] = await pool.query('SELECT * FROM admins WHERE id = ?', [decoded.userId])
+		const [validateAdminResult] = await pool.query('SELECT * FROM admins WHERE admin_id = ?', [decoded.userId])
 
 		if (validateAdminResult.length === 0) {
-			return res.status(404).json({ message: 'User not exist' })
+			return res.status(404).json({ message: 'Akun tidak ditemukan' })
 		}
 
 		let user
@@ -91,7 +112,7 @@ async function getAdmin(req, res, pool) {
 		return res.status(200).json({ user: user, role: role })
 	} catch (err) {
 		console.error(err.stack)
-		return res.status(500).json({ message: 'Internal Server Error' })
+		return res.status(500).json({ message: 'Server Bermasalah' })
 	}
 }
 
