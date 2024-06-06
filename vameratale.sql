@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS admins (
   admin_password VARCHAR(60) NOT NULL,
   admin_role_id INT NOT NULL DEFAULT 1,
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (admin_id) USING BTREE,
+  PRIMARY KEY (admin_id),
   KEY admin_role_id (admin_role_id),
   CONSTRAINT admins_ibfk_1 FOREIGN KEY (admin_role_id) REFERENCES roles (role_id)
 ) ENGINE = InnoDB;
@@ -42,9 +42,27 @@ CREATE TABLE IF NOT EXISTS users (
   verificationToken VARCHAR(64),
   isVerified BOOLEAN DEFAULT FALSE,
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (user_id) USING BTREE,
+  PRIMARY KEY (user_id),
   KEY user_role_id (user_role_id),
   CONSTRAINT users_ibfk_1 FOREIGN KEY (user_role_id) REFERENCES roles (role_id)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS varians (
+  varian_id INT NOT NULL AUTO_INCREMENT,
+  varian_name VARCHAR(25) NOT NULL,
+  PRIMARY KEY (varian_id)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS sizes (
+  size_id INT NOT NULL AUTO_INCREMENT,
+  size_name VARCHAR(25) NOT NULL,
+  PRIMARY KEY (size_id)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS categories (
+  category_id INT NOT NULL AUTO_INCREMENT,
+  category_name VARCHAR(25) NOT NULL,
+  PRIMARY KEY (category_id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE products (
