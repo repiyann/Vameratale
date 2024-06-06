@@ -74,7 +74,6 @@ export default function SidebarAdmin() {
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col ml-3">
 						<div>Pengaturan Pengiriman</div>
-						<div>Palsu</div>
 					</AccordionContent>
 				</AccordionItem>
 				<AccordionItem value="item-3">
@@ -86,7 +85,6 @@ export default function SidebarAdmin() {
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col ml-3">
 						<Link to={'/admin/reports/stock'}>Data Stok Barang</Link>
-						<div>Melati</div>
 					</AccordionContent>
 				</AccordionItem>
 				<AccordionItem value="item-4">
