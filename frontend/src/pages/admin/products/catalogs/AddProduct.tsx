@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import NavbarAdmin from '@/components/NavbarAdmin'
@@ -7,101 +8,61 @@ import SidebarAdmin from '@/components/SidebarAdmin'
 import { Card } from '@/components/ui/card'
 
 export default function AddProduct() {
-	const [selectedFile, setSelectedFile] = useState<File[]>([])
-	const [dragging, setDragging] = useState<boolean>(false)
-	const [error, setError] = useState<string>('')
+	const navigate = useNavigate()
+	const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null)
+	const [name, setName] = useState<string>('')
+	const [price, setPrice] = useState<string>('')
+	const [desc, setDesc] = useState<string>('')
+	const [varian, setVarian] = useState<string>('')
+	const [category, setCategory] = useState<string>('')
+	const [size, setSize] = useState<string>('')
+	const [stock, setStock] = useState<string>('')
+	const [errorMessage, setErrorMessage] = useState<string>('')
 	const iconRef = useRef<HTMLInputElement>(null!)
-	const [preview, setPreview] = useState<string[]>([])
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
 	function onBtnClick(): void {
 		iconRef?.current.click()
 	}
 
-	function handleDragEnter(event: React.DragEvent<HTMLDivElement>): void {
-		event.preventDefault()
-		setDragging(true)
+	function handleFileChange(event: React.ChangeEvent<HTMLInputElement>): void {
+		setSelectedFiles(event.target.files)
 	}
 
-	function handleDragLeave(event: React.DragEvent<HTMLDivElement>): void {
-		event.preventDefault()
-		setDragging(false)
-	}
+	async function handleSubmit(): Promise<void> {
+		try {
+			if (!selectedFiles || !name || !price || !desc || !category || !varian || !size || !stock) {
+				setErrorMessage('Please fill in all required fields and select files to upload.')
+				return
+			}
 
-	function handleDragOver(event: React.DragEvent<HTMLDivElement>): void {
-		event.preventDefault()
-	}
+			const formData = new FormData()
+			formData.append('productName', name)
+			formData.append('productPrice', price)
+			formData.append('productDesc', desc)
+			formData.append('category', category)
+			formData.append('variant', varian)
+			formData.append('size', size)
+			formData.append('stock', stock)
+			Array.from(selectedFiles).forEach((file) => {
+				formData.append('files', file)
+			})
 
-	function handleDrop(event: React.DragEvent<HTMLDivElement>): void {
-		event.preventDefault()
-		setDragging(false)
-		const files = event.dataTransfer.files
-		const validFiles: File[] = []
-
-		if (files.length > 5) {
-			setError('Maximum of 5 images allowed.')
-			return
-		}
-
-		for (let i = 0; i < files.length; i++) {
-			const file = files[i]
-
-			if (file) {
-				if (!validateFile(file)) {
-					continue
+			await axios.post(`${BASE_API_URL}/product/newProduct`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
 				}
-				validFiles.push(file)
-				setError('')
+			})
+			navigate('/admin/products/catalog')
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
 			}
 		}
-
-		setSelectedFile(validFiles)
-		const newPreviewUrls = validFiles.map((file) => URL.createObjectURL(file))
-		setPreview(newPreviewUrls)
-	}
-
-	function handleFileInput(event: React.ChangeEvent<HTMLInputElement>): void {
-		const files = event.target.files || []
-		const validFiles: File[] = []
-
-		if (files.length > 5) {
-			setError('Maximum of 5 images allowed.')
-			return
-		}
-
-		for (let i = 0; i < files.length; i++) {
-			const file = files[i]
-			if (file) {
-				if (!validateFile(file)) {
-					continue
-				}
-				validFiles.push(file)
-				setError('')
-			}
-		}
-
-		setSelectedFile(validFiles)
-		const newPreviewUrls = validFiles.map((file) => URL.createObjectURL(file))
-		setPreview(newPreviewUrls)
-	}
-
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-		event.preventDefault()
-	}
-
-	function validateFile(file: File | null): boolean {
-		if (!file) return false
-
-		if (!file.type.startsWith('image/')) {
-			setError('Please select an image file')
-			return false
-		}
-
-		if (file.size > 1000000) {
-			setError('File size is too large')
-			return false
-		}
-
-		return true
 	}
 
 	return (
@@ -129,23 +90,21 @@ export default function AddProduct() {
 						</div>
 						<h1 className="text-2xl font-bold">Input Katalog Barang</h1>
 						<Card className="p-5 mt-2 bg-[#FFF3F3]">
-							<form onSubmit={handleSubmit}>
-								<div
-									className={`rounded-md flex flex-col text-center ${
-										dragging ? 'p-10 bg-blue-400' : selectedFile.length > 0 ? 'p-10 bg-red-400' : 'p-10 bg-green-400'
-									}`}
-									onDragEnter={handleDragEnter}
-									onDragLeave={handleDragLeave}
-									onDragOver={handleDragOver}
-									onDrop={handleDrop}
-								>
+							<form
+								onSubmit={(e) => {
+									e.preventDefault()
+									handleSubmit()
+								}}
+							>
+								{errorMessage && <p className="text-red-500">{errorMessage}</p>}
+								<div className={`rounded-md flex flex-col text-center`}>
 									<input
 										ref={iconRef}
 										type="file"
-										onChange={handleFileInput}
-										name="file"
+										onChange={handleFileChange}
 										hidden
 										multiple
+										name="files"
 									/>
 									<div className="flex justify-center">
 										<svg
@@ -167,43 +126,74 @@ export default function AddProduct() {
 									type="text"
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
 									placeholder="Masukkan nama barang"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									required
 								/>
 								<input
-									type="text"
+									type="number"
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
 									placeholder="Masukkan harga barang"
+									value={price}
+									onChange={(e) => setPrice(e.target.value)}
+									required
 								/>
 								<select
-									name=""
-									id=""
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+									value={category}
+									onChange={(e) => setCategory(e.target.value)}
+									required
 								>
-									<option disabled>Pilih Kategori Barang</option>
+									<option
+										value={''}
+										disabled
+									>
+										Pilih Kategori Barang
+									</option>
+									<option value="besar">Besar</option>
 								</select>
 								<select
-									name=""
-									id=""
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+									value={varian}
+									onChange={(e) => setVarian(e.target.value)}
+									required
 								>
-									<option disabled>Pilih Varian Bunga</option>
+									<option
+										value={''}
+										disabled
+									>
+										Pilih Varian Bunga
+									</option>
+									<option value="kecil">Kecil</option>
 								</select>
 								<select
-									name=""
-									id=""
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+									value={size}
+									onChange={(e) => setSize(e.target.value)}
+									required
 								>
-									<option disabled>Pilih Ukuran</option>
+									<option
+										value={''}
+										disabled
+									>
+										Pilih Ukuran
+									</option>
+									<option value="sedang">Sedang</option>
 								</select>
 								<textarea
-									name=""
-									id=""
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2 h-[150px]"
 									placeholder="Masukkan deskripsi barang"
+									value={desc}
+									onChange={(e) => setDesc(e.target.value)}
+									required
 								></textarea>
 								<input
-									type="text"
+									type="number"
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
 									placeholder="Masukkan stok barang"
+									value={stock}
+									onChange={(e) => setStock(e.target.value)}
+									required
 								/>
 								<div className="flex justify-center mt-4">
 									<button
@@ -214,24 +204,6 @@ export default function AddProduct() {
 									</button>
 								</div>
 							</form>
-							{error}
-							<section>
-								<div className="col-md-4 ">
-									{preview.map((previewUrl, index) => (
-										<div
-											key={index}
-											className="col-md-4"
-										>
-											<img
-												src={previewUrl}
-												width={244}
-												height={344}
-												alt={`Preview ${index + 1}`}
-											/>
-										</div>
-									))}
-								</div>
-							</section>
 						</Card>
 					</div>
 				</section>
