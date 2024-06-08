@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,6 +6,21 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import NavbarAdmin from '@/components/NavbarAdmin'
 import SidebarAdmin from '@/components/SidebarAdmin'
 import { Card } from '@/components/ui/card'
+
+interface Varian {
+	varian_id: string
+	varian_name: string
+}
+
+interface Size {
+	size_id: string
+	size_name: string
+}
+
+interface Category {
+	category_id: string
+	category_name: string
+}
 
 export default function AddProduct() {
 	const navigate = useNavigate()
@@ -19,14 +34,103 @@ export default function AddProduct() {
 	const [stock, setStock] = useState<string>('')
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const iconRef = useRef<HTMLInputElement>(null!)
+	const [dragging, setDragging] = useState<boolean>(false)
+	const [preview, setPreview] = useState<string[]>([])
+	const [varians, setVarians] = useState<Varian[]>([])
+	const [sizes, setSizes] = useState<Size[]>([])
+	const [categories, setCategories] = useState<Category[]>([])
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+
+	useEffect(() => {
+		async function fetchData(): Promise<void> {
+			try {
+				const [responseVariants, responseSizes, responseCategories] = await Promise.all([
+					axios.get(`${BASE_API_URL}/varian/getVarians`),
+					axios.get(`${BASE_API_URL}/size/getSizes`),
+					axios.get(`${BASE_API_URL}/category/getCategories`)
+				])
+
+				setVarians(responseVariants.data.data)
+				setSizes(responseSizes.data.data)
+				setCategories(responseCategories.data.data)
+			} catch (error: unknown) {
+				if (axios.isAxiosError(error)) {
+					setErrorMessage(error.response?.data.message)
+				} else if (error instanceof Error) {
+					setErrorMessage(error.message)
+				} else {
+					setErrorMessage('Server bermasalah')
+				}
+			}
+		}
+
+		fetchData()
+	}, [BASE_API_URL])
 
 	function onBtnClick(): void {
 		iconRef?.current.click()
 	}
 
+	function handleDragEnter(event: React.DragEvent<HTMLDivElement>): void {
+		event.preventDefault()
+		setDragging(true)
+	}
+
+	function handleDragLeave(event: React.DragEvent<HTMLDivElement>): void {
+		event.preventDefault()
+		setDragging(false)
+	}
+
+	function handleDragOver(event: React.DragEvent<HTMLDivElement>): void {
+		event.preventDefault()
+	}
+
+	function handleDrop(event: React.DragEvent<HTMLDivElement>): void {
+		event.preventDefault()
+		setDragging(false)
+		const files: FileList = event.dataTransfer.files
+		handleFiles(files)
+	}
+
 	function handleFileChange(event: React.ChangeEvent<HTMLInputElement>): void {
-		setSelectedFiles(event.target.files)
+		const files: FileList | null = event.target.files
+		handleFiles(files)
+	}
+
+	function handleFiles(files: FileList | null): void {
+		if (!files) return
+		if (files.length > 5) {
+			setErrorMessage('Maximum of 5 images allowed.')
+			return
+		}
+
+		const validFiles: File[] = []
+		for (let i = 0; i < files.length; i++) {
+			const file: File = files[i]
+			if (file && validateFile(file)) {
+				validFiles.push(file)
+			}
+		}
+
+		if (validFiles.length > 0) {
+			setSelectedFiles(files)
+			const newPreviewUrls: string[] = Array.from(validFiles).map((file) => URL.createObjectURL(file))
+			setPreview(newPreviewUrls)
+			setErrorMessage('')
+		}
+	}
+
+	function validateFile(file: File | null): boolean {
+		if (!file) return false
+		if (!file.type.startsWith('image/')) {
+			setErrorMessage('Please select an image file')
+			return false
+		}
+		if (file.size > 1000000) {
+			setErrorMessage('File size is too large')
+			return false
+		}
+		return true
 	}
 
 	async function handleSubmit(): Promise<void> {
@@ -97,7 +201,15 @@ export default function AddProduct() {
 								}}
 							>
 								{errorMessage && <p className="text-red-500">{errorMessage}</p>}
-								<div className={`rounded-md flex flex-col text-center`}>
+								<div
+									className={`rounded-md flex flex-col ${
+										dragging ? 'bg-[#DC9D9D]' : 'bg-white'
+									} text-center border-dashed border-2 border-black p-10`}
+									onDragEnter={handleDragEnter}
+									onDragLeave={handleDragLeave}
+									onDragOver={handleDragOver}
+									onDrop={handleDrop}
+								>
 									<input
 										ref={iconRef}
 										type="file"
@@ -121,6 +233,18 @@ export default function AddProduct() {
 									</div>
 									<p>Or</p>
 									<p>Drag and Drop to Upload</p>
+									{preview.length > 0 && (
+										<div className="flex flex-wrap justify-center mt-4">
+											{preview.map((previewUrl, index) => (
+												<img
+													key={index}
+													src={previewUrl}
+													className="h-32 object-cover m-2"
+													alt={`Preview ${index + 1}`}
+												/>
+											))}
+										</div>
+									)}
 								</div>
 								<input
 									type="text"
@@ -150,7 +274,14 @@ export default function AddProduct() {
 									>
 										Pilih Kategori Barang
 									</option>
-									<option value="besar">Besar</option>
+									{categories.map((category) => (
+										<option
+											key={category.category_id}
+											value={category.category_id}
+										>
+											{category.category_name}
+										</option>
+									))}
 								</select>
 								<select
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
@@ -164,7 +295,14 @@ export default function AddProduct() {
 									>
 										Pilih Varian Bunga
 									</option>
-									<option value="kecil">Kecil</option>
+									{varians.map((varian) => (
+										<option
+											key={varian.varian_id}
+											value={varian.varian_id}
+										>
+											{varian.varian_name}
+										</option>
+									))}
 								</select>
 								<select
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
@@ -178,7 +316,14 @@ export default function AddProduct() {
 									>
 										Pilih Ukuran
 									</option>
-									<option value="sedang">Sedang</option>
+									{sizes.map((size) => (
+										<option
+											key={size.size_id}
+											value={size.size_id}
+										>
+											{size.size_name}
+										</option>
+									))}
 								</select>
 								<textarea
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2 h-[150px]"
