@@ -65,7 +65,7 @@ async function getProducts(req, res, pool, next) {
 				p.product_varian, 
 				p.product_size, 
 				p.product_stock, 
-				i.data AS image_data 
+				i.image_data AS image_data 
 			FROM 
 				products p
 			LEFT JOIN (
@@ -76,7 +76,7 @@ async function getProducts(req, res, pool, next) {
  				WHERE 
 					(image_product_id, image_id) IN (
 		 				SELECT
-							image_product_id, MAX(image_id) AS max_id
+							image_product_id, MIN(image_id) AS max_id
 		 				FROM
 							product_images
 		 				GROUP BY
@@ -172,7 +172,10 @@ async function updateProduct(req, res, pool, next) {
 
 		if (images && images.length > 0) {
 			const updateImage = images.map((imageData) => {
-				return connection.execute(`INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)`, [productId, imageData])
+				return connection.execute(`INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)`, [
+					productId,
+					imageData
+				])
 			})
 			await Promise.all(updateImage)
 		}
@@ -190,11 +193,11 @@ async function updateProduct(req, res, pool, next) {
 
 async function deleteProduct(req, res, pool, next) {
 	try {
-		const productId = req.params.id
+		const { id } = req.params
 
-		await pool.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [productId])
+		await pool.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
 
-		const deleteResult = await pool.execute(`DELETE FROM products WHERE product_id = ?`, [productId])
+		const deleteResult = await pool.execute(`DELETE FROM products WHERE product_id = ?`, [id])
 
 		if (deleteResult.affectedRows === 0) {
 			return res.status(404).json({ message: 'Product not found' })
