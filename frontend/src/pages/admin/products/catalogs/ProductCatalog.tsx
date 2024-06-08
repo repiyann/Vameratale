@@ -1,61 +1,58 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusSquare, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { Card } from '@/components/ui/card'
 import NavbarAdmin from '@/components/NavbarAdmin'
 import SidebarAdmin from '@/components/SidebarAdmin'
 
+type Product = {
+	product_id: number
+	product_name: string
+	product_price: number
+	product_description: string
+	image_data: string
+}
+
 export default function ProductCatalog() {
-	const imageCard = [
-		{
-			src: '/fresh-1.png',
-			alt: 'Card 1',
-			title: '2 Sunflower',
-			description: 'Cheerful flower',
-			price: 'Rp 195.000',
-			link: '/admin/products/catalog/edit-product'
-		},
-		{
-			src: '/flowers.png',
-			alt: 'Card 2',
-			title: '3 Roses',
-			description: 'Beautiful bouquet',
-			price: 'Rp 250.000',
-			link: '/detail/roses'
-		},
-		{
-			src: '/fresh-3.png',
-			alt: 'Card 3',
-			title: 'Mixed Flowers',
-			description: 'Colorful and vibrant',
-			price: 'Rp 300.000',
-			link: '/detail/mixed'
-		},
-		{
-			src: '/fresh-4.png',
-			alt: 'Card 4',
-			title: 'Orchid Bouquet',
-			description: 'Elegant and stylish',
-			price: 'Rp 450.000',
-			link: '/detail/orchid'
-		},
-		{
-			src: '/fresh-5.png',
-			alt: 'Card 5',
-			title: 'Tulips',
-			description: 'Bright and cheerful',
-			price: 'Rp 200.000',
-			link: '/detail/tulips'
-		},
-		{
-			src: '/fresh-6.png',
-			alt: 'Card 6',
-			title: 'Lilies',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 220.000',
-			link: '/detail/lilies'
+	const [products, setProducts] = useState<Product[]>([])
+	const [errorMessage, setErrorMessage] = useState<string>('')
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+
+	useEffect(() => {
+		async function fetchProducts(): Promise<void> {
+			try {
+				const response = await axios.get(`${BASE_API_URL}/product/getProducts`)
+				setProducts(response.data.rows)
+			} catch (error: unknown) {
+				if (axios.isAxiosError(error)) {
+					setErrorMessage(error.response?.data.message)
+				} else if (error instanceof Error) {
+					setErrorMessage(error.message)
+				} else {
+					setErrorMessage('Server bermasalah')
+				}
+			}
 		}
-	]
+
+		fetchProducts()
+	}, [BASE_API_URL])
+
+	async function handleDelete(id: number): Promise<void> {
+		try {
+			await axios.delete(`${BASE_API_URL}/size/deleteSize/${id}`)
+			setProducts(products.filter((product) => product.product_id !== id))
+		} catch (error: unknown) {
+			if (axios.isAxiosError(error)) {
+				setErrorMessage(error.response?.data.message)
+			} else if (error instanceof Error) {
+				setErrorMessage(error.message)
+			} else {
+				setErrorMessage('Server bermasalah')
+			}
+		}
+	}
 
 	return (
 		<>
@@ -87,24 +84,29 @@ export default function ProductCatalog() {
 							</Link>
 						</div>
 						<div className="md:grid md:grid-cols-3 gap-5 md:gap-10 mt-5">
-							{imageCard.map((card, index) => (
+							{errorMessage && <p className="text-red-500">{errorMessage}</p>}
+							{products.map((product, index) => (
 								<Card
 									key={index}
 									className="bg-white rounded-2xl shadow-lg"
 								>
 									<div className="bg-[#FFE3E3] px-2 py-1 flex items-center rounded-xl w-full h-[280px]">
-										<img
-											src={card.src}
-											alt={card.alt}
-											className="mx-auto"
-											width={150}
-										/>
+										{product.image_data ? (
+											<img
+												src={`data:image/jpeg;base64,${product.image_data}`}
+												alt={product.product_name}
+												className="mx-auto"
+												width={300}
+											/>
+										) : (
+											<div className="w-full h-[280px] flex items-center justify-center">No Image Available</div>
+										)}
 									</div>
-									<h2 className="text-xl mt-2 font-bold mx-4 md:mx-6">{card.title}</h2>
-									<p className="text-[#A8A8A8] text-lg font-medium mx-4 md:mx-6">{card.description}</p>
-									<p className="text-[#D13E55] text-lg font-semibold mx-4 md:mx-6">{card.price}</p>
+									<h2 className="text-xl mt-2 font-bold mx-4 md:mx-6">{product.product_name}</h2>
+									<p className="text-[#A8A8A8] text-lg font-medium mx-4 md:mx-6">{product.product_description}</p>
+									<p className="text-[#D13E55] text-lg font-semibold mx-4 md:mx-6">{product.product_price}</p>
 									<div className="flex justify-end mr-7 gap-4 mb-4">
-										<Link to={card.link}>
+										<Link to={`/admin/products/catalog/edit/${product.product_id}`}>
 											<FontAwesomeIcon
 												icon={faPenToSquare}
 												size="xl"
@@ -114,6 +116,7 @@ export default function ProductCatalog() {
 											icon={faTrashCan}
 											className="text-red-600"
 											size="xl"
+											onClick={() => handleDelete(product.product_id)}
 										/>
 									</div>
 								</Card>
