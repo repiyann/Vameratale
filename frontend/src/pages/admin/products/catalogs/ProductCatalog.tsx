@@ -41,7 +41,7 @@ export default function ProductCatalog() {
 
 	async function handleDelete(id: number): Promise<void> {
 		try {
-			await axios.delete(`${BASE_API_URL}/size/deleteSize/${id}`)
+			await axios.delete(`${BASE_API_URL}/product/deleteProduct/${id}`)
 			setProducts(products.filter((product) => product.product_id !== id))
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {
@@ -114,7 +114,7 @@ export default function ProductCatalog() {
 										</Link>
 										<FontAwesomeIcon
 											icon={faTrashCan}
-											className="text-red-600"
+											className="text-red-600 cursor-pointer"
 											size="xl"
 											onClick={() => handleDelete(product.product_id)}
 										/>
