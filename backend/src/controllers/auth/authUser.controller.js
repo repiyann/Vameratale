@@ -12,7 +12,15 @@ async function register(req, res, pool, next) {
 	try {
 		const { email, password, telepon, confirmPassword } = req.body
 		const checkEmailQuery = `SELECT * FROM users WHERE user_email = ?`
-		const SQLQuery = `INSERT INTO users (user_email, user_password, user_phone, verificationToken) VALUES (?, ?, ?, ?)`
+		const SQLQuery = `
+			INSERT INTO 
+				users (
+					user_email,
+					user_password,
+					user_phone,
+					verificationToken
+				)
+			VALUES (?, ?, ?, ?)`
 
 		if (
 			validator.isEmpty(email) ||
@@ -51,9 +59,9 @@ async function register(req, res, pool, next) {
 		await sendVerificationEmail(email, verificationToken)
 
 		return res.status(201).json({ message: 'Registrasi berhasil' })
-	} catch (err) {
-		console.error(err.stack)
-		res.status(500).json({ message: 'Server bermasalah' })
+	} catch (error) {
+		console.error(error.stack)
+		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
 
@@ -91,9 +99,9 @@ async function login(req, res, pool, next) {
 		const token = jwt.sign({ userId: user.user_id }, JWT_SECRET_KEY, { expiresIn: '1h' })
 
 		return res.status(200).json({ message: 'Login berhasil', token, role: role })
-	} catch (err) {
-		console.error(err.stack)
-		res.status(500).json({ message: 'Server Bermasalah' })
+	} catch (error) {
+		console.error(error.stack)
+		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
 
@@ -128,8 +136,8 @@ async function getUser(req, res, pool, next) {
 		}
 
 		return res.status(200).json({ user: user, role: role })
-	} catch (err) {
-		console.error(err.stack)
+	} catch (error) {
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -156,12 +164,20 @@ async function verifyEmail(req, res, pool, next) {
 			return res.status(404).json({ message: 'Token verifikasi tidak valid atau kadaluarsa' })
 		}
 
-		const updateSQLQuery = `UPDATE users SET isVerified = TRUE, verificationToken = NULL WHERE user_email = ?`
+		const updateSQLQuery = `
+			UPDATE
+				users
+			SET
+				isVerified = TRUE,
+				verificationToken = NULL 
+			WHERE 
+				user_email = ?`
+
 		await pool.execute(updateSQLQuery, [email])
 
 		return res.status(200).json({ message: 'Verifikasi email berhasil' })
-	} catch (err) {
-		console.error(err.stack)
+	} catch (error) {
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -178,7 +194,14 @@ async function generateOTP(req, res, pool, next) {
 		const expiration = Date.now() + 10 * 60 * 1000
 		const formattedExpiration = moment(expiration).format('YYYY-MM-DD HH:mm:ss')
 		const checkEmailQuery = `SELECT * FROM users WHERE user_email = ?`
-		const SQLQuery = `UPDATE users SET resetPasswordOTP = ?, resetPasswordExpires = ? WHERE user_email = ?`
+		const SQLQuery = `
+			UPDATE 
+				users
+			SET 
+				resetPasswordOTP = ?,
+				resetPasswordExpires = ? 
+			WHERE 
+				user_email = ?`
 
 		const [checkEmailResult] = await pool.execute(checkEmailQuery, [email])
 		if (checkEmailResult.length === 0) {
@@ -189,8 +212,8 @@ async function generateOTP(req, res, pool, next) {
 		await sendOTPEmail(email, otp)
 
 		return res.status(200).json({ message: 'OTP berhasil dikirim' })
-	} catch (err) {
-		console.error(err.stack)
+	} catch (error) {
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -214,10 +237,18 @@ async function resetPasswordOTP(req, res, pool, next) {
 		const hashedPassword = await bcrypt.hash(password, 10)
 		const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
 		const SQLQuery = `
-    	UPDATE users
-    	SET user_password = ?, resetPasswordOTP = NULL, resetPasswordExpires = NULL
-    	WHERE user_email = ? AND resetPasswordOTP = ? AND resetPasswordExpires > ?
-  	`
+    	UPDATE
+				users
+    	SET 
+				user_password = ?,
+				resetPasswordOTP = NULL,
+				resetPasswordExpires = NULL
+    	WHERE
+				user_email = ?
+					AND
+				resetPasswordOTP = ?
+					AND
+				resetPasswordExpires > ?`
 
 		const [result] = await pool.execute(SQLQuery, [hashedPassword, email, otp, currentTime])
 		if (result.affectedRows === 0) {
@@ -225,8 +256,8 @@ async function resetPasswordOTP(req, res, pool, next) {
 		}
 
 		return res.status(200).json({ message: 'Kata sandi berhasil diatur ulang' })
-	} catch (err) {
-		console.error(err.stack)
+	} catch (error) {
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }

@@ -12,7 +12,7 @@ async function createSize(req, res, pool, next) {
 
 		return res.status(201).json({ message: 'Ukuran berhasil dibuat' })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -26,7 +26,7 @@ async function getSizes(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Varian berhasil didapat', data: results })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -50,7 +50,7 @@ async function getSizeByID(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Ukuran berhasil didapat', data: result })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -80,7 +80,7 @@ async function updateSize(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Ukuran berhasil diubah' })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -109,7 +109,7 @@ async function deleteSize(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Ukuran berhasil dihapus' })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }

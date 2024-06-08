@@ -30,9 +30,9 @@ async function registerAdmin(req, res, pool, next) {
 		await pool.query('INSERT INTO admins (admin_email, admin_password) VALUES (?, ?)', [email, hashedPassword])
 
 		return res.status(201).json({ message: 'Registrasi berhasil' })
-	} catch (err) {
-		console.error(err.stack)
-		res.status(500).json({ message: 'Server sedang bermasalah' })
+	} catch (error) {
+		console.error(error.stack)
+		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
 
@@ -74,9 +74,9 @@ async function loginAdmin(req, res, pool, next) {
 		const token = jwt.sign({ userId: user.id }, JWT_SECRET_KEY, { expiresIn: '1h' })
 
 		return res.status(200).json({ message: 'Login berhasil', token, role: role })
-	} catch (err) {
-		console.error(err.stack)
-		res.status(500).json({ message: 'Server Bermasalah' })
+	} catch (error) {
+		console.error(error.stack)
+		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
 
@@ -110,9 +110,9 @@ async function getAdmin(req, res, pool) {
 		}
 
 		return res.status(200).json({ user: user, role: role })
-	} catch (err) {
-		console.error(err.stack)
-		return res.status(500).json({ message: 'Server Bermasalah' })
+	} catch (error) {
+		console.error(error.stack)
+		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
 

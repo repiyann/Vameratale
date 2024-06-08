@@ -7,7 +7,7 @@ async function getUsersAdmin(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Pengguna berhasil didapat', data: results })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }

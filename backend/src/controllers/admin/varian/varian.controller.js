@@ -12,7 +12,7 @@ async function createVarians(req, res, pool, next) {
 
 		return res.status(201).json({ message: 'Varian berhasil dibuat' })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -26,7 +26,7 @@ async function getVarians(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Varian berhasil didapat', data: results })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -50,7 +50,7 @@ async function getVarianByID(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Varian berhasil didapat', data: result })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -80,7 +80,7 @@ async function updateVarian(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Varian berhasil diubah' })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
@@ -109,7 +109,7 @@ async function deleteVarian(req, res, pool, next) {
 
 		return res.status(200).json({ message: 'Varian berhasil dihapus' })
 	} catch (error) {
-		console.error(error)
+		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
 	}
 }
