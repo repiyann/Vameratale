@@ -41,7 +41,7 @@ export default function AddProduct() {
 			formData.append('productPrice', price)
 			formData.append('productDesc', desc)
 			formData.append('category', category)
-			formData.append('variant', varian)
+			formData.append('varian', varian)
 			formData.append('size', size)
 			formData.append('stock', stock)
 			Array.from(selectedFiles).forEach((file) => {

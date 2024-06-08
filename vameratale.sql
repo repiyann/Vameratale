@@ -68,20 +68,20 @@ CREATE TABLE IF NOT EXISTS categories (
   PRIMARY KEY (category_id)
 ) ENGINE = InnoDB;
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
   product_id INT NOT NULL AUTO_INCREMENT,
   product_name VARCHAR(255) NOT NULL,
   product_price DECIMAL(10, 0) NOT NULL,
   product_description TEXT NOT NULL,
   product_category VARCHAR(50) NOT NULL,
-  product_variant VARCHAR(50) NOT NULL,
+  product_varian VARCHAR(50) NOT NULL,
   product_size VARCHAR(20) NOT NULL,
   product_stock INT NOT NULL,
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (product_id) USING BTREE
 ) ENGINE = InnoDB;
 
-CREATE TABLE product_images (
+CREATE TABLE IF NOT EXISTS product_images (
   image_id INT AUTO_INCREMENT,
   image_product_id INT,
   image_data LONGBLOB,

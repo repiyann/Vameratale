@@ -1,7 +1,7 @@
 import validator from 'validator'
 
 async function createProduct(req, res, pool, next) {
-	const { productName, productPrice, productDesc, category, variant, size, stock } = req.body
+	const { productName, productPrice, productDesc, category, varian, size, stock } = req.body
 
 	if (!req.files || !req.files.files || !Array.isArray(req.files.files)) {
 		return res.status(400).json({ message: 'No files uploaded or invalid format' })
@@ -16,7 +16,7 @@ async function createProduct(req, res, pool, next) {
 		const insertProduct = `
 			INSERT INTO 
 				products 
-					(product_name, product_price, product_description, product_category, product_variant, product_size, product_stock)
+					(product_name, product_price, product_description, product_category, product_varian, product_size, product_stock)
 			VALUES
 				(?, ?, ?, ?, ?, ?, ?)`
 
@@ -25,7 +25,7 @@ async function createProduct(req, res, pool, next) {
 			productPrice,
 			productDesc,
 			category,
-			variant,
+			varian,
 			size,
 			stock
 		])
@@ -33,7 +33,7 @@ async function createProduct(req, res, pool, next) {
 
 		const insertImage = uploadedFiles.map(async (file) => {
 			const fileData = file.data
-			const query = 'INSERT INTO images_tes (product_id, data) VALUES (?, ?)'
+			const query = 'INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)'
 
 			await connection.execute(query, [productId, fileData])
 		})
@@ -62,7 +62,7 @@ async function getProducts(req, res, pool, next) {
 				p.product_price, 
 				p.product_description, 
 				p.product_category, 
-				p.product_variant, 
+				p.product_varian, 
 				p.product_size, 
 				p.product_stock, 
 				i.data AS image_data 
@@ -70,19 +70,19 @@ async function getProducts(req, res, pool, next) {
 				products p
 			LEFT JOIN (
  				SELECT 
-					id, product_id, data
+					image_id, image_product_id, image_data
  				FROM 
-					images_tes
+					product_images
  				WHERE 
-					(product_id, id) IN (
+					(image_product_id, image_id) IN (
 		 				SELECT
-							product_id, MAX(id) AS max_id
+							image_product_id, MAX(image_id) AS max_id
 		 				FROM
-							images_tes
+							product_images
 		 				GROUP BY
-							product_id
+							image_product_id
  				)
-			) i ON p.product_id = i.product_id`
+			) i ON p.product_id = i.image_product_id`
 
 		const [rows] = await connection.execute(query)
 		rows.forEach((row) => {
@@ -115,7 +115,7 @@ async function getProductByID(req, res, pool, next) {
 			return res.status(404).json({ message: 'Produk tidak ditemukan' })
 		}
 
-		const imagesQuery = `SELECT * FROM images_tes WHERE product_id = ?`
+		const imagesQuery = `SELECT * FROM product_images WHERE image_product_id = ?`
 		const [imagesRows] = await connection.execute(imagesQuery, [productId])
 
 		const product = productRows[0]
@@ -132,7 +132,7 @@ async function getProductByID(req, res, pool, next) {
 
 async function updateProduct(req, res, pool, next) {
 	const productId = req.params.id
-	const { productName, productPrice, productDesc, category, variant, size, stock, images } = req.body
+	const { productName, productPrice, productDesc, category, varian, size, stock, images } = req.body
 
 	if (!validator.isInt(productId, { min: 1 })) {
 		return res.status(400).json({ message: 'Invalid product ID' })
@@ -151,7 +151,7 @@ async function updateProduct(req, res, pool, next) {
         product_price = ?,
         product_description = ?,
         product_category = ?,
-        product_variant = ?,
+        product_varian = ?,
         product_size = ?,
         product_stock = ?
       WHERE 
@@ -162,17 +162,17 @@ async function updateProduct(req, res, pool, next) {
 			productPrice,
 			productDesc,
 			category,
-			variant,
+			varian,
 			size,
 			stock,
 			productId
 		])
 
-		await connection.execute(`DELETE FROM images_tes WHERE product_id = ?`, [productId])
+		await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [productId])
 
 		if (images && images.length > 0) {
 			const updateImage = images.map((imageData) => {
-				return connection.execute(`INSERT INTO images_tes (product_id, data) VALUES (?, ?)`, [productId, imageData])
+				return connection.execute(`INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)`, [productId, imageData])
 			})
 			await Promise.all(updateImage)
 		}
@@ -192,7 +192,7 @@ async function deleteProduct(req, res, pool, next) {
 	try {
 		const productId = req.params.id
 
-		await pool.execute(`DELETE FROM images_tes WHERE product_id = ?`, [productId])
+		await pool.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [productId])
 
 		const deleteResult = await pool.execute(`DELETE FROM products WHERE product_id = ?`, [productId])
 
