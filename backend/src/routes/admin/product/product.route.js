@@ -21,6 +21,6 @@ router.post('/newProduct', async (req, res, next) => await createProduct(req, re
 router.get('/getProducts', async (req, res, next) => await getProducts(req, res, pool, next))
 router.get('/getProduct/:id', async (req, res, next) => await getProductByID(req, res, pool, next))
 router.put('/updateProduct/:id', async (req, res, next) => await updateProduct(req, res, pool, next))
-router.post('/deleteProduct/:id', async (req, res, next) => await deleteProduct(req, res, pool, next))
+router.delete('/deleteProduct/:id', async (req, res, next) => await deleteProduct(req, res, pool, next))
 
 export default router
