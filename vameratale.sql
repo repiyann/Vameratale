@@ -50,37 +50,42 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS varians (
   varian_id INT NOT NULL AUTO_INCREMENT,
   varian_name VARCHAR(25) NOT NULL,
+  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (varian_id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS sizes (
   size_id INT NOT NULL AUTO_INCREMENT,
   size_name VARCHAR(25) NOT NULL,
+  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (size_id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS categories (
   category_id INT NOT NULL AUTO_INCREMENT,
   category_name VARCHAR(25) NOT NULL,
+  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (category_id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE products (
-  product_id INT AUTO_INCREMENT,
+  product_id INT NOT NULL AUTO_INCREMENT,
   product_name VARCHAR(255) NOT NULL,
   product_price DECIMAL(10, 0) NOT NULL,
-  product_description TEXT,
-  product_category VARCHAR(50),
-  product_variant VARCHAR(50),
-  product_size VARCHAR(20),
-  product_stock INT,
+  product_description TEXT NOT NULL,
+  product_category VARCHAR(50) NOT NULL,
+  product_variant VARCHAR(50) NOT NULL,
+  product_size VARCHAR(20) NOT NULL,
+  product_stock INT NOT NULL,
+  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (product_id) USING BTREE
 ) ENGINE = InnoDB;
 
 CREATE TABLE product_images (
   image_id INT AUTO_INCREMENT,
   image_product_id INT,
-  image_path VARCHAR(255),
+  image_data LONGBLOB,
+  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (image_id) USING BTREE,
   KEY image_product_id (image_product_id),
   CONSTRAINT images_ibfk_1 FOREIGN KEY (image_product_id) REFERENCES products(product_id)
