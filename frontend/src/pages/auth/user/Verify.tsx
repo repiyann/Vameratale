@@ -3,6 +3,10 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import roundLogo from '/round_logo.png'
 
+interface VerifyResponse {
+	email: string
+}
+
 export default function Verifying() {
 	const [pins, setPins] = useState<string[]>(['', '', '', ''])
 	const [errorMessage, setErrorMessage] = useState<string>('')
@@ -28,7 +32,7 @@ export default function Verifying() {
 
 	async function generateOTP(email: string): Promise<void> {
 		try {
-			await axios.post(`${BASE_API_URL}/auth/generateOTP`, { email })
+			await axios.post<VerifyResponse>(`${BASE_API_URL}/auth/generateOTP`, { email })
 			setErrorMessage('Kode OTP baru berhasil dikirim')
 			setResendDisabled(true)
 			setTimer(600)

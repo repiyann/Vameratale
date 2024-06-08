@@ -16,8 +16,8 @@ export default function Home() {
 		window.scrollTo({ top: 0, behavior: 'smooth' })
 	})
 
-	const categoryImages = Array(4).fill(categoriesImage)
-	const reviewImages = Array(5).fill(reviewImage)
+	const categoryImages: string[] = Array(4).fill(categoriesImage)
+	const reviewImages: string[] = Array(5).fill(reviewImage)
 	const categoryData = [
 		{ text: 'Fresh Flowers', url: '/text1' },
 		{ text: 'Occational Bouquet', url: '/text2' },

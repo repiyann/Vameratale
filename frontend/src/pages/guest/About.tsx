@@ -1,7 +1,12 @@
+import { useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import roundLogo from '/round_logo.png'
 
 export default function About() {
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	})
+
 	return (
 		<>
 			<section className="lg:px-72 lg:py-20">

@@ -73,7 +73,7 @@ export default function Dashboard() {
 		}
 	}, [])
 
-	function handleValueChange(newValues: string[]) {
+	function handleValueChange(newValues: string[]): void {
 		setSelectedValues(newValues)
 		localStorage.setItem('selectedValues', JSON.stringify(newValues))
 	}

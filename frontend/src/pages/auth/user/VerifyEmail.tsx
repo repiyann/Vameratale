@@ -10,11 +10,11 @@ interface VerifyEmailResponse {
 
 export default function VerifyEmail() {
 	const [searchParams] = useSearchParams()
-	const token = searchParams.get('token')
-	const email = searchParams.get('email')
+	const token: string | null = searchParams.get('token')
+	const email: string | null = searchParams.get('email')
 
 	useEffect(() => {
-		async function verifyEmail() {
+		async function verifyEmail(): Promise<void> {
 			try {
 				const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 				if (!BASE_API_URL) {

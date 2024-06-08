@@ -13,12 +13,12 @@ type User = {
 }
 
 export default function UserManage() {
-	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 	const [users, setUsers] = useState<User[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
 	useEffect(() => {
-		const fetchData = async () => {
+		async function fetchData(): Promise<void> {
 			if (BASE_API_URL) {
 				try {
 					const response = await axios.get(`${BASE_API_URL}/get/getUsersAdmin`)

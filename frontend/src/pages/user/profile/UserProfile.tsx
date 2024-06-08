@@ -34,6 +34,7 @@ export default function UserProfile() {
 							<input
 								type="text"
 								className="w-full border-2 border-[#B7B8B9] rounded-lg px-3 py-2"
+								value={userData?.name}
 							/>
 						</div>
 						<div>
@@ -49,11 +50,15 @@ export default function UserProfile() {
 							<input
 								type="tel"
 								className="w-full border-2 border-[#B7B8B9] rounded-lg px-3 py-2"
+								value={userData?.telepon}
 							/>
 						</div>
 						<div>
 							<label className="block text-gray-700">Alamat</label>
-							<textarea className="w-full resize-none border-2 border-[#B7B8B9] rounded-lg px-3 py-2" />
+							<textarea
+								className="w-full resize-none border-2 border-[#B7B8B9] rounded-lg px-3 py-2"
+								value={userData?.address}
+							/>
 						</div>
 						<div className="flex justify-center">
 							<button className="bg-[#606F49] text-white px-4 py-2 rounded-xl">Simpan</button>

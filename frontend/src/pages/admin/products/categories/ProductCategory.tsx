@@ -13,12 +13,12 @@ type Category = {
 }
 
 export default function ProductCategory() {
-	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 	const [categories, setCategories] = useState<Category[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
 	useEffect(() => {
-		const fetchData = async () => {
+		async function fetchData(): Promise<void> {
 			if (BASE_API_URL) {
 				try {
 					const response = await axios.get(`${BASE_API_URL}/category/getCategories`)
@@ -38,7 +38,7 @@ export default function ProductCategory() {
 		fetchData()
 	}, [BASE_API_URL])
 
-	async function handleDelete(id: number) {
+	async function handleDelete(id: number): Promise<void> {
 		try {
 			await axios.delete(`${BASE_API_URL}/size/deleteSize/${id}`)
 			setCategories(categories.filter((category) => category.category_id !== id))

@@ -3,6 +3,13 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import roundLogo from '/round_logo.png'
 
+interface ResetResponse {
+	email: string
+	password: string
+	confirmPassword: string
+	otp: string
+}
+
 export default function Reset() {
 	const [password, setPassword] = useState<string>('')
 	const [confirmPassword, setConfirmPassword] = useState<string>('')
@@ -11,15 +18,15 @@ export default function Reset() {
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
 	async function handleSubmit(): Promise<void> {
-		const resetEmail = localStorage.getItem('resetEmail')
-		const verificationPin = localStorage.getItem('verificationPin')
+		const resetEmail: string | null = localStorage.getItem('resetEmail')
+		const verificationPin: string | null = localStorage.getItem('verificationPin')
 
 		if (password !== confirmPassword) {
 			return setErrorMessage('Kata sandi tidak sesuai')
 		}
 
 		try {
-			await axios.post(`${BASE_API_URL}/auth/resetPasswordOTP`, {
+			await axios.post<ResetResponse>(`${BASE_API_URL}/auth/resetPasswordOTP`, {
 				email: resetEmail,
 				otp: verificationPin,
 				password: password,

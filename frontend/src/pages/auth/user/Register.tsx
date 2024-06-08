@@ -5,6 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 import roundLogo from '/round_logo.png'
 
+interface RegisterResponse {
+	email: string
+	password: string
+	confirmPassword: string
+	telepon: string
+}
+
 export default function Register() {
 	const [telepon, setTelepon] = useState<string>('')
 	const [email, setEmail] = useState<string>('')
@@ -55,7 +62,7 @@ export default function Register() {
 		}
 
 		try {
-			await axios.post(`${BASE_API_URL}/auth/register`, data)
+			await axios.post<RegisterResponse>(`${BASE_API_URL}/auth/register`, data)
 			navigate('/login')
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {
