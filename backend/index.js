@@ -11,6 +11,8 @@ import sizeRoutes from './src/routes/admin/size/size.route.js'
 import categoryRoutes from './src/routes/admin/category/category.route.js'
 import getUserRoute from './src/routes/admin/user/user.route.js'
 import verifyToken from './src/middleware/jwt.middleware.js'
+import pool from './src/database/config.js'
+import fileUpload from 'express-fileupload'
 
 const app = express()
 const PORT = process.env.PORT
@@ -41,6 +43,53 @@ app.use('/varian', varianRoutes)
 app.use('/size', sizeRoutes)
 app.use('/category', categoryRoutes)
 app.use('/get', getUserRoute)
+
+app.use(
+	fileUpload({
+		createParentPath: true
+	})
+)
+
+// Upload Endpoint
+app.post('/upload', async (req, res) => {
+	let uploadedFiles = req.files.files
+
+	if (!Array.isArray(uploadedFiles)) {
+		uploadedFiles = [uploadedFiles]
+	}
+
+	const insertPromises = uploadedFiles.map(async (file) => {
+		const fileName = file.name
+		const fileData = file.data
+
+		const query = 'INSERT INTO images (name, data) VALUES (?, ?)'
+		await pool.query(query, [fileName, fileData])
+		console.log('File inserted:', fileName)
+	})
+
+	try {
+		await Promise.all(insertPromises)
+		res.send('Files have been uploaded.')
+	} catch (err) {
+		console.error('Error inserting files:', err)
+		res.status(500).send('An error occurred while uploading files.')
+	}
+})
+
+// Retrieve endpoint
+app.get('/images', async (req, res) => {
+	const query = 'SELECT * FROM images'
+	try {
+		const [results] = await pool.query(query)
+		results.forEach((result) => {
+			result.data = result.data.toString('base64')
+		})
+		res.json(results)
+	} catch (err) {
+		console.error('Error fetching images:', err)
+		res.status(500).send('An error occurred while fetching images.')
+	}
+})
 
 app.listen(PORT, () => {
 	console.log(`Backend listening on port ${PORT}`)

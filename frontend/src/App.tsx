@@ -20,7 +20,6 @@ import PageTitle from './utils/PageTitle'
 import Scan from './pages/user/transaction/Scan'
 import Invoice from './pages/user/transaction/Invoice'
 import Cart from './pages/user/transaction/Cart'
-import CreateProduct from './pages/CreateProduct'
 import ProductCatalog from './pages/admin/products/catalogs/ProductCatalog'
 import AddProduct from './pages/admin/products/catalogs/AddProduct'
 import GuestAdminMiddleware from './utils/guest/GuestAdminMiddleware'
@@ -37,6 +36,7 @@ import ProductStock from './pages/admin/reports/ProductStock'
 import EditProduct from './pages/admin/products/catalogs/EditProduct'
 import VerifyEmail from './pages/auth/user/VerifyEmail'
 import ResetMiddleware from './utils/user/ResetMiddleware'
+import UploadImage from './pages/admin/products/catalogs/UploadImage'
 
 export default function App() {
 	return (
@@ -46,7 +46,7 @@ export default function App() {
 					path="/tesUpload"
 					element={
 						<>
-							<CreateProduct />
+							<UploadImage />
 							<PageTitle title="Registrasi | Vameratale" />
 						</>
 					}
