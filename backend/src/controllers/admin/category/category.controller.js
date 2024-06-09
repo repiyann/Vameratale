@@ -21,7 +21,7 @@ async function getCategories(req, res, pool, next) {
 	try {
 		const [results] = await pool.query('SELECT * FROM categories')
 		if (results.length === 0) {
-			return res.status(404).json({ message: 'Ukuran kosong' })
+			return res.status(404).json({ message: 'Kategori kosong' })
 		}
 
 		return res.status(200).json({ message: 'Kategori berhasil didapat', data: results })
