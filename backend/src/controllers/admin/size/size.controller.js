@@ -63,7 +63,7 @@ async function updateSize(req, res, pool, next) {
 
 async function deleteSize(req, res, pool, next) {
 	try {
-		const { id } = req.paramss
+		const { id } = req.params
 
 		if (!validator.isInt(id, { min: 1 })) {
 			return res.status(400).json({ message: 'ID harus angka' })

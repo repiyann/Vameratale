@@ -40,7 +40,7 @@ export default function ProductCategory() {
 
 	async function handleDelete(id: number): Promise<void> {
 		try {
-			await axios.delete(`${BASE_API_URL}/size/deleteSize/${id}`)
+			await axios.delete(`${BASE_API_URL}/category/deleteCategory/${id}`)
 			setCategories(categories.filter((category) => category.category_id !== id))
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {
