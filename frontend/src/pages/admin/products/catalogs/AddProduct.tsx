@@ -8,12 +8,12 @@ import SidebarAdmin from '@/components/SidebarAdmin'
 import { Card } from '@/components/ui/card'
 
 interface Varian {
-	varian_id: string
+	varian_id: number
 	varian_name: string
 }
 
 interface Size {
-	size_id: string
+	size_id: number
 	size_name: string
 }
 
@@ -41,31 +41,42 @@ export default function AddProduct() {
 	const [categories, setCategories] = useState<Category[]>([])
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
+	function handleAxiosError(error: unknown): void {
+		if (axios.isAxiosError(error)) {
+			setErrorMessage(error.response?.data.message)
+		} else if (error instanceof Error) {
+			setErrorMessage(error.message)
+		} else {
+			setErrorMessage('Server bermasalah')
+		}
+	}
+
 	useEffect(() => {
 		async function fetchData(): Promise<void> {
 			try {
-				const [responseVariants, responseSizes, responseCategories] = await Promise.all([
-					axios.get(`${BASE_API_URL}/varian/getVarians`),
+				const [responseSizes, responseCategories] = await Promise.all([
 					axios.get(`${BASE_API_URL}/size/getSizes`),
 					axios.get(`${BASE_API_URL}/category/getCategories`)
 				])
 
-				setVarians(responseVariants.data.data)
 				setSizes(responseSizes.data.data)
 				setCategories(responseCategories.data.data)
 			} catch (error: unknown) {
-				if (axios.isAxiosError(error)) {
-					setErrorMessage(error.response?.data.message)
-				} else if (error instanceof Error) {
-					setErrorMessage(error.message)
-				} else {
-					setErrorMessage('Server bermasalah')
-				}
+				handleAxiosError(error)
 			}
 		}
 
 		fetchData()
 	}, [BASE_API_URL])
+
+	async function fetchVariantsByCategory(categoryId: string): Promise<void> {
+		try {
+			const response = await axios.get(`${BASE_API_URL}/varian/getVarian/${categoryId}`);
+			setVarians(response.data.data)
+		} catch (error: unknown) {
+			handleAxiosError(error)
+		}
+	}
 
 	function onBtnClick(): void {
 		iconRef?.current.click()
@@ -159,13 +170,7 @@ export default function AddProduct() {
 			})
 			navigate('/admin/products/catalog')
 		} catch (error: unknown) {
-			if (axios.isAxiosError(error)) {
-				setErrorMessage(error.response?.data.message)
-			} else if (error instanceof Error) {
-				setErrorMessage(error.message)
-			} else {
-				setErrorMessage('Server bermasalah')
-			}
+			handleAxiosError(error)
 		}
 	}
 
@@ -265,7 +270,10 @@ export default function AddProduct() {
 								<select
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
 									value={category}
-									onChange={(e) => setCategory(e.target.value)}
+									onChange={(e) => {
+										setCategory(e.target.value)
+										fetchVariantsByCategory(e.target.value)
+									}}
 									required
 								>
 									<option
