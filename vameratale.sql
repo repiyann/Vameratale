@@ -37,28 +37,14 @@ CREATE TABLE IF NOT EXISTS users (
   user_address VARCHAR(255) NOT NULL DEFAULT '',
   user_password VARCHAR(60) NOT NULL,
   user_role_id INT NOT NULL DEFAULT 2,
-  resetPasswordOTP VARCHAR(6),
-  resetPasswordExpires DATETIME,
-  verificationToken VARCHAR(64),
+  resetPasswordOTP VARCHAR(6) NOT NULL,
+  resetPasswordExpires DATETIME NOT NULL,
+  verificationToken VARCHAR(64) NOT NULL,
   isVerified BOOLEAN DEFAULT FALSE,
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id),
   KEY user_role_id (user_role_id),
   CONSTRAINT users_ibfk_1 FOREIGN KEY (user_role_id) REFERENCES roles (role_id)
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS varians (
-  varian_id INT NOT NULL AUTO_INCREMENT,
-  varian_name VARCHAR(25) NOT NULL,
-  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (varian_id)
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS sizes (
-  size_id INT NOT NULL AUTO_INCREMENT,
-  size_name VARCHAR(25) NOT NULL,
-  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (size_id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -68,25 +54,48 @@ CREATE TABLE IF NOT EXISTS categories (
   PRIMARY KEY (category_id)
 ) ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS varians (
+  varian_id INT NOT NULL AUTO_INCREMENT,
+  varian_name VARCHAR(25) NOT NULL,
+  varian_category_id INT NOT NULL,
+  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (varian_id),
+  KEY varian_category_id (varian_category_id),
+  CONSTRAINT varians_ibfk_1 FOREIGN KEY (varian_category_id) REFERENCES categories (category_id)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS sizes (
+  size_id INT NOT NULL AUTO_INCREMENT,
+  size_name VARCHAR(25) NOT NULL,
+  createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (size_id)
+) ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS products (
   product_id INT NOT NULL AUTO_INCREMENT,
   product_name VARCHAR(255) NOT NULL,
   product_price DECIMAL(10, 0) NOT NULL,
   product_description TEXT NOT NULL,
-  product_category VARCHAR(50) NOT NULL,
-  product_varian VARCHAR(50) NOT NULL,
-  product_size VARCHAR(20) NOT NULL,
+  product_category INT NOT NULL,
+  product_varian INT NOT NULL,
+  product_size INT NOT NULL,
   product_stock INT NOT NULL,
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (product_id) USING BTREE
+  PRIMARY KEY (product_id),
+  KEY product_category (product_category),
+  CONSTRAINT products_ibfk_1 FOREIGN KEY (product_category) REFERENCES categories (category_id),
+  KEY product_varian (product_varian),
+  CONSTRAINT products_ibfk_2 FOREIGN KEY (product_varian) REFERENCES varians (varian_id),
+  KEY product_size (product_size),
+  CONSTRAINT products_ibfk_3 FOREIGN KEY (product_size) REFERENCES sizes (size_id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS product_images (
   image_id INT AUTO_INCREMENT,
-  image_product_id INT,
-  image_data LONGBLOB,
+  image_product_id INT NOT NULL,
+  image_data LONGBLOB NOT NULL,
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (image_id) USING BTREE,
+  PRIMARY KEY (image_id),
   KEY image_product_id (image_product_id),
   CONSTRAINT images_ibfk_1 FOREIGN KEY (image_product_id) REFERENCES products(product_id)
 ) ENGINE = InnoDB;
