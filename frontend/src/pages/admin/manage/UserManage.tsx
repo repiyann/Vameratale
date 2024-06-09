@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import NavbarAdmin from '@/components/NavbarAdmin'
 import SidebarAdmin from '@/components/SidebarAdmin'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from '@/components/ui/table'
 
 type User = {
 	user_id: number
@@ -14,6 +14,7 @@ type User = {
 
 export default function UserManage() {
 	const [users, setUsers] = useState<User[]>([])
+	const [userCount, setUserCount] = useState<number>(0)
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
@@ -23,6 +24,7 @@ export default function UserManage() {
 				try {
 					const response = await axios.get(`${BASE_API_URL}/get/getUsersAdmin`)
 					setUsers(response.data.data)
+					setUserCount(response.data.totalUsers)
 				} catch (error: unknown) {
 					if (axios.isAxiosError(error)) {
 						setErrorMessage(error.response?.data.message)
@@ -78,6 +80,12 @@ export default function UserManage() {
 										</TableRow>
 									))}
 								</TableBody>
+								<TableFooter>
+									<TableRow>
+										<TableCell colSpan={5}>Total</TableCell>
+										<TableCell className="text-right">{userCount}</TableCell>
+									</TableRow>
+								</TableFooter>
 							</Table>
 						</div>
 					</div>

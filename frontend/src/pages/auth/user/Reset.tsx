@@ -18,8 +18,8 @@ export default function Reset() {
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
 	async function handleSubmit(): Promise<void> {
-		const resetEmail: string | null = localStorage.getItem('resetEmail')
-		const verificationPin: string | null = localStorage.getItem('verificationPin')
+		const resetEmail: string | null = sessionStorage.getItem('resetEmail')
+		const verificationPin: string | null = sessionStorage.getItem('verificationPin')
 
 		if (password !== confirmPassword) {
 			return setErrorMessage('Kata sandi tidak sesuai')
@@ -32,8 +32,8 @@ export default function Reset() {
 				password: password,
 				confirmPassword: confirmPassword
 			})
-			localStorage.removeItem('resetEmail')
-			localStorage.removeItem('verificationPin')
+			sessionStorage.removeItem('resetEmail')
+			sessionStorage.removeItem('verificationPin')
 			navigate('/login')
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {

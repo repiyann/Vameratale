@@ -61,12 +61,12 @@ export default function Verifying() {
 
 	function handleSubmit(): void {
 		const pinString: string = pins.join('')
-		localStorage.setItem('verificationPin', pinString)
+		sessionStorage.setItem('verificationPin', pinString)
 		navigate('/reset')
 	}
 
 	function handleResendCode(): void {
-		const email: string | null = localStorage.getItem('resetEmail')
+		const email: string | null = sessionStorage.getItem('resetEmail')
 		if (email) {
 			generateOTP(email)
 		} else {

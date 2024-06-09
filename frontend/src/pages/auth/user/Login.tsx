@@ -50,8 +50,8 @@ export default function Login() {
 		try {
 			const response = await axios.post<LoginUserResponse>(`${BASE_API_URL}/auth/login`, data)
 			const { token, role } = response.data
-			localStorage.setItem('token', token)
-			localStorage.setItem('userRole', role)
+			sessionStorage.setItem('token', token)
+			sessionStorage.setItem('userRole', role)
 			navigate('/dashboard')
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {

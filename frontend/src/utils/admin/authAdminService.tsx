@@ -24,10 +24,10 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 	const [adminData, setAdminData] = useState<AdminData | null>(null)
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const navigate = useNavigate()
-	const token: string | null = localStorage.getItem('token')
+	const token: string | null = sessionStorage.getItem('token')
 
 	useEffect(() => {
-		const fetchAdmin = async (): Promise<void> => {
+		async function fetchAdmin(): Promise<void> {
 			if (token) {
 				try {
 					const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
@@ -43,8 +43,14 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
 					const { admin } = response.data
 					setAdminData(admin)
-				} catch (error) {
-					setErrorMessage('Fetching user data failed. Please try again.')
+				} catch (error: unknown) {
+					if (axios.isAxiosError(error)) {
+						setErrorMessage(error.response?.data.message)
+					} else if (error instanceof Error) {
+						setErrorMessage(error.message)
+					} else {
+						setErrorMessage('Server bermasalah')
+					}
 				}
 			} else {
 				setAdminData(null)
@@ -55,9 +61,9 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 	}, [token])
 
 	function handleLogout(): void {
-		localStorage.removeItem('token')
-		localStorage.removeItem('userRole')
-		localStorage.removeItem('selectedValues')
+		sessionStorage.removeItem('token')
+		sessionStorage.removeItem('userRole')
+		sessionStorage.removeItem('selectedValues')
 		setAdminData(null)
 		navigate('/')
 	}

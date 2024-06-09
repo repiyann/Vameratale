@@ -36,7 +36,7 @@ export default function Forgot() {
 		}
 
 		try {
-			localStorage.setItem('resetEmail', email)
+			sessionStorage.setItem('resetEmail', email)
 			await axios.post<ForgotPassword>(`${BASE_API_URL}/auth/generateOTP`, { email: email })
 			navigate('/verify')
 		} catch (error: unknown) {

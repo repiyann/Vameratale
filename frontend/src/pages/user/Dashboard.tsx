@@ -62,7 +62,7 @@ export default function Dashboard() {
 	useEffect(() => {
 		window.scrollTo({ top: 0, behavior: 'smooth' })
 
-		const storedValues: string | null = localStorage.getItem('selectedValues')
+		const storedValues: string | null = sessionStorage.getItem('selectedValues')
 		if (storedValues) {
 			try {
 				const parsedValues: string[] = JSON.parse(storedValues)
@@ -75,7 +75,7 @@ export default function Dashboard() {
 
 	function handleValueChange(newValues: string[]): void {
 		setSelectedValues(newValues)
-		localStorage.setItem('selectedValues', JSON.stringify(newValues))
+		sessionStorage.setItem('selectedValues', JSON.stringify(newValues))
 	}
 
 	return (

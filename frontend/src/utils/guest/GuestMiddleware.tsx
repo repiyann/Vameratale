@@ -1,7 +1,7 @@
 import { Outlet, Navigate } from 'react-router-dom'
 
 export default function GuestMiddleware() {
-	const role: string | null = localStorage.getItem('userRole')
+	const role: string | null = sessionStorage.getItem('userRole')
 
 	if (!role) {
 		return <Outlet />

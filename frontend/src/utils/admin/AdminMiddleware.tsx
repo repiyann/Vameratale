@@ -1,7 +1,7 @@
 import { Outlet, Navigate } from 'react-router-dom'
 
 export default function AdminMiddleware() {
-	const role: string | null = localStorage.getItem('userRole')
+	const role: string | null = sessionStorage.getItem('userRole')
 
 	if (!role) {
 		return <Navigate to="/login" />

@@ -48,9 +48,9 @@ export default function LoginAdmin() {
 		try {
 			const response = await axios.post<LoginAdminResponse>(`${BASE_API_URL}/auth/loginAdmin`, data)
 			const { token, role } = response.data
-			localStorage.setItem('token', token)
-			localStorage.setItem('userRole', role)
-			localStorage.removeItem('selectedValues')
+			sessionStorage.setItem('token', token)
+			sessionStorage.setItem('userRole', role)
+			sessionStorage.removeItem('selectedValues')
 			navigate('/admin/dashboard')
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {
