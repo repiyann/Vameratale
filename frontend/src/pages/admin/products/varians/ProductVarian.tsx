@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 type Varian = {
 	varian_id: number
 	varian_name: string
+	category_name: string
 }
 
 export default function ProductVarian() {
@@ -87,6 +88,7 @@ export default function ProductVarian() {
 								<TableHeader>
 									<TableRow>
 										<TableHead className="w-[10px]">No</TableHead>
+										<TableHead>Kategori</TableHead>
 										<TableHead>Varian</TableHead>
 										<TableHead className="text-right">Aksi</TableHead>
 									</TableRow>
@@ -96,6 +98,7 @@ export default function ProductVarian() {
 									{varians.map((varian, index) => (
 										<TableRow key={varian.varian_id}>
 											<TableCell className="font-medium">{index + 1}</TableCell>
+											<TableCell>{varian.category_name}</TableCell>
 											<TableCell>{varian.varian_name}</TableCell>
 											<TableCell className="text-right">
 												<FontAwesomeIcon

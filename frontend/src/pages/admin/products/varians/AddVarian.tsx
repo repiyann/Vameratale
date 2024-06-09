@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,15 +7,22 @@ import NavbarAdmin from '@/components/NavbarAdmin'
 import SidebarAdmin from '@/components/SidebarAdmin'
 import { Card } from '@/components/ui/card'
 
+interface Category {
+	category_id: number
+	category_name: string
+}
+
 export default function AddVarian() {
 	const [varian, setVarian] = useState<string>('')
+	const [category, setCategory] = useState<string>('')
+	const [categories, setCategories] = useState<Category[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const navigate = useNavigate()
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 
 	async function handleSubmit(): Promise<void> {
 		try {
-			await axios.post(`${BASE_API_URL}/varian/createVarian`, {varian_name: varian})
+			await axios.post(`${BASE_API_URL}/varian/createVarian`, { varian_name: varian, category_id: category })
 			navigate('/admin/products/varian')
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {
@@ -27,6 +34,25 @@ export default function AddVarian() {
 			}
 		}
 	}
+
+	useEffect(() => {
+		async function fetchData(): Promise<void> {
+			try {
+				const response = await axios.get(`${BASE_API_URL}/category/getCategories`)
+				setCategories(response.data.data)
+			} catch (error: unknown) {
+				if (axios.isAxiosError(error)) {
+					setErrorMessage(error.response?.data.message)
+				} else if (error instanceof Error) {
+					setErrorMessage(error.message)
+				} else {
+					setErrorMessage('Server bermasalah')
+				}
+			}
+		}
+
+		fetchData()
+	}, [BASE_API_URL])
 
 	return (
 		<>
@@ -60,6 +86,27 @@ export default function AddVarian() {
 								}}
 							>
 								{errorMessage && <p className="text-red-500">{errorMessage}</p>}
+								<select
+									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+									value={category}
+									onChange={(e) => setCategory(e.target.value)}
+									required
+								>
+									<option
+										value={''}
+										disabled
+									>
+										Pilih Kategori Barang
+									</option>
+									{categories.map((category) => (
+										<option
+											key={category.category_id}
+											value={category.category_id}
+										>
+											{category.category_name}
+										</option>
+									))}
+								</select>
 								<input
 									type="text"
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
