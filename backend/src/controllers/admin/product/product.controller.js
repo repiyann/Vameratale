@@ -4,7 +4,25 @@ async function createProduct(req, res, pool, next) {
 	const { productName, productPrice, productDesc, category, varian, size, stock } = req.body
 
 	if (!req.files || !req.files.files || !Array.isArray(req.files.files)) {
-		return res.status(400).json({ message: 'No files uploaded or invalid format' })
+		return res.status(400).json({ message: 'Format gambar salah' })
+	}
+
+	if (
+		validator.isEmpty(productName) ||
+		validator.isEmpty(productDesc) ||
+		validator.isEmpty(category) ||
+		validator.isEmpty(varian) ||
+		validator.isEmpty(size)
+	) {
+		return res.status(400).json({ message: 'Input tidak boleh kosong' })
+	}
+
+	if (!validator.isNumeric(productPrice, { min: 0 })) {
+		return res.status(400).json({ message: 'Input harga harus angka' })
+	}
+
+	if (!validator.isInt(stock, { min: 0 })) {
+		return res.status(400).json({ message: 'Input stok harus angka' })
 	}
 
 	const uploadedFiles = Array.isArray(req.files.files) ? req.files.files : [req.files.files]
@@ -45,7 +63,7 @@ async function createProduct(req, res, pool, next) {
 	} catch (error) {
 		await connection.rollback()
 		console.error(error.stack)
-		return res.status(500).json({ message: 'Server bermasalah', error: error.message })
+		return res.status(500).json({ message: 'Server bermasalah' })
 	} finally {
 		connection.release()
 	}
@@ -89,19 +107,19 @@ async function getProducts(req, res, pool, next) {
 			row.image_data = row.image_data.toString('base64')
 		})
 
-		return res.status(200).json({ message: 'Berhasil mengambil semua produk', rows })
+		return res.status(200).json({ message: 'Produk berhasil didapat', rows })
 	} catch (error) {
 		console.error(error.stack)
-		return res.status(500).json({ message: 'Server bermasalah', error: error.message })
+		return res.status(500).json({ message: 'Server bermasalah' })
 	} finally {
 		connection.release()
 	}
 }
 
 async function getProductByID(req, res, pool, next) {
-	const productId = req.params.id
+	const { id } = req.params
 
-	if (!validator.isInt(productId, { min: 1 })) {
+	if (!validator.isInt(id, { min: 1 })) {
 		return res.status(400).json({ message: 'ID produk tidak valid' })
 	}
 
@@ -109,33 +127,51 @@ async function getProductByID(req, res, pool, next) {
 
 	try {
 		const productQuery = `SELECT * FROM products WHERE product_id = ?`
-		const [productRows] = await connection.execute(productQuery, [productId])
+		const [productRows] = await connection.execute(productQuery, [id])
 
 		if (productRows.length === 0) {
 			return res.status(404).json({ message: 'Produk tidak ditemukan' })
 		}
 
 		const imagesQuery = `SELECT * FROM product_images WHERE image_product_id = ?`
-		const [imagesRows] = await connection.execute(imagesQuery, [productId])
+		const [imagesRows] = await connection.execute(imagesQuery, [id])
 
 		const product = productRows[0]
 		product.images = imagesRows
 
-		return res.status(200).json({ message: 'Berhasil fetch produk', product })
+		return res.status(200).json({ message: 'Produk berhasil didapat', product })
 	} catch (error) {
 		console.error(error.stack)
-		return res.status(500).json({ message: 'Server bermasalah', error: error.message })
+		return res.status(500).json({ message: 'Server bermasalah' })
 	} finally {
 		connection.release()
 	}
 }
 
 async function updateProduct(req, res, pool, next) {
-	const productId = req.params.id
-	const { productName, productPrice, productDesc, category, varian, size, stock, images } = req.body
+	const { id } = req.params
+	const { productName, productPrice, productDesc, category, varian, size, stock } = req.body
 
-	if (!validator.isInt(productId, { min: 1 })) {
-		return res.status(400).json({ message: 'Invalid product ID' })
+	if (!validator.isInt(id, { min: 1 })) {
+		return res.status(400).json({ message: 'ID harus angka' })
+	}
+
+	if (
+		validator.isEmpty(productName) ||
+		validator.isEmpty(productDesc) ||
+		validator.isEmpty(category) ||
+		validator.isEmpty(varian) ||
+		validator.isEmpty(size)
+	) {
+		return res.status(400).json({ message: 'Input tidak boleh kosong' })
+	}
+
+	if (!validator.isNumeric(productPrice, { min: 0 })) {
+		return res.status(400).json({ message: 'Input harga harus angka' })
+	}
+
+	if (!validator.isInt(stock, { min: 0 })) {
+		return res.status(400).json({ message: 'Input stok harus angka' })
 	}
 
 	const connection = await pool.getConnection()
@@ -157,35 +193,30 @@ async function updateProduct(req, res, pool, next) {
       WHERE 
         product_id = ?`
 
-		await connection.execute(productQuery, [
-			productName,
-			productPrice,
-			productDesc,
-			category,
-			varian,
-			size,
-			stock,
-			productId
-		])
+		await connection.execute(productQuery, [productName, productPrice, productDesc, category, varian, size, stock, id])
 
-		await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [productId])
+		if (req.files && req.files.files) {
+			const uploadedFiles = Array.isArray(req.files.files) ? req.files.files : [req.files.files]
 
-		if (images && images.length > 0) {
-			const updateImage = images.map((imageData) => {
-				return connection.execute(`INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)`, [
-					productId,
-					imageData
-				])
+			await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
+
+			const insertImage = uploadedFiles.map(async (file) => {
+				const fileData = file.data
+				const query = 'INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)'
+
+				await connection.execute(query, [id, fileData])
 			})
-			await Promise.all(updateImage)
+
+			await Promise.all(insertImage)
 		}
 
 		await connection.commit()
-		return res.status(200).json({ message: 'Successfully updated the product' })
+
+		return res.status(200).json({ message: 'Produk berhasil diubah' })
 	} catch (error) {
 		await connection.rollback()
 		console.error(error.stack)
-		return res.status(500).json({ message: 'Server bermasalah', error: error.message })
+		return res.status(500).json({ message: 'Server bermasalah' })
 	} finally {
 		connection.release()
 	}
@@ -195,18 +226,31 @@ async function deleteProduct(req, res, pool, next) {
 	try {
 		const { id } = req.params
 
-		await pool.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
-
-		const deleteResult = await pool.execute(`DELETE FROM products WHERE product_id = ?`, [id])
-
-		if (deleteResult.affectedRows === 0) {
-			return res.status(404).json({ message: 'Product not found' })
+		if (!validator.isInt(id, { min: 1 })) {
+			return res.status(400).json({ message: 'ID tidak boleh kosong' })
 		}
 
-		return res.status(200).json({ message: 'Successfully deleted the product' })
+		const connection = await pool.getConnection()
+		await connection.beginTransaction()
+
+		const [deleteImage] = await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
+
+		const [deleteProduct] = await connection.execute(`DELETE FROM products WHERE product_id = ?`, [id])
+
+		if (deleteImage.affectedRows === 0 || deleteProduct.affectedRows === 0) {
+			await connection.rollback()
+			return res.status(404).json({ message: 'Produk atau gambar tidak ditemukan' })
+		}
+
+		await connection.commit()
+
+		return res.status(200).json({ message: 'Produk berhasil dihapus' })
 	} catch (error) {
+		await connection.rollback()
 		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
+	} finally {
+		connection.release()
 	}
 }
 

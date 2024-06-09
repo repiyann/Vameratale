@@ -5,7 +5,7 @@ async function createVarians(req, res, pool, next) {
 		const { varian_name } = req.body
 
 		if (validator.isEmpty(varian_name)) {
-			return res.status(400).json({ message: 'Input nama tidak boleh kosong' })
+			return res.status(400).json({ message: 'Input tidak boleh kosong' })
 		}
 
 		await pool.query('INSERT INTO varians (varian_name) VALUES (?)', [varian_name])
@@ -31,41 +31,17 @@ async function getVarians(req, res, pool, next) {
 	}
 }
 
-async function getVarianByID(req, res, pool, next) {
-	try {
-		const { id } = req.params
-
-		if (validator.isEmpty(id)) {
-			return res.status(400).json({ message: 'ID tidak boleh kosong' })
-		}
-
-		if (!validator.isNumeric(id)) {
-			return res.status(400).json({ message: 'ID harus angka' })
-		}
-
-		const [result] = await pool.query('SELECT * FROM varians WHERE varian_id = ?', [id])
-		if (result.length === 0) {
-			return res.status(404).json({ message: 'Varian tidak ditemukan' })
-		}
-
-		return res.status(200).json({ message: 'Varian berhasil didapat', data: result })
-	} catch (error) {
-		console.error(error.stack)
-		return res.status(500).json({ message: 'Server bermasalah' })
-	}
-}
-
 async function updateVarian(req, res, pool, next) {
 	try {
 		const { id } = req.params
 		const { varian_name } = req.body
 
-		if (validator.isEmpty(id) || validator.isEmpty(varian_name)) {
-			return res.status(400).json({ message: 'Input tidak boleh kosong' })
+		if (!validator.isInt(id, { min: 1 })) {
+			return res.status(400).json({ message: 'ID harus angka' })
 		}
 
-		if (!validator.isNumeric(id)) {
-			return res.status(400).json({ message: 'ID harus angka' })
+		if (validator.isEmpty(varian_name)) {
+			return res.status(400).json({ message: 'Input tidak boleh kosong' })
 		}
 
 		const [checkNotes] = await pool.query('SELECT * FROM varians WHERE varian_id = ?', [id])
@@ -89,11 +65,7 @@ async function deleteVarian(req, res, pool, next) {
 	try {
 		const { id } = req.params
 
-		if (validator.isEmpty(id)) {
-			return res.status(400).json({ message: 'ID tidak boleh kosong' })
-		}
-
-		if (!validator.isNumeric(id)) {
+		if (!validator.isInt(id, { min: 1 })) {
 			return res.status(400).json({ message: 'ID harus angka' })
 		}
 
@@ -114,4 +86,4 @@ async function deleteVarian(req, res, pool, next) {
 	}
 }
 
-export { createVarians, getVarians, getVarianByID, updateVarian, deleteVarian }
+export { createVarians, getVarians, updateVarian, deleteVarian }

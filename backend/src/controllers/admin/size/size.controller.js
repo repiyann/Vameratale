@@ -5,7 +5,7 @@ async function createSize(req, res, pool, next) {
 		const { size_name } = req.body
 
 		if (validator.isEmpty(size_name)) {
-			return res.status(400).json({ message: 'Input nama tidak boleh kosong' })
+			return res.status(400).json({ message: 'Input tidak boleh kosong' })
 		}
 
 		await pool.query('INSERT INTO sizes (size_name) VALUES (?)', [size_name])
@@ -24,31 +24,7 @@ async function getSizes(req, res, pool, next) {
 			return res.status(404).json({ message: 'Ukuran kosong' })
 		}
 
-		return res.status(200).json({ message: 'Varian berhasil didapat', data: results })
-	} catch (error) {
-		console.error(error.stack)
-		return res.status(500).json({ message: 'Server bermasalah' })
-	}
-}
-
-async function getSizeByID(req, res, pool, next) {
-	try {
-		const { id } = req.params
-
-		if (validator.isEmpty(id)) {
-			return res.status(400).json({ message: 'ID tidak boleh kosong' })
-		}
-
-		if (!validator.isNumeric(id)) {
-			return res.status(400).json({ message: 'ID harus angka' })
-		}
-
-		const [result] = await pool.query('SELECT * FROM sizes WHERE size_id = ?', [id])
-		if (result.length === 0) {
-			return res.status(404).json({ message: 'Ukuran tidak ditemukan' })
-		}
-
-		return res.status(200).json({ message: 'Ukuran berhasil didapat', data: result })
+		return res.status(200).json({ message: 'Ukuran berhasil didapat', data: results })
 	} catch (error) {
 		console.error(error.stack)
 		return res.status(500).json({ message: 'Server bermasalah' })
@@ -60,12 +36,12 @@ async function updateSize(req, res, pool, next) {
 		const { id } = req.params
 		const { size_name } = req.body
 
-		if (validator.isEmpty(id) || validator.isEmpty(size_name)) {
-			return res.status(400).json({ message: 'Input tidak boleh kosong' })
+		if (!validator.isInt(id, { min: 1 })) {
+			return res.status(400).json({ message: 'ID harus angka' })
 		}
 
-		if (!validator.isNumeric(id)) {
-			return res.status(400).json({ message: 'ID harus angka' })
+		if (validator.isEmpty(size_name)) {
+			return res.status(400).json({ message: 'Input tidak boleh kosong' })
 		}
 
 		const [checkNotes] = await pool.query('SELECT * FROM sizes WHERE size_id = ?', [id])
@@ -87,13 +63,9 @@ async function updateSize(req, res, pool, next) {
 
 async function deleteSize(req, res, pool, next) {
 	try {
-		const { id } = req.params
+		const { id } = req.paramss
 
-		if (validator.isEmpty(id)) {
-			return res.status(400).json({ message: 'ID tidak boleh kosong' })
-		}
-
-		if (!validator.isNumeric(id)) {
+		if (!validator.isInt(id, { min: 1 })) {
 			return res.status(400).json({ message: 'ID harus angka' })
 		}
 
@@ -114,4 +86,4 @@ async function deleteSize(req, res, pool, next) {
 	}
 }
 
-export { createSize, getSizes, getSizeByID, updateSize, deleteSize }
+export { createSize, getSizes, updateSize, deleteSize }
