@@ -7,14 +7,16 @@ async function createProduct(req, res, pool, next) {
 		return res.status(400).json({ message: 'Format gambar salah' })
 	}
 
+	if (validator.isEmpty(productName) || validator.isEmpty(productDesc)) {
+		return res.status(400).json({ message: 'Input teks tidak boleh kosong' })
+	}
+
 	if (
-		validator.isEmpty(productName) ||
-		validator.isEmpty(productDesc) ||
-		validator.isEmpty(category) ||
-		validator.isEmpty(varian) ||
-		validator.isEmpty(size)
+		!validator.isInt(category, { min: 1 }) ||
+		!validator.isInt(varian, { min: 1 }) ||
+		!validator.isInt(size, { min: 1 })
 	) {
-		return res.status(400).json({ message: 'Input tidak boleh kosong' })
+		return res.status(400).json({ message: 'Input angka tidak boleh kosong' })
 	}
 
 	if (!validator.isNumeric(productPrice, { min: 0 })) {
@@ -24,6 +26,12 @@ async function createProduct(req, res, pool, next) {
 	if (!validator.isInt(stock, { min: 0 })) {
 		return res.status(400).json({ message: 'Input stok harus angka' })
 	}
+
+	const productPriceNumber = Number(productPrice)
+	const categoryNumber = Number(category)
+	const varianNumber = Number(varian)
+	const sizeNumber = Number(size)
+	const stockNumber = Number(stock)
 
 	const uploadedFiles = Array.isArray(req.files.files) ? req.files.files : [req.files.files]
 	const connection = await pool.getConnection()
@@ -40,12 +48,12 @@ async function createProduct(req, res, pool, next) {
 
 		const [productResult] = await connection.execute(insertProduct, [
 			productName,
-			productPrice,
+			productPriceNumber,
 			productDesc,
-			category,
-			varian,
-			size,
-			stock
+			categoryNumber,
+			varianNumber,
+			sizeNumber,
+			stockNumber
 		])
 		const productId = productResult.insertId
 
@@ -79,13 +87,16 @@ async function getProducts(req, res, pool, next) {
 				p.product_name, 
 				p.product_price, 
 				p.product_description, 
-				p.product_category, 
-				p.product_varian, 
-				p.product_size, 
+				c.category_name,
+				v.varian_name,
+				s.size_name, 
 				p.product_stock, 
 				i.image_data AS image_data 
 			FROM 
 				products p
+			LEFT JOIN categories c ON p.product_category = c.category_id
+			LEFT JOIN varians v ON p.product_varian = v.varian_id
+			LEFT JOIN sizes s ON p.product_size = s.size_id
 			LEFT JOIN (
  				SELECT 
 					image_id, image_product_id, image_data
@@ -174,6 +185,12 @@ async function updateProduct(req, res, pool, next) {
 		return res.status(400).json({ message: 'Input stok harus angka' })
 	}
 
+	const productPriceNumber = Number(productPrice)
+	const categoryNumber = Number(category)
+	const varianNumber = Number(varian)
+	const sizeNumber = Number(size)
+	const stockNumber = Number(stock)
+
 	const connection = await pool.getConnection()
 
 	try {
@@ -193,7 +210,16 @@ async function updateProduct(req, res, pool, next) {
       WHERE 
         product_id = ?`
 
-		await connection.execute(productQuery, [productName, productPrice, productDesc, category, varian, size, stock, id])
+		await connection.execute(productQuery, [
+			productName,
+			productPriceNumber,
+			productDesc,
+			categoryNumber,
+			varianNumber,
+			sizeNumber,
+			stockNumber,
+			id
+		])
 
 		if (req.files && req.files.files) {
 			const uploadedFiles = Array.isArray(req.files.files) ? req.files.files : [req.files.files]
