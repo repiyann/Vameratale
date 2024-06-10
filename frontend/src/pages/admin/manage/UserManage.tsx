@@ -17,28 +17,32 @@ export default function UserManage() {
 	const [userCount, setUserCount] = useState<number>(0)
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
 
 	useEffect(() => {
 		async function fetchData(): Promise<void> {
-			if (BASE_API_URL) {
-				try {
-					const response = await axios.get(`${BASE_API_URL}/get/getUsersAdmin`)
-					setUsers(response.data.data)
-					setUserCount(response.data.totalUsers)
-				} catch (error: unknown) {
-					if (axios.isAxiosError(error)) {
-						setErrorMessage(error.response?.data.message)
-					} else if (error instanceof Error) {
-						setErrorMessage(error.message)
-					} else {
-						setErrorMessage('Server bermasalah')
+			try {
+				const response = await axios.get(`${BASE_API_URL}/get/getUsersAdmin`, {
+					headers: {
+						Authorization: `Bearer ${token}`
 					}
+				})
+				
+				setUsers(response.data.data)
+				setUserCount(response.data.totalUsers)
+			} catch (error: unknown) {
+				if (axios.isAxiosError(error)) {
+					setErrorMessage(error.response?.data.message)
+				} else if (error instanceof Error) {
+					setErrorMessage(error.message)
+				} else {
+					setErrorMessage('Server bermasalah')
 				}
 			}
 		}
 
 		fetchData()
-	}, [BASE_API_URL])
+	}, [BASE_API_URL, token])
 
 	return (
 		<>
