@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS varians (
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (varian_id),
   KEY varian_category_id (varian_category_id),
-  CONSTRAINT varians_ibfk_1 FOREIGN KEY (varian_category_id) REFERENCES categories (category_id)
+  CONSTRAINT varians_ibfk_1 FOREIGN KEY (varian_category_id) REFERENCES categories (category_id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS sizes (
@@ -86,11 +86,11 @@ CREATE TABLE IF NOT EXISTS products (
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (product_uuid),
   KEY product_category (product_category),
-  CONSTRAINT products_ibfk_1 FOREIGN KEY (product_category) REFERENCES categories (category_id),
+  CONSTRAINT products_ibfk_1 FOREIGN KEY (product_category) REFERENCES categories (category_id) ON DELETE CASCADE,
   KEY product_varian (product_varian),
-  CONSTRAINT products_ibfk_2 FOREIGN KEY (product_varian) REFERENCES varians (varian_id),
+  CONSTRAINT products_ibfk_2 FOREIGN KEY (product_varian) REFERENCES varians (varian_id) ON DELETE CASCADE,
   KEY product_size (product_size),
-  CONSTRAINT products_ibfk_3 FOREIGN KEY (product_size) REFERENCES sizes (size_id)
+  CONSTRAINT products_ibfk_3 FOREIGN KEY (product_size) REFERENCES sizes (size_id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS product_images (
@@ -100,5 +100,5 @@ CREATE TABLE IF NOT EXISTS product_images (
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (image_id),
   KEY image_product_id (image_product_id),
-  CONSTRAINT images_ibfk_1 FOREIGN KEY (image_product_id) REFERENCES products(product_uuid)
+  CONSTRAINT images_ibfk_1 FOREIGN KEY (image_product_id) REFERENCES products(product_uuid) ON DELETE CASCADE
 ) ENGINE = InnoDB;
