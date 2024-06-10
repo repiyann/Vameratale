@@ -52,7 +52,7 @@ async function loginAdmin(req, res, pool, next) {
 			return res.status(400).json({ message: 'Kata sandi minimal 8 karakter' })
 		}
 
-		const [validateAdminResult] = await pool.execute('SELECT * FROM admins WHERE admin_email = ?', [email])
+		const [validateAdminResult] = await pool.query('SELECT * FROM admins WHERE admin_email = ?', [email])
 
 		if (validateAdminResult.length === 0) {
 			return res.status(404).json({ message: 'Email dan kata sandi tidak sesuai' })
