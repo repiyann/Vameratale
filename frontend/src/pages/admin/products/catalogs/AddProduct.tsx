@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
+import CurrencyInput from 'react-currency-input-field';
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
@@ -71,10 +72,21 @@ export default function AddProduct() {
 
 	async function fetchVariantsByCategory(categoryId: string): Promise<void> {
 		try {
-			const response = await axios.get(`${BASE_API_URL}/varian/getVarian/${categoryId}`);
+			const response = await axios.get(`${BASE_API_URL}/varian/getVarian/${categoryId}`)
 			setVarians(response.data.data)
 		} catch (error: unknown) {
 			handleAxiosError(error)
+		}
+	}
+
+	function validateValue(value: string | undefined): void {
+		const rawValue = value === undefined ? 'undefined' : value
+		setPrice(rawValue || ' ')
+
+		if (!value) {
+			setErrorMessage('')
+		} else if (Number.isNaN(Number(value))) {
+			setErrorMessage('Please enter a valid number')
 		}
 	}
 
@@ -259,13 +271,16 @@ export default function AddProduct() {
 									onChange={(e) => setName(e.target.value)}
 									required
 								/>
-								<input
-									type="number"
-									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+								<CurrencyInput
+									id="validation-example-2-field"
 									placeholder="Masukkan harga barang"
-									value={price}
-									onChange={(e) => setPrice(e.target.value)}
-									required
+									allowDecimals={false}
+									groupSeparator='.'
+									decimalSeparator=','
+									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+									onValueChange={validateValue}
+									prefix={'Rp'}
+									step={10}
 								/>
 								<select
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"

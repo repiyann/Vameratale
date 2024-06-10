@@ -28,7 +28,6 @@ export default function ProductCatalog() {
 			try {
 				const response = await axios.get(`${BASE_API_URL}/product/getProducts`)
 				setProducts(response.data.rows)
-				console.log(response.data.rows)
 			} catch (error: unknown) {
 				if (axios.isAxiosError(error)) {
 					setErrorMessage(error.response?.data.message)
@@ -111,7 +110,9 @@ export default function ProductCatalog() {
 									<p className="text-[#A8A8A8] text-lg font-medium mx-4 md:mx-6">{product.product_size}</p>
 									<p className="text-[#A8A8A8] text-lg font-medium mx-4 md:mx-6">{product.product_varian}</p>
 									<p className="text-[#A8A8A8] text-lg font-medium mx-4 md:mx-6">{product.product_category}</p>
-									<p className="text-[#D13E55] text-lg font-semibold mx-4 md:mx-6">{product.product_price}</p>
+									<p className="text-[#D13E55] text-lg font-semibold mx-4 md:mx-6">
+										Rp{new Intl.NumberFormat('id-ID').format(product.product_price)}
+									</p>
 									<div className="flex justify-end mr-7 gap-4 mb-4">
 										<Link to={`/admin/products/catalog/edit/${product.product_id}`}>
 											<FontAwesomeIcon
