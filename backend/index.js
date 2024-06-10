@@ -36,13 +36,12 @@ app.use((err, req, res, next) => {
 })
 
 app.use('/auth', authRoutes)
-app.use('/user', userRoutes)
-app.use('/product', productRoutes)
-// app.use('/varian', [verifyToken, varianRoutes])
-app.use('/varian', varianRoutes)
-app.use('/size', sizeRoutes)
-app.use('/category', categoryRoutes)
-app.use('/get', getUserRoute)
+app.use('/user', verifyToken('user'), userRoutes)
+app.use('/product', verifyToken('admin'), productRoutes)
+app.use('/varian', verifyToken('admin'), varianRoutes)
+app.use('/size', verifyToken('admin'), sizeRoutes)
+app.use('/category', verifyToken('admin'), categoryRoutes)
+app.use('/get', verifyToken('admin'), getUserRoute)
 
 app.use(
 	fileUpload({
