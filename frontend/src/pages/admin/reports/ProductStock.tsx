@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faPlusSquare } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -8,14 +8,15 @@ import NavbarAdmin from '@/components/NavbarAdmin'
 import SidebarAdmin from '@/components/SidebarAdmin'
 
 type Stock = {
-	stock_id: number
+	product_uuid: number
 	product_name: string
-	stock: number
+	product_stock: number
 }
 
 export default function ProductStock() {
 	const [stocks, setStocks] = useState<Stock[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
+	const navigate = useNavigate()
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 	const token: string | null = sessionStorage.getItem('token')
 
@@ -38,6 +39,7 @@ export default function ProductStock() {
 							Authorization: `Bearer ${token}`
 						}
 					})
+					
 					setStocks(response.data.data)
 				} catch (error: unknown) {
 					handleAxiosError(error)
@@ -50,12 +52,7 @@ export default function ProductStock() {
 
 	async function handleEdit(id: number): Promise<void> {
 		try {
-			await axios.delete(`${BASE_API_URL}/stock/editStock/${id}`, {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			})
-			setStocks(stocks.filter((stock) => stock.stock_id !== id))
+			navigate(`/admin/reports/stock/edit-stock/${id}`)
 		} catch (error: unknown) {
 			handleAxiosError(error)
 		}
@@ -77,19 +74,6 @@ export default function ProductStock() {
 				>
 					<div className="flex my-16 px-32 flex-col">
 						<h1 className="text-2xl font-bold">Stok Barang</h1>
-						<div className="mt-4">
-							<Link
-								to={'/admin/reports/stock/add-stock'}
-								className="px-4 pb-2 pt-1 bg-[#FAEAED] font-semibold rounded-xl border-[3px] border-[#D85A6D]"
-							>
-								<FontAwesomeIcon
-									icon={faPlusSquare}
-									size="xl"
-									className="text-[#606F49] mr-2"
-								/>
-								Tambah Stock
-							</Link>
-						</div>
 						<div className="mt-7">
 							<Table>
 								<TableHeader>
@@ -103,16 +87,16 @@ export default function ProductStock() {
 								<TableBody>
 									{errorMessage && <p className="text-red-500">{errorMessage}</p>}
 									{stocks.map((stock, index) => (
-										<TableRow key={stock.stock_id}>
+										<TableRow key={stock.product_uuid}>
 											<TableCell className="font-medium">{index + 1}</TableCell>
 											<TableCell>{stock.product_name}</TableCell>
-											<TableCell>{stock.stock}</TableCell>
+											<TableCell>{stock.product_stock}</TableCell>
 											<TableCell className="text-right">
 												<FontAwesomeIcon
-													icon={faTrashCan}
+													icon={faPenToSquare}
 													size="xl"
 													color="red"
-													onClick={() => handleEdit(stock.stock_id)}
+													onClick={() => handleEdit(stock.product_uuid)}
 												/>
 											</TableCell>
 										</TableRow>
