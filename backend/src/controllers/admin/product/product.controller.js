@@ -1,8 +1,7 @@
 import validator from 'validator'
 
 async function createProduct(req, res, pool, next) {
-	const { productID, productName, productPrice, productDesc, category, productSizeDesc, varian, size, stock } =
-		req.body
+	const { productID, productName, productPrice, productDesc, category, productSizeDesc, varian, size, stock } = req.body
 
 	if (!req.files || !req.files.files || !Array.isArray(req.files.files)) {
 		return res.status(400).json({ message: 'Format gambar salah' })
@@ -136,7 +135,6 @@ async function getProducts(req, res, pool, next) {
 
 async function getProductByID(req, res, pool, next) {
 	const { id } = req.params
-
 	if (!validator.isInt(id, { min: 1 })) {
 		return res.status(400).json({ message: 'ID produk tidak valid' })
 	}
@@ -146,13 +144,15 @@ async function getProductByID(req, res, pool, next) {
 	try {
 		const productQuery = `SELECT * FROM products WHERE product_uuid = ?`
 		const [productRows] = await connection.execute(productQuery, [id])
-
 		if (productRows.length === 0) {
 			return res.status(404).json({ message: 'Produk tidak ditemukan' })
 		}
 
 		const imagesQuery = `SELECT * FROM product_images WHERE image_product_id = ?`
 		const [imagesRows] = await connection.execute(imagesQuery, [id])
+		if (imagesRows.length === 0) {
+			return res.status(404).json({ message: 'Gambar tidak ditemukan' })
+		}
 
 		const product = productRows[0]
 		product.images = imagesRows
@@ -168,8 +168,7 @@ async function getProductByID(req, res, pool, next) {
 
 async function updateProduct(req, res, pool, next) {
 	const { id } = req.params
-	const { productID, productName, productPrice, productDesc, category, varian, size, stock, productSizeDesc } =
-		req.body
+	const { productID, productName, productPrice, productDesc, category, varian, size, stock, productSizeDesc } = req.body
 
 	if (!validator.isInt(id, { min: 1 })) {
 		return res.status(400).json({ message: 'ID harus angka' })
@@ -238,10 +237,9 @@ async function updateProduct(req, res, pool, next) {
 		])
 
 		if (req.files && req.files.files) {
-			const uploadedFiles = Array.isArray(req.files.files) ? req.files.files : [req.files.files]
-
 			await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
-
+			
+			const uploadedFiles = Array.isArray(req.files.files) ? req.files.files : [req.files.files]
 			const insertImage = uploadedFiles.map(async (file) => {
 				const fileData = file.data
 				const query = 'INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)'
@@ -268,21 +266,17 @@ async function deleteProduct(req, res, pool, next) {
 	const connection = await pool.getConnection()
 
 	try {
-		const { id } = req.params
+		await connection.beginTransaction()
 
+		const { id } = req.params
 		if (!validator.isInt(id, { min: 1 })) {
 			return res.status(400).json({ message: 'ID tidak boleh kosong' })
 		}
 
-		await connection.beginTransaction()
-
-		const [deleteImage] = await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
-
 		const [deleteProduct] = await connection.execute(`DELETE FROM products WHERE product_uuid = ?`, [id])
-
-		if (deleteImage.affectedRows === 0 || deleteProduct.affectedRows === 0) {
+		if (deleteProduct.affectedRows === 0) {
 			await connection.rollback()
-			return res.status(404).json({ message: 'Produk atau gambar tidak ditemukan' })
+			return res.status(404).json({ message: 'Produk tidak ditemukan' })
 		}
 
 		await connection.commit()

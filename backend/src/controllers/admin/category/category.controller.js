@@ -3,7 +3,6 @@ import validator from 'validator'
 async function createCategory(req, res, pool, next) {
 	try {
 		const { category_name } = req.body
-
 		if (validator.isEmpty(category_name)) {
 			return res.status(400).json({ message: 'Input tidak boleh kosong' })
 		}
@@ -67,7 +66,6 @@ async function updateCategory(req, res, pool, next) {
 async function deleteCategory(req, res, pool, next) {
 	try {
 		const { id } = req.params
-
 		if (!validator.isInt(id, { min: 1 })) {
 			return res.status(400).json({ message: 'ID harus angka' })
 		}
