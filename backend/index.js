@@ -9,6 +9,7 @@ import productRoutes from './src/routes/admin/product/product.route.js'
 import varianRoutes from './src/routes/admin/varian/varian.route.js'
 import sizeRoutes from './src/routes/admin/size/size.route.js'
 import categoryRoutes from './src/routes/admin/category/category.route.js'
+import stockRoutes from './src/routes/admin/stock/stock.route.js'
 import getUserRoute from './src/routes/admin/user/user.route.js'
 import verifyToken from './src/middleware/jwt.middleware.js'
 import pool from './src/database/config.js'
@@ -41,6 +42,7 @@ app.use('/product', verifyToken('admin'), productRoutes)
 app.use('/varian', verifyToken('admin'), varianRoutes)
 app.use('/size', verifyToken('admin'), sizeRoutes)
 app.use('/category', verifyToken('admin'), categoryRoutes)
+app.use('/stock', verifyToken('admin'), stockRoutes)
 app.use('/get', verifyToken('admin'), getUserRoute)
 
 app.use(
