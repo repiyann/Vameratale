@@ -249,6 +249,8 @@ async function updateProduct(req, res, pool, next) {
 }
 
 async function deleteProduct(req, res, pool, next) {
+	const connection = await pool.getConnection()
+	
 	try {
 		const { id } = req.params
 
@@ -256,7 +258,6 @@ async function deleteProduct(req, res, pool, next) {
 			return res.status(400).json({ message: 'ID tidak boleh kosong' })
 		}
 
-		const connection = await pool.getConnection()
 		await connection.beginTransaction()
 
 		const [deleteImage] = await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
