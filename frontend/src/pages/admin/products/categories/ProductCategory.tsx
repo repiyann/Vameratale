@@ -16,40 +16,47 @@ export default function ProductCategory() {
 	const [categories, setCategories] = useState<Category[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
+
+	function handleAxiosError(error: unknown): void {
+		if (axios.isAxiosError(error)) {
+			setErrorMessage(error.response?.data.message)
+		} else if (error instanceof Error) {
+			setErrorMessage(error.message)
+		} else {
+			setErrorMessage('Server bermasalah')
+		}
+	}
 
 	useEffect(() => {
 		async function fetchData(): Promise<void> {
 			if (BASE_API_URL) {
 				try {
-					const response = await axios.get(`${BASE_API_URL}/category/getCategories`)
+					const response = await axios.get(`${BASE_API_URL}/category/getCategories`, {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					})
 					setCategories(response.data.data)
 				} catch (error: unknown) {
-					if (axios.isAxiosError(error)) {
-						setErrorMessage(error.response?.data.message)
-					} else if (error instanceof Error) {
-						setErrorMessage(error.message)
-					} else {
-						setErrorMessage('Server bermasalah')
-					}
+					handleAxiosError(error)
 				}
 			}
 		}
 
 		fetchData()
-	}, [BASE_API_URL])
+	}, [BASE_API_URL, token])
 
 	async function handleDelete(id: number): Promise<void> {
 		try {
-			await axios.delete(`${BASE_API_URL}/category/deleteCategory/${id}`)
+			await axios.delete(`${BASE_API_URL}/category/deleteCategory/${id}`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
 			setCategories(categories.filter((category) => category.category_id !== id))
 		} catch (error: unknown) {
-			if (axios.isAxiosError(error)) {
-				setErrorMessage(error.response?.data.message)
-			} else if (error instanceof Error) {
-				setErrorMessage(error.message)
-			} else {
-				setErrorMessage('Server bermasalah')
-			}
+			handleAxiosError(error)
 		}
 	}
 

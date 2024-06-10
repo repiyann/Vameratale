@@ -19,40 +19,47 @@ export default function AddVarian() {
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const navigate = useNavigate()
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
+
+	function handleAxiosError(error: unknown): void {
+		if (axios.isAxiosError(error)) {
+			setErrorMessage(error.response?.data.message)
+		} else if (error instanceof Error) {
+			setErrorMessage(error.message)
+		} else {
+			setErrorMessage('Server bermasalah')
+		}
+	}
 
 	async function handleSubmit(): Promise<void> {
 		try {
-			await axios.post(`${BASE_API_URL}/varian/createVarian`, { varian_name: varian, category_id: category })
+			await axios.post(`${BASE_API_URL}/varian/createVarian`, { varian_name: varian, category_id: category }, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
 			navigate('/admin/products/varian')
 		} catch (error: unknown) {
-			if (axios.isAxiosError(error)) {
-				setErrorMessage(error.response?.data.message)
-			} else if (error instanceof Error) {
-				setErrorMessage(error.message)
-			} else {
-				setErrorMessage('Server bermasalah')
-			}
+			handleAxiosError(error)
 		}
 	}
 
 	useEffect(() => {
 		async function fetchData(): Promise<void> {
 			try {
-				const response = await axios.get(`${BASE_API_URL}/category/getCategories`)
+				const response = await axios.get(`${BASE_API_URL}/category/getCategories`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
 				setCategories(response.data.data)
 			} catch (error: unknown) {
-				if (axios.isAxiosError(error)) {
-					setErrorMessage(error.response?.data.message)
-				} else if (error instanceof Error) {
-					setErrorMessage(error.message)
-				} else {
-					setErrorMessage('Server bermasalah')
-				}
+				handleAxiosError(error)
 			}
 		}
 
 		fetchData()
-	}, [BASE_API_URL])
+	}, [BASE_API_URL, token])
 
 	return (
 		<>

@@ -17,40 +17,47 @@ export default function ProductStock() {
 	const [stocks, setStocks] = useState<Stock[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
+
+	function handleAxiosError(error: unknown): void {
+		if (axios.isAxiosError(error)) {
+			setErrorMessage(error.response?.data.message)
+		} else if (error instanceof Error) {
+			setErrorMessage(error.message)
+		} else {
+			setErrorMessage('Server bermasalah')
+		}
+	}
 
 	useEffect(() => {
 		async function fetchData(): Promise<void> {
 			if (BASE_API_URL) {
 				try {
-					const response = await axios.get(`${BASE_API_URL}/stock/getStocks`)
+					const response = await axios.get(`${BASE_API_URL}/stock/getStocks`, {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					})
 					setStocks(response.data.data)
 				} catch (error: unknown) {
-					if (axios.isAxiosError(error)) {
-						setErrorMessage(error.response?.data.message)
-					} else if (error instanceof Error) {
-						setErrorMessage(error.message)
-					} else {
-						setErrorMessage('Server bermasalah')
-					}
+					handleAxiosError(error)
 				}
 			}
 		}
 
 		fetchData()
-	}, [BASE_API_URL])
+	}, [BASE_API_URL, token])
 
 	async function handleEdit(id: number): Promise<void> {
 		try {
-			await axios.delete(`${BASE_API_URL}/stock/editStock/${id}`)
+			await axios.delete(`${BASE_API_URL}/stock/editStock/${id}`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
 			setStocks(stocks.filter((stock) => stock.stock_id !== id))
 		} catch (error: unknown) {
-			if (axios.isAxiosError(error)) {
-				setErrorMessage(error.response?.data.message)
-			} else if (error instanceof Error) {
-				setErrorMessage(error.message)
-			} else {
-				setErrorMessage('Server bermasalah')
-			}
+			handleAxiosError(error)
 		}
 	}
 

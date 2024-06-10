@@ -43,6 +43,7 @@ export default function AddProduct() {
 	const [sizes, setSizes] = useState<Size[]>([])
 	const [categories, setCategories] = useState<Category[]>([])
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
 
 	function handleAxiosError(error: unknown): void {
 		if (axios.isAxiosError(error)) {
@@ -58,8 +59,16 @@ export default function AddProduct() {
 		async function fetchData(): Promise<void> {
 			try {
 				const [responseSizes, responseCategories] = await Promise.all([
-					axios.get(`${BASE_API_URL}/size/getSizes`),
-					axios.get(`${BASE_API_URL}/category/getCategories`)
+					axios.get(`${BASE_API_URL}/size/getSizes`, {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					}),
+					axios.get(`${BASE_API_URL}/category/getCategories`, {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					})
 				])
 
 				setSizes(responseSizes.data.data)
@@ -70,11 +79,15 @@ export default function AddProduct() {
 		}
 
 		fetchData()
-	}, [BASE_API_URL])
+	}, [BASE_API_URL, token])
 
 	async function fetchVariantsByCategory(categoryId: string): Promise<void> {
 		try {
-			const response = await axios.get(`${BASE_API_URL}/varian/getVarian/${categoryId}`)
+			const response = await axios.get(`${BASE_API_URL}/varian/getVarian/${categoryId}`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
 			setVarians(response.data.data)
 		} catch (error: unknown) {
 			handleAxiosError(error)
@@ -181,7 +194,8 @@ export default function AddProduct() {
 
 			await axios.post(`${BASE_API_URL}/product/newProduct`, formData, {
 				headers: {
-					'Content-Type': 'multipart/form-data'
+					'Content-Type': 'multipart/form-data',
+					Authorization: `Bearer ${token}`
 				}
 			})
 			navigate('/admin/products/catalog')

@@ -12,10 +12,15 @@ export default function AddCategory() {
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const navigate = useNavigate()
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
 
 	async function handleSubmit(): Promise<void> {
 		try {
-			await axios.post(`${BASE_API_URL}/category/createCategory`, { category_name: category })
+			await axios.post(`${BASE_API_URL}/category/createCategory`, { category_name: category }, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
 			navigate('/admin/products/category')
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {

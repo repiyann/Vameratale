@@ -15,42 +15,49 @@ type Varian = {
 
 export default function ProductVarian() {
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
 	const [varians, setVarians] = useState<Varian[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
+
+	function handleAxiosError(error: unknown): void {
+		if (axios.isAxiosError(error)) {
+			setErrorMessage(error.response?.data.message)
+		} else if (error instanceof Error) {
+			setErrorMessage(error.message)
+		} else {
+			setErrorMessage('Server bermasalah')
+		}
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
 			if (BASE_API_URL) {
 				try {
-					const response = await axios.get(`${BASE_API_URL}/varian/getVarians`)
+					const response = await axios.get(`${BASE_API_URL}/varian/getVarians`, {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					})
 					setVarians(response.data.data)
 				} catch (error: unknown) {
-					if (axios.isAxiosError(error)) {
-						setErrorMessage(error.response?.data.message)
-					} else if (error instanceof Error) {
-						setErrorMessage(error.message)
-					} else {
-						setErrorMessage('Server bermasalah')
-					}
+					handleAxiosError(error)
 				}
 			}
 		}
 
 		fetchData()
-	}, [BASE_API_URL])
+	}, [BASE_API_URL, token])
 
 	async function handleDelete(id: number) {
 		try {
-			await axios.delete(`${BASE_API_URL}/varian/deleteVarian/${id}`)
+			await axios.delete(`${BASE_API_URL}/varian/deleteVarian/${id}`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
 			setVarians(varians.filter((varian) => varian.varian_id !== id))
 		} catch (error: unknown) {
-			if (axios.isAxiosError(error)) {
-				setErrorMessage(error.response?.data.message)
-			} else if (error instanceof Error) {
-				setErrorMessage(error.message)
-			} else {
-				setErrorMessage('Server bermasalah')
-			}
+			handleAxiosError(error)
 		}
 	}
 
