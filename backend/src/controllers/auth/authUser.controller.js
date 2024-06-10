@@ -96,7 +96,7 @@ async function login(req, res, pool, next) {
 			return res.status(401).json({ message: 'Email dan kata sandi tidak sesuai' })
 		}
 
-		const token = jwt.sign({ userId: user.user_id }, JWT_SECRET_KEY, { expiresIn: '1h' })
+		const token = jwt.sign({ userId: user.user_id, role: role }, JWT_SECRET_KEY, { expiresIn: '1h' })
 
 		return res.status(200).json({ message: 'Login berhasil', token, role: role })
 	} catch (error) {
