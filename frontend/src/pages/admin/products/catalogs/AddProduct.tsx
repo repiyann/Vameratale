@@ -26,6 +26,7 @@ interface Category {
 export default function AddProduct() {
 	const navigate = useNavigate()
 	const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null)
+	const [productID, setProductID] = useState<string>('')
 	const [name, setName] = useState<string>('')
 	const [price, setPrice] = useState<string>('')
 	const [desc, setDesc] = useState<string>('')
@@ -33,6 +34,7 @@ export default function AddProduct() {
 	const [category, setCategory] = useState<string>('')
 	const [size, setSize] = useState<string>('')
 	const [stock, setStock] = useState<string>('')
+	const [sizeDesc, setSizeDesc] = useState<string>('')
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const iconRef = useRef<HTMLInputElement>(null!)
 	const [dragging, setDragging] = useState<boolean>(false)
@@ -164,6 +166,7 @@ export default function AddProduct() {
 			}
 
 			const formData = new FormData()
+			formData.append('productID', productID)
 			formData.append('productName', name)
 			formData.append('productPrice', price)
 			formData.append('productDesc', desc)
@@ -171,6 +174,7 @@ export default function AddProduct() {
 			formData.append('varian', varian)
 			formData.append('size', size)
 			formData.append('stock', stock)
+			formData.append('productSizeDesc', sizeDesc)
 			Array.from(selectedFiles).forEach((file) => {
 				formData.append('files', file)
 			})
@@ -266,6 +270,14 @@ export default function AddProduct() {
 								<input
 									type="text"
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+									placeholder="Masukkan ID barang"
+									value={productID}
+									onChange={(e) => setProductID(e.target.value)}
+									required
+								/>
+								<input
+									type="text"
+									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
 									placeholder="Masukkan nama barang"
 									value={name}
 									onChange={(e) => setName(e.target.value)}
@@ -348,6 +360,14 @@ export default function AddProduct() {
 										</option>
 									))}
 								</select>
+								<input
+									type="text"
+									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2"
+									placeholder="Masukkan deskripsi ukuran barang"
+									value={sizeDesc}
+									onChange={(e) => setSizeDesc(e.target.value)}
+									required
+								/>
 								<textarea
 									className="border-2 w-full border-black mt-4 rounded-md px-2 py-2 h-[150px]"
 									placeholder="Masukkan deskripsi barang"

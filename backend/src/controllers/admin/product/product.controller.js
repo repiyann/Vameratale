@@ -1,30 +1,33 @@
 import validator from 'validator'
 
 async function createProduct(req, res, pool, next) {
-	const { productName, productPrice, productDesc, category, varian, size, stock } = req.body
+	const { productID, productName, productPrice, productDesc, category, productSizeDesc, varian, size, stock } =
+		req.body
 
 	if (!req.files || !req.files.files || !Array.isArray(req.files.files)) {
 		return res.status(400).json({ message: 'Format gambar salah' })
 	}
 
-	if (validator.isEmpty(productName) || validator.isEmpty(productDesc)) {
+	if (
+		validator.isEmpty(productName) ||
+		validator.isEmpty(productDesc) ||
+		validator.isEmpty(productID) ||
+		validator.isEmpty(productSizeDesc)
+	) {
 		return res.status(400).json({ message: 'Input teks tidak boleh kosong' })
 	}
 
 	if (
 		!validator.isInt(category, { min: 1 }) ||
 		!validator.isInt(varian, { min: 1 }) ||
-		!validator.isInt(size, { min: 1 })
+		!validator.isInt(size, { min: 1 }) ||
+		!validator.isInt(stock, { min: 1 })
 	) {
 		return res.status(400).json({ message: 'Input angka tidak boleh kosong' })
 	}
 
 	if (!validator.isNumeric(productPrice, { min: 0 })) {
 		return res.status(400).json({ message: 'Input harga harus angka' })
-	}
-
-	if (!validator.isInt(stock, { min: 0 })) {
-		return res.status(400).json({ message: 'Input stok harus angka' })
 	}
 
 	const productPriceNumber = Number(productPrice)
@@ -42,26 +45,28 @@ async function createProduct(req, res, pool, next) {
 		const insertProduct = `
 			INSERT INTO 
 				products 
-					(product_name, product_price, product_description, product_category, product_varian, product_size, product_stock)
+					(product_id, product_name, product_price, product_description, product_category, product_varian, product_size, product_stock, product_size_desc)
 			VALUES
-				(?, ?, ?, ?, ?, ?, ?)`
+				(?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 		const [productResult] = await connection.execute(insertProduct, [
+			productID,
 			productName,
 			productPriceNumber,
 			productDesc,
 			categoryNumber,
 			varianNumber,
 			sizeNumber,
-			stockNumber
+			stockNumber,
+			productSizeDesc
 		])
-		const productId = productResult.insertId
+		const productUUID = productResult.insertId
 
 		const insertImage = uploadedFiles.map(async (file) => {
 			const fileData = file.data
 			const query = 'INSERT INTO product_images (image_product_id, image_data) VALUES (?, ?)'
 
-			await connection.execute(query, [productId, fileData])
+			await connection.execute(query, [productUUID, fileData])
 		})
 
 		await Promise.all(insertImage)
@@ -83,10 +88,12 @@ async function getProducts(req, res, pool, next) {
 	try {
 		const query = `
 			SELECT 
+				p.product_uuid,
 				p.product_id, 
 				p.product_name, 
 				p.product_price, 
-				p.product_description, 
+				p.product_description,
+				p.product_size_desc, 
 				c.category_name,
 				v.varian_name,
 				s.size_name, 
@@ -111,7 +118,7 @@ async function getProducts(req, res, pool, next) {
 		 				GROUP BY
 							image_product_id
  				)
-			) i ON p.product_id = i.image_product_id`
+			) i ON p.product_uuid = i.image_product_id`
 
 		const [rows] = await connection.execute(query)
 		rows.forEach((row) => {
@@ -137,7 +144,7 @@ async function getProductByID(req, res, pool, next) {
 	const connection = await pool.getConnection()
 
 	try {
-		const productQuery = `SELECT * FROM products WHERE product_id = ?`
+		const productQuery = `SELECT * FROM products WHERE product_uuid = ?`
 		const [productRows] = await connection.execute(productQuery, [id])
 
 		if (productRows.length === 0) {
@@ -161,7 +168,8 @@ async function getProductByID(req, res, pool, next) {
 
 async function updateProduct(req, res, pool, next) {
 	const { id } = req.params
-	const { productName, productPrice, productDesc, category, varian, size, stock } = req.body
+	const { productID, productName, productPrice, productDesc, category, varian, size, stock, productSizeDesc } =
+		req.body
 
 	if (!validator.isInt(id, { min: 1 })) {
 		return res.status(400).json({ message: 'ID harus angka' })
@@ -170,19 +178,23 @@ async function updateProduct(req, res, pool, next) {
 	if (
 		validator.isEmpty(productName) ||
 		validator.isEmpty(productDesc) ||
-		validator.isEmpty(category) ||
-		validator.isEmpty(varian) ||
-		validator.isEmpty(size)
+		validator.isEmpty(productID) ||
+		validator.isEmpty(productSizeDesc)
 	) {
-		return res.status(400).json({ message: 'Input tidak boleh kosong' })
+		return res.status(400).json({ message: 'Input teks tidak boleh kosong' })
 	}
 
 	if (!validator.isNumeric(productPrice, { min: 0 })) {
 		return res.status(400).json({ message: 'Input harga harus angka' })
 	}
 
-	if (!validator.isInt(stock, { min: 0 })) {
-		return res.status(400).json({ message: 'Input stok harus angka' })
+	if (
+		!validator.isInt(category, { min: 1 }) ||
+		!validator.isInt(varian, { min: 1 }) ||
+		!validator.isInt(size, { min: 1 }) ||
+		!validator.isInt(stock, { min: 1 })
+	) {
+		return res.status(400).json({ message: 'Input angka tidak boleh kosong' })
 	}
 
 	const productPriceNumber = Number(productPrice)
@@ -200,17 +212,20 @@ async function updateProduct(req, res, pool, next) {
       UPDATE
         products 
       SET
+				product_id = ?,
         product_name = ?,
         product_price = ?,
         product_description = ?,
         product_category = ?,
         product_varian = ?,
         product_size = ?,
-        product_stock = ?
+        product_stock = ?,
+				product_size_desc = ?
       WHERE 
-        product_id = ?`
+        product_uuid = ?`
 
 		await connection.execute(productQuery, [
+			productID,
 			productName,
 			productPriceNumber,
 			productDesc,
@@ -218,6 +233,7 @@ async function updateProduct(req, res, pool, next) {
 			varianNumber,
 			sizeNumber,
 			stockNumber,
+			productSizeDesc,
 			id
 		])
 
@@ -250,7 +266,7 @@ async function updateProduct(req, res, pool, next) {
 
 async function deleteProduct(req, res, pool, next) {
 	const connection = await pool.getConnection()
-	
+
 	try {
 		const { id } = req.params
 
@@ -262,7 +278,7 @@ async function deleteProduct(req, res, pool, next) {
 
 		const [deleteImage] = await connection.execute(`DELETE FROM product_images WHERE image_product_id = ?`, [id])
 
-		const [deleteProduct] = await connection.execute(`DELETE FROM products WHERE product_id = ?`, [id])
+		const [deleteProduct] = await connection.execute(`DELETE FROM products WHERE product_uuid = ?`, [id])
 
 		if (deleteImage.affectedRows === 0 || deleteProduct.affectedRows === 0) {
 			await connection.rollback()

@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS users (
   user_name VARCHAR(25) NOT NULL DEFAULT '',
   user_phone VARCHAR(15) NOT NULL DEFAULT '',
   user_address VARCHAR(255) NOT NULL DEFAULT '',
+  image_profile BLOB NOT NULL,
   user_password VARCHAR(60) NOT NULL,
   user_role_id INT NOT NULL DEFAULT 2,
   resetPasswordOTP VARCHAR(6) NOT NULL,
@@ -72,7 +73,8 @@ CREATE TABLE IF NOT EXISTS sizes (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS products (
-  product_id INT NOT NULL AUTO_INCREMENT,
+  product_uuid INT NOT NULL AUTO_INCREMENT,
+  product_id VARCHAR(255) NOT NULL,
   product_name VARCHAR(255) NOT NULL,
   product_price DECIMAL(10, 0) NOT NULL,
   product_description TEXT NOT NULL,
@@ -80,8 +82,9 @@ CREATE TABLE IF NOT EXISTS products (
   product_varian INT NOT NULL,
   product_size INT NOT NULL,
   product_stock INT NOT NULL,
+  product_size_desc VARCHAR(255) NOT NULL,
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (product_id),
+  PRIMARY KEY (product_uuid),
   KEY product_category (product_category),
   CONSTRAINT products_ibfk_1 FOREIGN KEY (product_category) REFERENCES categories (category_id),
   KEY product_varian (product_varian),
@@ -97,5 +100,5 @@ CREATE TABLE IF NOT EXISTS product_images (
   createdAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (image_id),
   KEY image_product_id (image_product_id),
-  CONSTRAINT images_ibfk_1 FOREIGN KEY (image_product_id) REFERENCES products(product_id)
+  CONSTRAINT images_ibfk_1 FOREIGN KEY (image_product_id) REFERENCES products(product_uuid)
 ) ENGINE = InnoDB;

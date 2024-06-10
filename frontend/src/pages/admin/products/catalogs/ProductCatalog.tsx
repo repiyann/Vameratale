@@ -8,13 +8,15 @@ import NavbarAdmin from '@/components/NavbarAdmin'
 import SidebarAdmin from '@/components/SidebarAdmin'
 
 type Product = {
-	product_id: number
+	product_uuid: number
+	product_id: string
 	product_name: string
 	product_price: number
 	product_description: string
 	product_size: string
 	product_category: string
 	product_varian: string
+	product_size_desc: string
 	image_data: string
 }
 
@@ -28,6 +30,7 @@ export default function ProductCatalog() {
 			try {
 				const response = await axios.get(`${BASE_API_URL}/product/getProducts`)
 				setProducts(response.data.rows)
+				console.log(response.data.rows)
 			} catch (error: unknown) {
 				if (axios.isAxiosError(error)) {
 					setErrorMessage(error.response?.data.message)
@@ -45,7 +48,7 @@ export default function ProductCatalog() {
 	async function handleDelete(id: number): Promise<void> {
 		try {
 			await axios.delete(`${BASE_API_URL}/product/deleteProduct/${id}`)
-			setProducts(products.filter((product) => product.product_id !== id))
+			setProducts(products.filter((product) => product.product_uuid !== id))
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {
 				setErrorMessage(error.response?.data.message)
@@ -124,7 +127,7 @@ export default function ProductCatalog() {
 											icon={faTrashCan}
 											className="text-red-600 cursor-pointer"
 											size="xl"
-											onClick={() => handleDelete(product.product_id)}
+											onClick={() => handleDelete(product.product_uuid)}
 										/>
 									</div>
 								</Card>
