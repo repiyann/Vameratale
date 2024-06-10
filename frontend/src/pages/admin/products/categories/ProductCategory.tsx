@@ -30,17 +30,16 @@ export default function ProductCategory() {
 
 	useEffect(() => {
 		async function fetchData(): Promise<void> {
-			if (BASE_API_URL) {
-				try {
-					const response = await axios.get(`${BASE_API_URL}/category/getCategories`, {
-						headers: {
-							Authorization: `Bearer ${token}`
-						}
-					})
-					setCategories(response.data.data)
-				} catch (error: unknown) {
-					handleAxiosError(error)
-				}
+			try {
+				const response = await axios.get(`${BASE_API_URL}/category/getCategories`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+				
+				setCategories(response.data.data)
+			} catch (error: unknown) {
+				handleAxiosError(error)
 			}
 		}
 
@@ -54,6 +53,7 @@ export default function ProductCategory() {
 					Authorization: `Bearer ${token}`
 				}
 			})
+
 			setCategories(categories.filter((category) => category.category_id !== id))
 		} catch (error: unknown) {
 			handleAxiosError(error)

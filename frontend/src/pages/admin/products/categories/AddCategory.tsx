@@ -8,9 +8,9 @@ import SidebarAdmin from '@/components/SidebarAdmin'
 import { Card } from '@/components/ui/card'
 
 export default function AddCategory() {
+	const navigate = useNavigate()
 	const [category, setCategory] = useState<string>('')
 	const [errorMessage, setErrorMessage] = useState<string>('')
-	const navigate = useNavigate()
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 	const token: string | null = sessionStorage.getItem('token')
 
@@ -21,6 +21,7 @@ export default function AddCategory() {
 					Authorization: `Bearer ${token}`
 				}
 			})
+			
 			navigate('/admin/products/category')
 		} catch (error: unknown) {
 			if (axios.isAxiosError(error)) {

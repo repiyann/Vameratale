@@ -37,6 +37,7 @@ import EditProduct from './pages/admin/products/catalogs/EditProduct'
 import VerifyEmail from './pages/auth/user/VerifyEmail'
 import ResetMiddleware from './utils/user/ResetMiddleware'
 import UploadImage from './pages/admin/products/catalogs/UploadImage'
+import EditStock from './pages/admin/reports/EditStock'
 
 export default function App() {
 	return (
@@ -318,6 +319,15 @@ export default function App() {
 							<>
 								<ProductStock />
 								<PageTitle title="Product Stock | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/admin/reports/stock/edit-stock/:id"
+						element={
+							<>
+								<EditStock />
+								<PageTitle title="Edit Stock | Vameratale" />
 							</>
 						}
 					/>

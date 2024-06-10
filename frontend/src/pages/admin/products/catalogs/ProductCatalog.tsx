@@ -44,8 +44,8 @@ export default function ProductCatalog() {
 						Authorization: `Bearer ${token}`
 					}
 				})
+
 				setProducts(response.data.rows)
-				console.log(response.data.rows)
 			} catch (error: unknown) {
 				handleAxiosError(error)
 			}
@@ -61,6 +61,7 @@ export default function ProductCatalog() {
 					Authorization: `Bearer ${token}`
 				}
 			})
+
 			setProducts(products.filter((product) => product.product_uuid !== id))
 		} catch (error: unknown) {
 			handleAxiosError(error)

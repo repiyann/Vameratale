@@ -88,6 +88,7 @@ export default function AddProduct() {
 					Authorization: `Bearer ${token}`
 				}
 			})
+			
 			setVarians(response.data.data)
 		} catch (error: unknown) {
 			handleAxiosError(error)
@@ -198,6 +199,7 @@ export default function AddProduct() {
 					Authorization: `Bearer ${token}`
 				}
 			})
+
 			navigate('/admin/products/catalog')
 		} catch (error: unknown) {
 			handleAxiosError(error)

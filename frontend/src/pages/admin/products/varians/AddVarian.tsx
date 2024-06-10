@@ -13,11 +13,11 @@ interface Category {
 }
 
 export default function AddVarian() {
+	const navigate = useNavigate()
 	const [varian, setVarian] = useState<string>('')
 	const [category, setCategory] = useState<string>('')
 	const [categories, setCategories] = useState<Category[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
-	const navigate = useNavigate()
 	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
 	const token: string | null = sessionStorage.getItem('token')
 
@@ -38,6 +38,7 @@ export default function AddVarian() {
 					Authorization: `Bearer ${token}`
 				}
 			})
+			
 			navigate('/admin/products/varian')
 		} catch (error: unknown) {
 			handleAxiosError(error)
@@ -52,6 +53,7 @@ export default function AddVarian() {
 						Authorization: `Bearer ${token}`
 					}
 				})
+
 				setCategories(response.data.data)
 			} catch (error: unknown) {
 				handleAxiosError(error)

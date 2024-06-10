@@ -30,17 +30,16 @@ export default function ProductSize() {
 
 	useEffect(() => {
 		async function fetchData(): Promise<void> {
-			if (BASE_API_URL) {
-				try {
-					const response = await axios.get(`${BASE_API_URL}/size/getSizes`, {
-						headers: {
-							Authorization: `Bearer ${token}`
-						}
-					})
-					setSizes(response.data.data)
-				} catch (error: unknown) {
-					handleAxiosError(error)
-				}
+			try {
+				const response = await axios.get(`${BASE_API_URL}/size/getSizes`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+
+				setSizes(response.data.data)
+			} catch (error: unknown) {
+				handleAxiosError(error)
 			}
 		}
 
@@ -54,6 +53,7 @@ export default function ProductSize() {
 					Authorization: `Bearer ${token}`
 				}
 			})
+			
 			setSizes(sizes.filter((size) => size.size_id !== id))
 		} catch (error: unknown) {
 			handleAxiosError(error)

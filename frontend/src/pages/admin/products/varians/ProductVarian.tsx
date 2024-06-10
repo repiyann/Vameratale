@@ -14,10 +14,10 @@ type Varian = {
 }
 
 export default function ProductVarian() {
-	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
-	const token: string | null = sessionStorage.getItem('token')
 	const [varians, setVarians] = useState<Varian[]>([])
 	const [errorMessage, setErrorMessage] = useState<string>('')
+	const BASE_API_URL: string | undefined = process.env.REACT_APP_API_URL
+	const token: string | null = sessionStorage.getItem('token')
 
 	function handleAxiosError(error: unknown): void {
 		if (axios.isAxiosError(error)) {
@@ -30,31 +30,31 @@ export default function ProductVarian() {
 	}
 
 	useEffect(() => {
-		const fetchData = async () => {
-			if (BASE_API_URL) {
-				try {
-					const response = await axios.get(`${BASE_API_URL}/varian/getVarians`, {
-						headers: {
-							Authorization: `Bearer ${token}`
-						}
-					})
-					setVarians(response.data.data)
-				} catch (error: unknown) {
-					handleAxiosError(error)
-				}
+		async function fetchData(): Promise<void> {
+			try {
+				const response = await axios.get(`${BASE_API_URL}/varian/getVarians`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+
+				setVarians(response.data.data)
+			} catch (error: unknown) {
+				handleAxiosError(error)
 			}
 		}
 
 		fetchData()
 	}, [BASE_API_URL, token])
 
-	async function handleDelete(id: number) {
+	async function handleDelete(id: number): Promise<void> {
 		try {
 			await axios.delete(`${BASE_API_URL}/varian/deleteVarian/${id}`, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}
 			})
+			
 			setVarians(varians.filter((varian) => varian.varian_id !== id))
 		} catch (error: unknown) {
 			handleAxiosError(error)
