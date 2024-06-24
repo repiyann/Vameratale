@@ -19,10 +19,10 @@ export default function Home() {
 	const categoryImages: string[] = Array(4).fill(categoriesImage)
 	const reviewImages: string[] = Array(5).fill(reviewImage)
 	const categoryData = [
-		{ text: 'Fresh Flowers', url: '/text1' },
-		{ text: 'Occational Bouquet', url: '/text2' },
-		{ text: 'Artificial Flowers', url: '/text3' },
-		{ text: 'Other Bouquet', url: '/text4' }
+		{ text: 'Fresh Flowers', url: '/freshflower' },
+		{ text: 'Occational Bouquet', url: '/dashboard' },
+		{ text: 'Artificial Flowers', url: '/dashboard' },
+		{ text: 'Other Bouquet', url: '/dashboard' }
 	]
 	const bestSelling = [
 		{ image: '/fresh-1.png', alt: 'Card 1', title: '2 Sunflower', url: '/product1' },
@@ -65,7 +65,7 @@ export default function Home() {
 							alt="flowerBox"
 						/>
 						<div className="mx-2">
-							<h3>100</h3>
+							<h3>10±</h3>
 							<h4>Kategori</h4>
 						</div>
 					</div>
@@ -76,8 +76,8 @@ export default function Home() {
 							alt="flowerBox"
 						/>
 						<div className="mx-2">
-							<h3>100</h3>
-							<h4>Kategori</h4>
+							<h3>30±</h3>
+							<h4>Produk</h4>
 						</div>
 					</div>
 					<div className="px-3 flex flex-row">
@@ -87,8 +87,8 @@ export default function Home() {
 							alt="flowerBox"
 						/>
 						<div className="mx-2">
-							<h3>100</h3>
-							<h4>Kategori</h4>
+							<h3>500±</h3>
+							<h4>Pelanggan</h4>
 						</div>
 					</div>
 				</div>

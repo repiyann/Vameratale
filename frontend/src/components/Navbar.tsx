@@ -147,36 +147,85 @@ export default function Navbar() {
 							<DropdownMenuContent onMouseLeave={() => setOpenDropdown(false)}>
 								<DropdownMenuSub>
 									<DropdownMenuSubTrigger>
-										<span>Fresh Flowers</span>
+										<Link to={'/freshflower'}>Fresh Flowers Bouquet</Link>
 									</DropdownMenuSubTrigger>
 									<DropdownMenuPortal>
 										<DropdownMenuSubContent>
 											<DropdownMenuItem>
-												<span>Bouquet</span>
+												<Link to={'/dashboard'}>Rose Variant</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<span>Vase</span>
+												<Link to={'/dashboard'}>Lily Variant</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>More...</Link>
+												<Link to={'/dashboard'}>Fresh Flowers</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Link to={'/dashboard'}>Flowers Box</Link>
 											</DropdownMenuItem>
 										</DropdownMenuSubContent>
 									</DropdownMenuPortal>
 								</DropdownMenuSub>
 								<DropdownMenuSub>
 									<DropdownMenuSubTrigger>
-										<span>Category</span>
+										<Link to={'/dashboard'}>Artificial Flower Bouquet</Link>
 									</DropdownMenuSubTrigger>
 									<DropdownMenuPortal>
 										<DropdownMenuSubContent>
 											<DropdownMenuItem>
-												<span>Wedding</span>
+												<Link to={'/dashboard'}>Artificial Flower</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<span>Date</span>
+												<Link to={'/dashboard'}>Bloom Box</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>More...</Link>
+												<Link to={'/dashboard'}>Korean Style</Link>
+											</DropdownMenuItem>
+										</DropdownMenuSubContent>
+									</DropdownMenuPortal>
+								</DropdownMenuSub>
+								<DropdownMenuSub>
+									<DropdownMenuSubTrigger>
+										<Link to={'/dashboard'}>Balloon Bouquet</Link>
+									</DropdownMenuSubTrigger>
+									<DropdownMenuPortal>
+										<DropdownMenuSubContent>
+											<DropdownMenuItem>
+												<Link to={'/dashboard'}>Korean Flower Balloon</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Link to={'/dashboard'}>Hot Air Balloon & Balloon Box</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Link to={'/dashboard'}>Balloon Bouquet</Link>
+											</DropdownMenuItem>
+										</DropdownMenuSubContent>
+									</DropdownMenuPortal>
+								</DropdownMenuSub>
+								<DropdownMenuSub>
+									<DropdownMenuItem>
+										<Link to={'/dashboard'}>Snack Bouquet</Link>
+									</DropdownMenuItem>
+								</DropdownMenuSub>
+								<DropdownMenuSub>
+									<DropdownMenuItem>
+										<Link to={'/dashboard'}>Money Bouquet</Link>
+									</DropdownMenuItem>
+								</DropdownMenuSub>
+								<DropdownMenuSub>
+									<DropdownMenuSubTrigger>
+										<Link to={'/dashboard'}>Event</Link>
+									</DropdownMenuSubTrigger>
+									<DropdownMenuPortal>
+										<DropdownMenuSubContent>
+											<DropdownMenuItem>
+												<Link to={'/dashboard'}>Wedding</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Link to={'/dashboard'}>Anniversary</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Link to={'/dashboard'}>Graduation</Link>
 											</DropdownMenuItem>
 										</DropdownMenuSubContent>
 									</DropdownMenuPortal>

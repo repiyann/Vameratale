@@ -38,6 +38,7 @@ import VerifyEmail from './pages/auth/user/VerifyEmail'
 import ResetMiddleware from './utils/user/ResetMiddleware'
 import UploadImage from './pages/admin/products/catalogs/UploadImage'
 import EditStock from './pages/admin/reports/EditStock'
+import FreshFlower from './pages/user/FreshFlower'
 
 export default function App() {
 	return (
@@ -122,6 +123,15 @@ export default function App() {
 						element={
 							<>
 								<Dashboard />
+								<PageTitle title="Katalog | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/freshflower"
+						element={
+							<>
+								<FreshFlower />
 								<PageTitle title="Katalog | Vameratale" />
 							</>
 						}

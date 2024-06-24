@@ -5,56 +5,128 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-export default function Dashboard() {
+export default function FreshFlower() {
 	const imageCard = [
-		{
-			src: 'fresh-1.png',
-			alt: 'Card 1',
-			title: '2 Sunflower',
-			description: 'Cheerful flower',
-			price: 'Rp 195.000',
-			link: '/detail/sunflower'
-		},
 		{
 			src: 'flowers.png',
 			alt: 'Card 2',
-			title: '3 Roses',
+			title: 'Roses',
 			description: 'Beautiful bouquet',
-			price: 'Rp 250.000',
+			price: 'Rp 95.000 - 335.000',
 			link: '/detail/roses'
 		},
 		{
-			src: 'fresh-3.png',
+			src: 'huge_rose.png',
+			alt: 'Card 1',
+			title: 'Huge Rose',
+			description: 'Cheerful flower',
+			price: 'Rp 960.000 - 1.650.000',
+			link: '/detail/sunflower'
+		},
+		{
+			src: 'heart.png',
 			alt: 'Card 3',
-			title: 'Mixed Flowers',
+			title: 'Heart Shaped',
 			description: 'Colorful and vibrant',
-			price: 'Rp 300.000',
+			price: 'Rp 375.000 - 545.000',
 			link: '/detail/mixed'
 		},
 		{
-			src: 'fresh-4.png',
+			src: 'ROSE_GERBERA.png',
 			alt: 'Card 4',
-			title: 'Orchid Bouquet',
+			title: '8 Rose & Gerbera',
 			description: 'Elegant and stylish',
-			price: 'Rp 450.000',
+			price: 'Rp 220.000',
 			link: '/detail/orchid'
 		},
 		{
-			src: 'fresh-5.png',
+			src: '6lily.png',
 			alt: 'Card 5',
-			title: 'Tulips',
+			title: 'Lily',
 			description: 'Bright and cheerful',
-			price: 'Rp 200.000',
+			price: 'Rp 480.000 - 540.000',
 			link: '/detail/tulips'
+		},
+		{
+			src: '2LILY_GERBERA.png',
+			alt: 'Card 6',
+			title: '2 Lily & Gerbera',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 220.000',
+			link: '/detail/lilies'
+		},
+		{
+			src: 'LYROSBLOSSOMBALL.png',
+			alt: 'Card 6',
+			title: 'Lyros Blossom Ball',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 440.000',
+			link: '/detail/lilies'
+		},
+		{
+			src: 'fresh-1.png',
+			alt: 'Card 6',
+			title: '2 Sunflowers',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 220.000',
+			link: '/detail/lilies'
 		},
 		{
 			src: 'fresh-6.png',
 			alt: 'Card 6',
-			title: 'Lilies',
+			title: 'Rain Coat Bouquet',
 			description: 'Fragrant and beautiful',
-			price: 'Rp 220.000',
+			price: 'Rp 325.000',
 			link: '/detail/lilies'
-		}
+		},
+		{
+			src: 'fresh-2.png',
+			alt: 'Card 6',
+			title: '5 Gerbera',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 95.000',
+			link: '/detail/lilies'
+		},
+		{
+			src: 'fresh-4.png',
+			alt: 'Card 6',
+			title: 'Huge Hydrangea',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 160.000',
+			link: '/detail/lilies'
+		},
+		{
+			src: 'fresh-5.png',
+			alt: 'Card 6',
+			title: 'Sunny Rose Bouquet',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 160.000',
+			link: '/detail/lilies'
+		},
+		{
+			src: 'BoxofRoses.png',
+			alt: 'Card 6',
+			title: 'Box Of Roses',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 210.000 - 440.000',
+			link: '/detail/lilies'
+		},
+		{
+			src: 'boxflower.png',
+			alt: 'Card 6',
+			title: 'Stairs Of Roses',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 380.000',
+			link: '/detail/lilies'
+		},
+		{
+			src: 'lbb.png',
+			alt: 'Card 6',
+			title: 'Lyros Bloom Box',
+			description: 'Fragrant and beautiful',
+			price: 'Rp 185.000',
+			link: '/detail/lilies'
+		},
 	]
 
 	const [selectedValues, setSelectedValues] = useState<string[]>([''])
@@ -86,29 +158,29 @@ export default function Dashboard() {
 					className="md:block md:bg-[#FFFAFA] md:shadow-[rgba(0,0,0,0.13)_20px_15px_25px_-5px] md:w-64 md:h-1/2 md:my-20 md:sticky md:top-40 md:rounded-r-lg hidden"
 				>
 					<div className="py-10 px-10 gap-3 font-medium">
-						<h1 className='text-[#A5273A]'>Penjualan Terbaik</h1>
+						<h1>Penjualan Terbaik</h1>
 						<Accordion
 							value={selectedValues}
 							type="multiple"
 							onValueChange={handleValueChange}
 						>
 							<AccordionItem value="item-1">
-								<AccordionTrigger>Fresh Flower</AccordionTrigger>
+								<AccordionTrigger className='text-[#A5273A]'>Fresh Flower</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
-									<div>Fresh Varian</div>
-									<div>Rose Varian</div>
-									<div>Lily Varian</div>
-									<div>Box Varian</div>
-									<div>Satuan Varian</div>
+									<div >Fresh Variant</div>
+									<div>Rose Variant</div>
+									<div>Lily Variant</div>
+									<div>Box Variant</div>
+									<div>Satuan Variant</div>
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-2">
 								<AccordionTrigger>Artificial Flower</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
-									<div>Artificial Varian</div>
-									<div>Box Bloom Varian</div>
-									<div>Korean Style Varian</div>
-									<div>Satuan Varian</div>
+									<div>Artificial Variant</div>
+									<div>Box Bloom Variant</div>
+									<div>Korean Style Variant</div>
+									<div>Satuan Variant</div>
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-3">
@@ -123,9 +195,9 @@ export default function Dashboard() {
 							<AccordionItem value="item-4">
 								<AccordionTrigger>Other Bouquet</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
-									<div>Balloon Varian</div>
-									<div>Money Varian</div>
-									<div>Snack Varian</div>
+									<div>Balloon Variant</div>
+									<div>Money Variant</div>
+									<div>Snack Variant</div>
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
@@ -136,7 +208,7 @@ export default function Dashboard() {
 					className="flex-grow"
 				>
 					<div className="flex my-16 px-32 flex-col">
-						<h1 className="text-2xl font-bold mb-3">Penjualan Terbaik Saat Ini</h1>
+						<h1 className="text-2xl font-bold mb-3">Fresh Flower</h1>
 						<div className="relative">
 							<input
 								type="text"
