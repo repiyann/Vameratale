@@ -152,64 +152,64 @@ export default function Navbar() {
 									<DropdownMenuPortal>
 										<DropdownMenuSubContent>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Rose Variant</Link>
+												<Link to={'/freshflower'}>Rose Variant</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Lily Variant</Link>
+												<Link to={'/freshflower'}>Lily Variant</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Fresh Flowers</Link>
+												<Link to={'/freshflower'}>Fresh Flowers</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Flowers Box</Link>
-											</DropdownMenuItem>
-										</DropdownMenuSubContent>
-									</DropdownMenuPortal>
-								</DropdownMenuSub>
-								<DropdownMenuSub>
-									<DropdownMenuSubTrigger>
-										<Link to={'/dashboard'}>Artificial Flower Bouquet</Link>
-									</DropdownMenuSubTrigger>
-									<DropdownMenuPortal>
-										<DropdownMenuSubContent>
-											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Artificial Flower</Link>
-											</DropdownMenuItem>
-											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Bloom Box</Link>
-											</DropdownMenuItem>
-											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Korean Style</Link>
+												<Link to={'/freshflower'}>Flowers Box</Link>
 											</DropdownMenuItem>
 										</DropdownMenuSubContent>
 									</DropdownMenuPortal>
 								</DropdownMenuSub>
 								<DropdownMenuSub>
 									<DropdownMenuSubTrigger>
-										<Link to={'/dashboard'}>Balloon Bouquet</Link>
+										<Link to={'/artificialflower'}>Artificial Flower Bouquet</Link>
 									</DropdownMenuSubTrigger>
 									<DropdownMenuPortal>
 										<DropdownMenuSubContent>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Korean Flower Balloon</Link>
+												<Link to={'/artificialflower'}>Artificial Flower</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Hot Air Balloon & Balloon Box</Link>
+												<Link to={'/artificialflower'}>Bloom Box</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Link to={'/dashboard'}>Balloon Bouquet</Link>
+												<Link to={'/artificialflower'}>Korean Style</Link>
+											</DropdownMenuItem>
+										</DropdownMenuSubContent>
+									</DropdownMenuPortal>
+								</DropdownMenuSub>
+								<DropdownMenuSub>
+									<DropdownMenuSubTrigger>
+										<Link to={'/balloon'}>Balloon Bouquet</Link>
+									</DropdownMenuSubTrigger>
+									<DropdownMenuPortal>
+										<DropdownMenuSubContent>
+											<DropdownMenuItem>
+												<Link to={'/balloon'}>Korean Flower Balloon</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Link to={'/balloon'}>Hot Air Balloon & Balloon Box</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Link to={'/balloon'}>Balloon Bouquet</Link>
 											</DropdownMenuItem>
 										</DropdownMenuSubContent>
 									</DropdownMenuPortal>
 								</DropdownMenuSub>
 								<DropdownMenuSub>
 									<DropdownMenuItem>
-										<Link to={'/dashboard'}>Snack Bouquet</Link>
+										<Link to={'/snack'}>Snack Bouquet</Link>
 									</DropdownMenuItem>
 								</DropdownMenuSub>
 								<DropdownMenuSub>
 									<DropdownMenuItem>
-										<Link to={'/dashboard'}>Money Bouquet</Link>
+										<Link to={'/money'}>Money Bouquet</Link>
 									</DropdownMenuItem>
 								</DropdownMenuSub>
 								<DropdownMenuSub>

@@ -5,128 +5,56 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-export default function FreshFlower() {
+export default function ArtificialFlower() {
 	const imageCard = [
 		{
-			src: 'flowers.png',
-			alt: 'Card 2',
-			title: 'Roses',
-			description: 'Beautiful bouquet',
-			price: 'Rp 95.000 - 335.000',
-			link: '/detail/roses'
-		},
-		{
-			src: 'huge_rose.png',
-			alt: 'Card 1',
-			title: 'Huge Rose',
-			description: 'Cheerful flower',
-			price: 'Rp 960.000 - 1.650.000',
-			link: '/detail/sunflower'
-		},
-		{
-			src: 'heart.png',
-			alt: 'Card 3',
-			title: 'Heart Shaped',
-			description: 'Colorful and vibrant',
-			price: 'Rp 375.000 - 545.000',
-			link: '/detail/mixed'
-		},
-		{
-			src: 'ROSE_GERBERA.png',
-			alt: 'Card 4',
-			title: '8 Rose & Gerbera',
-			description: 'Elegant and stylish',
-			price: 'Rp 220.000',
-			link: '/detail/orchid'
-		},
-		{
-			src: '6lily.png',
-			alt: 'Card 5',
-			title: 'Lily',
-			description: 'Bright and cheerful',
-			price: 'Rp 480.000 - 540.000',
-			link: '/detail/tulips'
-		},
-		{
-			src: '2LILY_GERBERA.png',
-			alt: 'Card 6',
-			title: '2 Lily & Gerbera',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 220.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'LYROSBLOSSOMBALL.png',
-			alt: 'Card 6',
-			title: 'Lyros Blossom Ball',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 440.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'fresh-1.png',
-			alt: 'Card 6',
-			title: '2 Sunflowers',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 220.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'fresh-6.png',
-			alt: 'Card 6',
-			title: 'Rain Coat Bouquet',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 325.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'fresh-2.png',
-			alt: 'Card 6',
-			title: '5 Gerbera',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 95.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'fresh-4.png',
-			alt: 'Card 6',
-			title: 'Huge Hydrangea',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 160.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'fresh-5.png',
-			alt: 'Card 6',
-			title: 'Sunny Rose Bouquet',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 160.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'BoxofRoses.png',
-			alt: 'Card 6',
-			title: 'Box Of Roses',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 210.000 - 440.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'boxflower.png',
-			alt: 'Card 6',
-			title: 'Stairs Of Roses',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 380.000',
-			link: '/detail/lilies'
-		},
-		{
-			src: 'lbb.png',
-			alt: 'Card 6',
-			title: 'Lyros Bloom Box',
-			description: 'Fragrant and beautiful',
-			price: 'Rp 185.000',
-			link: '/detail/lilies'
-		},
+			src: 'al.png', // URL atau path gambar produk
+			alt: 'Artificial Lily Bouquet',
+			title: 'Lily Bouquet',
+			description: '5 Big premium stems of lily',
+			price: 'Rp 175,000',
+			link: '' // URL halaman produk
+		  },
+		  {
+			src: 'ar.png', 
+			alt: 'Artificial Rose Bouquet',
+			title: 'Rose Bouquet',
+			description: '10 stems of rose',
+			price: 'Rp 155,000',
+			link: ''
+		  },
+		  {
+			src: 'as.png',
+			alt: 'Artificial Sunflower Bouquet',
+			title: 'Sunflower Bouquet',
+			description: '4 big stems of sunflower',
+			price: 'Rp 145,000',
+			link: ''
+		  },
+		  {
+			src: 'am.png',
+			alt: 'Artificial Mixed Flower Bouquet',
+			title: 'Mixed Flower Bouquet',
+			description: ' S, M, L',
+			price: 'Rp 85,000 - 195,000',
+			link: ''
+		  },
+		  {
+			src: 'bloart.png',
+			alt: 'Artificial Mixed Flower Bloom Box (R)',
+			title: 'Mixed Flower Bloom Box',
+			description: 'S, R',
+			price: 'Rp 175,000 - 260,000',
+			link: ''
+		  },
+		  {
+			src: 'ab.png',
+			alt: 'Artificial Butterfly Bouquet',
+			title: 'Butterfly Bouquet',
+			description: 'Butterflies with fairy light',
+			price: 'Rp 150,000',
+			link: ''
+		  }
 	]
 
 	const [selectedValues, setSelectedValues] = useState<string[]>([''])
@@ -167,7 +95,7 @@ export default function FreshFlower() {
 							onValueChange={handleValueChange}
 						>
 							<AccordionItem value="item-1">
-								<AccordionTrigger className='text-[#A5273A]'>Fresh Flower</AccordionTrigger>
+								<AccordionTrigger><Link to="/freshflower">Fresh Flower</Link></AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>Fresh Variant</div>
 									<div>Rose Variant</div>
@@ -177,7 +105,7 @@ export default function FreshFlower() {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-2">
-								<AccordionTrigger>
+								<AccordionTrigger className='text-[#A5273A]'>
 									<Link to="/artificialflower">Artificial Flower</Link>
 								</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
@@ -188,7 +116,9 @@ export default function FreshFlower() {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-3">
-								<AccordionTrigger>Occasion Bouquet</AccordionTrigger>
+								<AccordionTrigger>
+									<Link to="/occasion">Occasion Bouquet</Link>
+								</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>Wedding</div>
 									<div>Birthday</div>
@@ -197,7 +127,9 @@ export default function FreshFlower() {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-4">
-								<AccordionTrigger>Other Bouquet</AccordionTrigger>
+								<AccordionTrigger>
+									<Link to="/balloon">Other Bouquet</Link>
+								</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>
 										<Link to="/balloon">Balloon Variant</Link>
@@ -218,7 +150,7 @@ export default function FreshFlower() {
 					className="flex-grow"
 				>
 					<div className="flex my-16 px-32 flex-col">
-						<h1 className="text-2xl font-bold mb-3">Fresh Flower</h1>
+						<h1 className="text-2xl font-bold mb-3">Artificial Flower</h1>
 						<div className="relative">
 							<input
 								type="text"

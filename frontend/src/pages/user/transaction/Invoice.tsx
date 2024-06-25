@@ -41,10 +41,10 @@ export default function Invoice() {
 								<p className="text-md font-medium">Jumlah Pesanan</p>
 							</div>
 							<div>
-								<p className="text-md font-medium">: Audrey</p>
-								<p className="text-md font-medium">: 081313293859</p>
+								<p className="text-md font-medium">: Audrey Aprilia</p>
+								<p className="text-md font-medium">: 082282262157</p>
 								<p className="text-md font-medium">: 3 Roses</p>
-								<p className="text-md font-medium">: Jl. Jakarta, DKI Jakarta</p>
+								<p className="text-md font-medium">: Jl. Kapten Muslihat No.22, RT.04/RW.01, Paledang, Kecamatan Bogor Tengah, Kota Bogor </p>
 								<p className="text-md font-medium">: Diantar</p>
 								<p className="text-md font-medium">: 1</p>
 							</div>

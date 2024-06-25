@@ -86,14 +86,18 @@ export default function Dashboard() {
 					className="md:block md:bg-[#FFFAFA] md:shadow-[rgba(0,0,0,0.13)_20px_15px_25px_-5px] md:w-64 md:h-1/2 md:my-20 md:sticky md:top-40 md:rounded-r-lg hidden"
 				>
 					<div className="py-10 px-10 gap-3 font-medium">
-						<h1 className='text-[#A5273A]'>Penjualan Terbaik</h1>
+						<h1 className='text-[#A5273A]'>
+							<Link to="/dashboard">Penjualan Terbaik</Link>
+						</h1>
 						<Accordion
 							value={selectedValues}
 							type="multiple"
 							onValueChange={handleValueChange}
 						>
 							<AccordionItem value="item-1">
-								<AccordionTrigger>Fresh Flower</AccordionTrigger>
+								<AccordionTrigger>
+									<Link to="/freshflower">Fresh Flower</Link>
+								</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>Fresh Varian</div>
 									<div>Rose Varian</div>
@@ -103,7 +107,9 @@ export default function Dashboard() {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-2">
-								<AccordionTrigger>Artificial Flower</AccordionTrigger>
+								<AccordionTrigger>
+									<Link to="/artificialflower">Artificial Flower</Link>
+								</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>Artificial Varian</div>
 									<div>Box Bloom Varian</div>
@@ -112,7 +118,9 @@ export default function Dashboard() {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-3">
-								<AccordionTrigger>Occasion Bouquet</AccordionTrigger>
+								<AccordionTrigger>
+								<Link to="/occasion">Occasion Bouquet</Link>
+								</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>Wedding</div>
 									<div>Birthday</div>
@@ -121,11 +129,19 @@ export default function Dashboard() {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-4">
-								<AccordionTrigger>Other Bouquet</AccordionTrigger>
+								<AccordionTrigger>
+									<Link to="/">Other Bouquet</Link>
+								</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
-									<div>Balloon Varian</div>
-									<div>Money Varian</div>
-									<div>Snack Varian</div>
+									<div>
+										<Link to="/balloon">Balloon Varian</Link>
+									</div>
+									<div>
+										<Link to="/money">Money Varian</Link>
+									</div>
+									<div>
+										<Link to="/snack">Snack Varian</Link>
+									</div>
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>

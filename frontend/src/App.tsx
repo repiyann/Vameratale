@@ -39,6 +39,10 @@ import ResetMiddleware from './utils/user/ResetMiddleware'
 import UploadImage from './pages/admin/products/catalogs/UploadImage'
 import EditStock from './pages/admin/reports/EditStock'
 import FreshFlower from './pages/user/FreshFlower'
+import ArtificialFlower from './pages/user/ArtificialFlower'
+import Balloon from './pages/user/balloon'
+import Money from './pages/user/money'
+import Snack from './pages/user/snack'
 
 export default function App() {
 	return (
@@ -132,6 +136,42 @@ export default function App() {
 						element={
 							<>
 								<FreshFlower />
+								<PageTitle title="Katalog | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/artificialflower"
+						element={
+							<>
+								<ArtificialFlower />
+								<PageTitle title="Katalog | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/balloon"
+						element={
+							<>
+								<Balloon />
+								<PageTitle title="Katalog | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/money"
+						element={
+							<>
+								<Money />
+								<PageTitle title="Katalog | Vameratale" />
+							</>
+						}
+					/>
+					<Route
+						path="/snack"
+						element={
+							<>
+								<Snack />
 								<PageTitle title="Katalog | Vameratale" />
 							</>
 						}

@@ -21,8 +21,8 @@ export default function Home() {
 	const categoryData = [
 		{ text: 'Fresh Flowers', url: '/freshflower' },
 		{ text: 'Occational Bouquet', url: '/dashboard' },
-		{ text: 'Artificial Flowers', url: '/dashboard' },
-		{ text: 'Other Bouquet', url: '/dashboard' }
+		{ text: 'Artificial Flowers', url: '/artificialflower' },
+		{ text: 'Other Bouquet', url: '/balloon' }
 	]
 	const bestSelling = [
 		{ image: '/fresh-1.png', alt: 'Card 1', title: '2 Sunflower', url: '/product1' },

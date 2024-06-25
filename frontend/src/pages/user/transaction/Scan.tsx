@@ -16,7 +16,7 @@ export default function Scan() {
 			<div className="flex justify-center text-center py-10 mr-0.5">
 				<div className="flex flex-col">
 					<h1 className="text-2xl font-bold">Scan Pembayaran</h1>
-					<h1 className="text-xl font-semibold mt-5 mb-3">Total Bayar Rp75.000</h1>
+					<h1 className="text-xl font-semibold mt-5 mb-3">Total Bayar Rp95.000</h1>
 					<img
 						src="/qris.png"
 						className="p-5 border-4 border-black rounded-3xl"

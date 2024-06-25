@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-export default function FreshFlower() {
+export default function Money() {
 	const imageCard = [
 		{
 			src: 'flowers.png',
@@ -167,7 +167,7 @@ export default function FreshFlower() {
 							onValueChange={handleValueChange}
 						>
 							<AccordionItem value="item-1">
-								<AccordionTrigger className='text-[#A5273A]'>Fresh Flower</AccordionTrigger>
+								<AccordionTrigger>Fresh Flower</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>Fresh Variant</div>
 									<div>Rose Variant</div>
@@ -197,13 +197,13 @@ export default function FreshFlower() {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-4">
-								<AccordionTrigger>Other Bouquet</AccordionTrigger>
+								<AccordionTrigger className='text-[#A5273A]'>Other Bouquet</AccordionTrigger>
 								<AccordionContent className="flex flex-col ml-3">
 									<div>
 										<Link to="/balloon">Balloon Variant</Link>
 									</div>
 									<div>
-										<Link to="/money">Money Variant</Link>
+										<Link to="/money" className='text-[#A5273A]'>Money Variant</Link>
 									</div>
 									<div>
 										<Link to="/snack">Snack Variant</Link>
@@ -218,7 +218,7 @@ export default function FreshFlower() {
 					className="flex-grow"
 				>
 					<div className="flex my-16 px-32 flex-col">
-						<h1 className="text-2xl font-bold mb-3">Fresh Flower</h1>
+						<h1 className="text-2xl font-bold mb-3">Money Variant</h1>
 						<div className="relative">
 							<input
 								type="text"

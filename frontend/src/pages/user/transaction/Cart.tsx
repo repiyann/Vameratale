@@ -28,6 +28,7 @@ export default function Cart() {
 						<div className="col-span-2 my-3">
 							<p className="text-lg font-medium">3 Roses</p>
 							<p className="text-md">Rp95.000 | 1pcs</p>
+							<p className="text-md">Ukuran S</p>
 						</div>
 						<p className="text-end text-lg font-medium mx-10 my-3">Rp95.000</p>
 					</Card>
